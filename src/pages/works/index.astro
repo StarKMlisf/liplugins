@@ -1,0 +1,33 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { works } from '@/data/site';
+import { withBase } from '@/lib/paths';
+---
+
+<BaseLayout title="作品" description="浏览牢李插件系列当前发布和持续维护的 Minecraft 服务器插件。">
+  <header class="page-heading">
+    <div class="page-heading__grid shell">
+      <div><span class="eyebrow">Works / 作品</span><h1>为真实服务器<br />解决真实问题。</h1></div>
+      <p>作品目录会说明每款插件解决什么问题、适用什么环境，以及免费或付费状态。付费插件直接展示当前标价，不隐藏在咨询流程里。</p>
+    </div>
+  </header>
+  <section class="section shell">
+    <div class="works-list">
+      {works.map((work, index) => (
+        <a class="work-row" href={withBase(`/works/${work.slug}/`)}>
+          <span class="work-row__number">{String(index + 1).padStart(2, '0')}</span>
+          <h2>{work.name}<span>{work.kicker}</span></h2>
+          <div class="work-row__summary">
+            <p>{work.summary}</p>
+            <div class="work-row__meta">
+              <span class="tag">v{work.version}</span>
+              {work.priceCny && <span class="tag tag--paid">付费插件 · ¥{work.priceCny}</span>}
+            </div>
+          </div>
+          <span class="work-row__arrow">↗</span>
+        </a>
+      ))}
+    </div>
+    <p style="margin: 2rem 0 0; color: var(--ink-soft); font-size: .8rem;">当前收录 {works.length} 款插件。LiTitle 与 LiRealEnchant 页面只展示已确认价格；具体授权和交付方式以购买时说明为准。</p>
+  </section>
+</BaseLayout>

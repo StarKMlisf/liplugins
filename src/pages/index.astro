@@ -1,0 +1,142 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SeasonMark from '@/components/SeasonMark.astro';
+import VoxelBlock from '@/components/VoxelBlock.astro';
+import { works } from '@/data/site';
+import { allDocs } from '@/data/docs';
+import { withBase } from '@/lib/paths';
+
+const currentWork = works[0];
+const paidWorks = works.filter((work) => work.priceCny);
+---
+
+<BaseLayout>
+  <section class="home-hero">
+    <div class="home-hero__inner shell">
+      <div class="home-hero__copy">
+        <span class="eyebrow">LaoLi Plugins · Minecraft server works</span>
+        <h1 class="display-title">把时间写进<br />服务器世界。</h1>
+        <p>牢李插件系列专注于完整、可靠、能长期维护的 Minecraft 服务器玩法。每一个作品，都从玩家感受到的变化出发，也把服主需要的配置、性能与文档做完整。</p>
+        <div class="button-row">
+          <a class="button button--primary" href={withBase('/works/')}>浏览作品 <span>→</span></a>
+          <a class="button" href={withBase('/docs/liseasons/home/')}>阅读 LISeasons 文档</a>
+        </div>
+        <div class="home-hero__note">当前收录：{works.length} 款插件 · {paidWorks.length} 款付费作品</div>
+      </div>
+
+      <div class="season-stage" aria-label="由春夏秋冬组成的 Minecraft 方块世界">
+        <img class="season-stage__art" src={withBase('/season-world.svg')} alt="春季森林、夏季农田、秋季落叶和冬季冰雪组成的像素方块世界" />
+        <div class="season-stage__hud"><span>XYZ 128 / 72 / -36</span><span>DAY 072 · AUTUMN</span></div>
+        <div class="season-stage__legend">
+          <span>SPRING · 生长</span><span>SUMMER · 盛放</span><span>AUTUMN · 收获</span><span>WINTER · 沉静</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="minecraft-systems shell" aria-label="LISeasons 世界系统">
+    <article><VoxelBlock type="grass" size="medium" label="草方块" /><div><span>WORLD CALENDAR</span><strong>世界日历</strong><p>四季与二十四节气</p></div></article>
+    <article><VoxelBlock type="redstone" size="medium" label="红石方块" /><div><span>PLAYER CLIMATE</span><strong>玩家体感</strong><p>温度、潮湿与热源</p></div></article>
+    <article><VoxelBlock type="meteor" size="medium" label="陨石方块" /><div><span>SEASON EVENTS</span><strong>季节事件</strong><p>流星雨与落点奖励</p></div></article>
+    <article><VoxelBlock type="ice" size="medium" label="冰方块" /><div><span>WORLD RULES</span><strong>世界规则</strong><p>冬冻春融与群系色调</p></div></article>
+  </section>
+
+  <section class="section">
+    <div class="shell section-heading">
+      <span class="eyebrow">Featured work / 主打作品</span>
+      <div>
+        <h2>不只显示季节，<br />而是让世界进入季节。</h2>
+        <p>时间、气候、视觉和玩法彼此连接，玩家会从树叶、冰面、作物、体感温度和夜空中真正感知季节正在变化。</p>
+      </div>
+    </div>
+
+    <div class="work-feature">
+      <div class="work-feature__story">
+        <span class="eyebrow">01 / Seasons & climate</span>
+        <h3>{currentWork.name}</h3>
+        <p>{currentWork.description}</p>
+        <div class="work-feature__meta">
+          <span class="tag tag--status">{currentWork.status}</span>
+          <span class="tag">v{currentWork.version}</span>
+          <span class="tag">{currentWork.platform}</span>
+          <span class="tag">Java 21</span>
+        </div>
+        <div class="button-row">
+          <a class="button button--primary" href={withBase('/works/liseasons/')}>了解 LISeasons</a>
+          <a class="button button--quiet" href={withBase('/docs/liseasons/')}>打开文档 <span>↗</span></a>
+        </div>
+      </div>
+      <div class="work-feature__visual">
+        <span class="work-feature__season work-feature__season--spring">SPRING</span>
+        <span class="work-feature__season work-feature__season--summer">SUMMER</span>
+        <span class="work-feature__season work-feature__season--autumn">AUTUMN</span>
+        <span class="work-feature__season work-feature__season--winter">WINTER</span>
+        <div class="work-feature__orbit">
+          <SeasonMark size="large" label />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section shell">
+    <div class="section-heading">
+      <span class="eyebrow">Commercial works / 付费作品</span>
+      <div><h2>更完整的系统，<br />也明确写出价格。</h2><p>价格用于插件本体展示；授权范围、交付方式和售后渠道以购买时说明为准。</p></div>
+    </div>
+    <div class="entry-grid">
+      {paidWorks.map((work, index) => (
+        <a class="entry-card" href={withBase(`/works/${work.slug}/`)}>
+          <span class="entry-card__index">{String(index + 2).padStart(2, '0')} / PAID PLUGIN</span>
+          <div class="work-feature__meta" style="margin:0 0 1rem;"><span class="tag tag--paid">¥{work.priceCny}</span><span class="tag">v{work.version}</span></div>
+          <h3>{work.name}</h3>
+          <p>{work.summary}</p>
+          <span class="entry-card__arrow">↗</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section shell">
+    <div class="section-heading">
+      <span class="eyebrow">Use & support / 使用与支持</span>
+      <div>
+        <h2>作品介绍和使用文档，<br />同样重要。</h2>
+        <p>先判断它是否适合你的服务器，再从安装、配置、运维到附属开发逐步落地。</p>
+      </div>
+    </div>
+    <div class="entry-grid">
+      <a class="entry-card" href={withBase('/docs/')}>
+        <span class="entry-card__index">01 / DOCUMENTATION</span>
+        <h3>完整文档</h3>
+        <p>{allDocs.length} 篇中文文档，覆盖 LISeasons、LiTitle 与 LiRealEnchant，并按玩家、管理员、开发者及附魔详情分区。</p>
+        <span class="entry-card__arrow">↗</span>
+      </a>
+      <a class="entry-card" href={withBase('/support/')}>
+        <span class="entry-card__index">02 / SUPPORT</span>
+        <h3>获取支持</h3>
+        <p>用清楚的版本、日志与复现信息定位问题，也了解提交问题前应完成的检查。</p>
+        <span class="entry-card__arrow">↗</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section section--bordered">
+    <div class="shell">
+      <div class="section-heading">
+        <span class="eyebrow">How we build / 制作原则</span>
+        <h2>看得见的体验，<br />也经得起长期运行。</h2>
+      </div>
+      <div class="principle-grid">
+        <article class="principle">
+          <span>01</span><h3>玩法要有反馈</h3><p>配置项最终应变成玩家看得见、听得到或能参与的世界变化。</p>
+        </article>
+        <article class="principle">
+          <span>02</span><h3>运维要可判断</h3><p>明确依赖、兼容范围、风险边界与故障路径，避免让服主靠猜。</p>
+        </article>
+        <article class="principle">
+          <span>03</span><h3>升级不破坏配置</h3><p>新增节点自动补齐，尽可能保留服主已经调整过的长期设定。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

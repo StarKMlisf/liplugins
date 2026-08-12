@@ -1,0 +1,83 @@
+---
+import DocsSidebar from '@/components/DocsSidebar.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { withBase } from '@/lib/paths';
+import VoxelBlock from '@/components/VoxelBlock.astro';
+import type { WikiHeading } from '@/lib/wiki';
+import type { DocSet } from '@/data/docs';
+
+interface Props {
+  title: string;
+  description: string;
+  docSet: DocSet;
+  activeSlug?: string;
+  group: string;
+  headings?: WikiHeading[];
+  previous?: { title: string; slug: string };
+  next?: { title: string; slug: string };
+}
+
+const { title, description, docSet, activeSlug, group, headings = [], previous, next } = Astro.props;
+---
+
+<BaseLayout title={`${title} - ${docSet.name} 文档`} description={description} bodyClass="docs-page">
+  <div class="docs-mobile-bar">
+    <button type="button" data-docs-open>
+      <span class="docs-mobile-bar__icon">≡</span>
+      文档目录
+    </button>
+    <a href={withBase('/search/')}>搜索</a>
+  </div>
+  <div class="docs-shell shell">
+    <DocsSidebar docSet={docSet} activeSlug={activeSlug} />
+    <div class="docs-overlay" data-docs-overlay></div>
+    <article class="docs-content">
+      <header class="docs-content__header">
+        <nav class="docs-breadcrumbs" aria-label="面包屑">
+          <a href={withBase('/docs/')}>文档</a><span>/</span><a href={withBase(`/docs/${docSet.slug}/`)}>{docSet.name}</a><span>/</span><span>{group}</span>
+        </nav>
+        <div class="docs-title-row"><VoxelBlock type={group === '玩家文档' ? 'grass' : group === '管理员文档' ? 'redstone' : group === '开发者文档' ? 'ice' : group === '附魔详情' ? 'amethyst' : 'book'} size="medium" /><h1>{title}</h1></div>
+        <p>{description}</p>
+      </header>
+      <div class="prose">
+        <slot />
+      </div>
+      {(previous || next) && (
+        <nav class="docs-pagination" aria-label="文档翻页">
+          {previous ? (
+            <a class="docs-pagination__previous" href={withBase(`/docs/${docSet.slug}/${previous.slug}/`)}>
+              <span>上一篇</span><strong>{previous.title}</strong>
+            </a>
+          ) : <span></span>}
+          {next && (
+            <a class="docs-pagination__next" href={withBase(`/docs/${docSet.slug}/${next.slug}/`)}>
+              <span>下一篇</span><strong>{next.title}</strong>
+            </a>
+          )}
+        </nav>
+      )}
+    </article>
+    {headings.length > 0 && (
+      <aside class="page-toc">
+        <p>本页目录</p>
+        <nav aria-label="本页目录">
+          {headings.map((heading) => <a class:list={{ 'page-toc__nested': heading.depth === 3 }} href={`#${heading.id}`}>{heading.text}</a>)}
+        </nav>
+      </aside>
+    )}
+  </div>
+</BaseLayout>
+
+<script>
+  const sidebar = document.querySelector<HTMLElement>('[data-docs-sidebar]');
+  const overlay = document.querySelector<HTMLElement>('[data-docs-overlay]');
+  const setOpen = (open: boolean) => {
+    sidebar?.toggleAttribute('data-open', open);
+    overlay?.toggleAttribute('data-open', open);
+    document.body.toggleAttribute('data-docs-open', open);
+  };
+
+  document.querySelector('[data-docs-open]')?.addEventListener('click', () => setOpen(true));
+  document.querySelector('[data-docs-close]')?.addEventListener('click', () => setOpen(false));
+  overlay?.addEventListener('click', () => setOpen(false));
+</script>

@@ -1,0 +1,121 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import VoxelBlock from '@/components/VoxelBlock.astro';
+import WorkEmblem from '@/components/WorkEmblem.astro';
+import { works } from '@/data/site';
+import { withBase } from '@/lib/paths';
+
+const work = works.find((entry) => entry.slug === 'lititle')!;
+---
+
+<BaseLayout title="LiTitle" description={work.summary}>
+  <header class="work-hero">
+    <div class="shell">
+      <div class="work-hero__top">
+        <div>
+          <div class="work-hero__labels"><span class="eyebrow">Work 02 / Title & chat</span><span class="tag tag--paid">付费插件 · ¥{work.priceCny}</span></div>
+          <h1>{work.name}</h1>
+          <p class="work-hero__lead">{work.summary}</p>
+          <div class="button-row" style="margin-top: 2rem;">
+            <a class="button button--primary" href={withBase('/docs/lititle/')}>阅读完整文档</a>
+            <a class="button" href="#environment">运行要求</a>
+          </div>
+        </div>
+        <WorkEmblem type="gold" code="TITLE" label="称号铭牌" priceCny={work.priceCny!} />
+      </div>
+      <div class="work-facts">
+        <div class="work-fact"><span>Version</span><strong>{work.version}</strong></div>
+        <div class="work-fact"><span>Price</span><strong>人民币 {work.priceCny} 元</strong></div>
+        <div class="work-fact"><span>Platform</span><strong>{work.platform}</strong></div>
+        <div class="work-fact"><span>Minecraft</span><strong>{work.minecraft}</strong></div>
+        <div class="work-fact"><span>Runtime</span><strong>{work.java}</strong></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="inventory-ribbon" aria-label="LiTitle 核心系统物品栏">
+    <div class="shell inventory-ribbon__inner">
+      <div class="inventory-slot"><VoxelBlock type="gold" size="medium" /><span>称号商城</span><kbd>1</kbd></div>
+      <div class="inventory-slot"><VoxelBlock type="book" size="medium" /><span>称号仓库</span><kbd>2</kbd></div>
+      <div class="inventory-slot"><VoxelBlock type="meteor" size="medium" /><span>称号卷轴</span><kbd>3</kbd></div>
+      <div class="inventory-slot"><VoxelBlock type="redstone" size="medium" /><span>自动称号</span><kbd>4</kbd></div>
+      <div class="inventory-slot"><VoxelBlock type="amethyst" size="medium" /><span>聊天颜色</span><kbd>5</kbd></div>
+      <div class="inventory-slot"><VoxelBlock type="ice" size="medium" /><span>跨服频道</span><kbd>6</kbd></div>
+    </div>
+  </section>
+
+  <section class="section shell" id="overview">
+    <div class="section-heading">
+      <span class="eyebrow">Overview / 它是什么</span>
+      <div>
+        <h2>让称号成为可收集、<br />可运营的玩家身份。</h2>
+        <p>{work.description} 玩家从商店、目标或卷轴获得称号，服主则通过独立 GUI、权限、经济与存储规则维护整套生态。</p>
+      </div>
+    </div>
+
+    <div class="feature-chapter">
+      <div><span class="feature-chapter__number">01 / TITLES</span><h2>从获得到展示</h2></div>
+      <div class="feature-chapter__body">
+        <p>称号不是一行固定前缀。LiTitle 把商店、仓库、佩戴、有效期、卷轴与自动解锁串成完整流程，并允许称号使用 HEX、渐变和动态帧。</p>
+        <div class="feature-list">
+          <div><strong>商城与仓库</strong><span>使用 Vault 金币、PlayerPoints、权限或物品设计获取方式。</span></div>
+          <div><strong>独立称号卷轴</strong><span>右键解锁，可配置绑定、外观、模型数据与解锁后动作。</span></div>
+          <div><strong>统计与自动称号</strong><span>根据挖掘、击杀、进度、余额和上交物品跟踪目标。</span></div>
+          <div><strong>进阶与动态展示</strong><span>称号前置、有效期、渐变文本和动态帧均可配置。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-chapter">
+      <div><span class="feature-chapter__number">02 / CHAT</span><h2>把身份接入聊天</h2></div>
+      <div class="feature-chapter__body">
+        <p>聊天系统提供本服、全服、管理与私聊等频道，也包含玩家屏蔽、监听、禁言、冷却、重复消息检测、长度限制、敏感词、@ 提醒和手持物品展示。</p>
+        <div class="feature-list">
+          <div><strong>频道体系</strong><span>本服、全服、管理频道与私聊回复各自独立控制。</span></div>
+          <div><strong>跨服交流</strong><span>适配 Velocity 环境下的全服与管理频道转发。</span></div>
+          <div><strong>聊天颜色</strong><span>普通色、HEX、彩虹和双色渐变通过菜单选择。</span></div>
+          <div><strong>昵称体系</strong><span>中文昵称与英文彩色昵称独立保存，并提供 PAPI 变量。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-chapter">
+      <div><span class="feature-chapter__number">03 / OPERATIONS</span><h2>适合单服与群组服</h2></div>
+      <div class="feature-chapter__body">
+        <p>单服可直接使用 SQLite，多子服可切换 MySQL 共享玩家称号与昵称数据。商店、仓库、聊天颜色、统计称号和进阶称号菜单均有独立配置。</p>
+        <div class="feature-list">
+          <div><strong>SQLite / MySQL</strong><span>按服务器规模选择本地或共享存储。</span></div>
+          <div><strong>PlaceholderAPI</strong><span>向 TAB、聊天和其他插件输出称号与统一聊天昵称。</span></div>
+          <div><strong>旧数据迁移</strong><span>提供旧 PlayeerTitle 数据迁移入口。</span></div>
+          <div><strong>配置保留</strong><span>新默认节点按需补齐，避免整份覆盖已有运营配置。</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--bordered" id="environment">
+    <div class="shell">
+      <div class="section-heading">
+        <span class="eyebrow">Environment / 运行环境</span>
+        <div><h2>先安装 Vault，<br />再配置称号经济。</h2><p>当前站点介绍对应 LiTitle 0.1.93。运行核心、Java 和依赖应按下列范围准备。</p></div>
+      </div>
+      <div class="directory-grid">
+        <div class="directory-card"><span class="directory-card__group">必须前置</span><h2>Vault</h2><p>插件清单声明为强制依赖；还需经济插件才能完成金币余额与购买流程。</p></div>
+        <div class="directory-card"><span class="directory-card__group">支持核心</span><h2>Paper / Folia</h2><p>当前文档范围为 Paper 1.21.11–26.2；Folia 范围为 26.1.2–26.2。</p></div>
+        <div class="directory-card"><span class="directory-card__group">Java</span><h2>Java 21</h2><p>成品字节码使用 Java 21；服务端本身仍需满足对应核心要求。</p></div>
+        <div class="directory-card"><span class="directory-card__group">可选联动</span><h2>PAPI · Points · Attribute</h2><p>按需启用占位符、点券购买与称号属性兼容。</p></div>
+      </div>
+      <div class="paid-notice">
+        <div><span class="eyebrow">Commercial license / 付费插件</span><strong>LiTitle 标价 ¥{work.priceCny}</strong></div>
+        <p>本站当前仅展示插件价格，未接入在线支付。具体交付方式、授权范围和后续更新服务以购买时的作者说明为准。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="cta-band__inner shell">
+      <h2>让每一个称号，<br />都对应一段玩家经历。</h2>
+      <div class="button-row"><a class="button button--primary" href={withBase('/docs/lititle/home/')}>从文档首页开始</a><a class="button" href={withBase('/works/')}>返回作品目录</a></div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,20 @@
+---
+import VoxelBlock from '@/components/VoxelBlock.astro';
+
+interface Props {
+  type: 'gold' | 'amethyst';
+  code: string;
+  label: string;
+  priceCny: number;
+}
+
+const { type, code, label, priceCny } = Astro.props;
+---
+
+<div class:list={['work-emblem', `work-emblem--${type}`]} aria-label={`${label}，付费插件，价格 ${priceCny} 元`}>
+  <span class="work-emblem__code">{code}</span>
+  <VoxelBlock type={type} size="large" />
+  <strong>{label}</strong>
+  <span class="work-emblem__price">¥{priceCny}</span>
+</div>
+

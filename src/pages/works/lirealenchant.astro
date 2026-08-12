@@ -1,0 +1,122 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import VoxelBlock from '@/components/VoxelBlock.astro';
+import WorkEmblem from '@/components/WorkEmblem.astro';
+import { works } from '@/data/site';
+import { withBase } from '@/lib/paths';
+
+const work = works.find((entry) => entry.slug === 'lirealenchant')!;
+---
+
+<BaseLayout title="LiRealEnchant" description={work.summary}>
+  <header class="work-hero">
+    <div class="shell">
+      <div class="work-hero__top">
+        <div>
+          <div class="work-hero__labels"><span class="eyebrow">Work 03 / Real enchantments</span><span class="tag tag--paid">付费插件 · ¥{work.priceCny}</span></div>
+          <h1>{work.name}</h1>
+          <p class="work-hero__lead">{work.summary}</p>
+          <div class="button-row" style="margin-top: 2rem;">
+            <a class="button button--primary" href={withBase('/docs/lirealenchant/')}>阅读完整 Wiki</a>
+            <a class="button" href="#environment">运行要求</a>
+          </div>
+        </div>
+        <WorkEmblem type="amethyst" code="ENCHANT" label="真实附魔书" priceCny={work.priceCny!} />
+      </div>
+      <div class="work-facts">
+        <div class="work-fact"><span>Version</span><strong>{work.version}</strong></div>
+        <div class="work-fact"><span>Price</span><strong>人民币 {work.priceCny} 元</strong></div>
+        <div class="work-fact"><span>Platform</span><strong>{work.platform}</strong></div>
+        <div class="work-fact"><span>Minecraft</span><strong>{work.minecraft}</strong></div>
+        <div class="work-fact"><span>Runtime</span><strong>{work.java}</strong></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="inventory-ribbon" aria-label="LiRealEnchant 核心系统物品栏">
+    <div class="shell inventory-ribbon__inner">
+      <div class="inventory-slot"><VoxelBlock type="amethyst" size="medium" /><span>真实附魔</span><kbd>1</kbd></div>
+      <div class="inventory-slot"><VoxelBlock type="book" size="medium" /><span>附魔图鉴</span><kbd>2</kbd></div>
+      <div class="inventory-slot"><VoxelBlock type="gold" size="medium" /><span>附魔获取</span><kbd>3</kbd></div>
+      <div class="inventory-slot"><VoxelBlock type="redstone" size="medium" /><span>槽位冲突</span><kbd>4</kbd></div>
+      <div class="inventory-slot"><VoxelBlock type="meteor" size="medium" /><span>战斗技能</span><kbd>5</kbd></div>
+      <div class="inventory-slot"><VoxelBlock type="ice" size="medium" /><span>祛魔净咒</span><kbd>6</kbd></div>
+    </div>
+  </section>
+
+  <section class="section shell" id="overview">
+    <div class="section-heading">
+      <span class="eyebrow">Overview / 它是什么</span>
+      <div>
+        <h2>不是 Lore 假附魔，<br />而是真正进入 Registry。</h2>
+        <p>{work.description} 附魔本体保存在原版 enchantments 数据中，Lore 只负责中文展示，不作为机制判定依据。</p>
+      </div>
+    </div>
+
+    <div class="feature-chapter">
+      <div><span class="feature-chapter__number">01 / REGISTRY</span><h2>122 个真实附魔</h2></div>
+      <div class="feature-chapter__body">
+        <p>每个附魔以 <code>yunmengze:*</code> 命名空间注册，并有独立的最高等级、适用装备、来源、冲突、概率、数值、冷却、粒子和声音。</p>
+        <div class="feature-list">
+          <div><strong>122 个原创附魔</strong><span>合计 385 个等级机制，覆盖战斗、工具、生存和移动。</span></div>
+          <div><strong>完整装备范围</strong><span>武器、工具、护甲、弓弩、三叉戟、矛、盾牌、钓竿与鞘翅。</span></div>
+          <div><strong>中文附魔图鉴</strong><span>菜单展示每级实际概率、伤害、持续时间、冷却和冲突。</span></div>
+          <div><strong>粒子与声音反馈</strong><span>主动与被动技能均按机制提供可辨认的客户端反馈。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-chapter">
+      <div><span class="feature-chapter__number">02 / GAMEPLAY</span><h2>进入原版生存循环</h2></div>
+      <div class="feature-chapter__body">
+        <p>服主可以让 LiReal 附魔进入附魔台、战利品和图书管理员交易，也能按单个附魔关闭来源。真实附魔书通过铁砧应用，并在合成前完成适用性、冲突、槽位和经验检查。</p>
+        <div class="feature-list">
+          <div><strong>三条自然来源</strong><span>附魔台、随机战利品和图书管理员交易均可独立控制。</span></div>
+          <div><strong>铁砧双向保护</strong><span>无论附魔位于左右哪一侧，都检查冲突并保留被拒绝物品。</span></div>
+          <div><strong>附魔槽系统</strong><span>装备显示已用与总槽位，扩槽器可增加可配置容量。</span></div>
+          <div><strong>自然获取总开关</strong><span>关闭时只移除 LiReal 自定义附魔，不占用原版随机结果。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-chapter">
+      <div><span class="feature-chapter__number">03 / CONTROL</span><h2>从获得到移除都可控</h2></div>
+      <div class="feature-chapter__body">
+        <p>玩家可通过菜单祛除普通附魔、抽魔成真实附魔书，或净化诅咒；成功率、材料与 Vault 费用均由服务器决定。Java 玩家继续使用原版附魔台，基岩玩家可进入兼容菜单流程。</p>
+        <div class="feature-list">
+          <div><strong>祛魔</strong><span>从装备上移除一个普通附魔。</span></div>
+          <div><strong>抽魔成书</strong><span>把目标附魔转移为可再次使用的真实附魔书。</span></div>
+          <div><strong>净咒</strong><span>使用独立规则处理诅咒附魔。</span></div>
+          <div><strong>Java / 基岩适配</strong><span>识别基岩玩家后使用兼容附魔菜单流程。</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--bordered" id="environment">
+    <div class="shell">
+      <div class="section-heading">
+        <span class="eyebrow">Environment / 运行环境</span>
+        <div><h2>这是 Paper 26 专用构建。</h2><p>当前介绍对应 dev196。真实附魔注册链与服务端版本紧密相关，不应部署到旧 Paper、Spigot 或混合核心。</p></div>
+      </div>
+      <div class="directory-grid">
+        <div class="directory-card"><span class="directory-card__group">基准核心</span><h2>Paper 26.1.2</h2><p>当前正式构建使用 Paper 26 的真实附魔 Bootstrap 与 Registry 注册链。</p></div>
+        <div class="directory-card"><span class="directory-card__group">Java</span><h2>Java 25</h2><p>服务端和插件构建基线均按 Java 25 准备。</p></div>
+        <div class="directory-card"><span class="directory-card__group">必须前置</span><h2>无</h2><p>核心玩法不要求其他插件；缺少可选依赖时相应联动自动停用。</p></div>
+        <div class="directory-card"><span class="directory-card__group">可选联动</span><h2>Vault · PAPI · Bedrock</h2><p>用于经济费用、占位符与基岩玩家兼容流程。</p></div>
+      </div>
+      <div class="notice" style="margin-top: 2rem;"><strong>实服验证基线</strong><p>dev195 已完成 122 个附魔、385 个等级的双客户端实服回归，共 2815 行结果、0 个失败，并对 35 个随机附魔执行 59500 次概率采样。dev196 只增加 Wiki 与修正文案，不改变该机制基线。</p></div>
+      <div class="paid-notice">
+        <div><span class="eyebrow">Commercial license / 付费插件</span><strong>LiRealEnchant 标价 ¥{work.priceCny}</strong></div>
+        <p>本站当前仅展示插件价格，未接入在线支付。具体交付方式、授权范围和后续更新服务以购买时的作者说明为准。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="cta-band__inner shell">
+      <h2>让每一本附魔书，<br />都真正改变装备玩法。</h2>
+      <div class="button-row"><a class="button button--primary" href={withBase('/docs/lirealenchant/enchantments/')}>查看 122 个附魔</a><a class="button" href={withBase('/works/')}>返回作品目录</a></div>
+    </div>
+  </section>
+</BaseLayout>

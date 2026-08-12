@@ -1,0 +1,51 @@
+---
+interface Props {
+  type?: 'grass' | 'leaf' | 'ice' | 'meteor' | 'book' | 'redstone' | 'gold' | 'amethyst';
+  size?: 'small' | 'medium' | 'large';
+  label?: string;
+}
+
+const { type = 'grass', size = 'medium', label = '' } = Astro.props;
+---
+
+<span class:list={['voxel-block', `voxel-block--${type}`, `voxel-block--${size}`]} role={label ? 'img' : undefined} aria-label={label || undefined} aria-hidden={label ? undefined : 'true'}>
+  <i class="voxel-block__pixel voxel-block__pixel--one"></i>
+  <i class="voxel-block__pixel voxel-block__pixel--two"></i>
+  <i class="voxel-block__pixel voxel-block__pixel--three"></i>
+  <i class="voxel-block__pixel voxel-block__pixel--four"></i>
+</span>
+
+<style>
+  .voxel-block {
+    --block-main: #765437;
+    --block-top: #6fa05e;
+    --block-dark: #4c3928;
+    --block-light: #9a7450;
+    position: relative;
+    display: inline-block;
+    flex: none;
+    overflow: hidden;
+    border: 2px solid color-mix(in srgb, var(--block-dark) 82%, black);
+    border-radius: 2px;
+    background: linear-gradient(to bottom, var(--block-top) 0 27%, var(--block-main) 27% 100%);
+    box-shadow: inset -4px -4px 0 color-mix(in srgb, var(--block-dark) 38%, transparent), inset 3px 3px 0 color-mix(in srgb, var(--block-light) 35%, transparent);
+    image-rendering: pixelated;
+  }
+
+  .voxel-block--small { width: 1.45rem; height: 1.45rem; }
+  .voxel-block--medium { width: 2.7rem; height: 2.7rem; }
+  .voxel-block--large { width: 4.3rem; height: 4.3rem; border-width: 3px; }
+  .voxel-block--leaf { --block-main: #4c7d49; --block-top: #76a767; --block-dark: #315738; --block-light: #9ac17b; }
+  .voxel-block--ice { --block-main: #8cc9dc; --block-top: #d8f1f5; --block-dark: #5695b2; --block-light: #f3fbff; }
+  .voxel-block--meteor { --block-main: #512f2c; --block-top: #e88440; --block-dark: #2d2325; --block-light: #f2bd52; transform: rotate(7deg); }
+  .voxel-block--book { --block-main: #355f78; --block-top: #e8dcc1; --block-dark: #233d4e; --block-light: #6da4b5; }
+  .voxel-block--redstone { --block-main: #716b62; --block-top: #b4483d; --block-dark: #393735; --block-light: #df7663; }
+  .voxel-block--gold { --block-main: #d99e22; --block-top: #ffe47a; --block-dark: #8a5a16; --block-light: #fff1a6; }
+  .voxel-block--amethyst { --block-main: #7b4ca5; --block-top: #c996ea; --block-dark: #4d2f69; --block-light: #efd4ff; }
+
+  .voxel-block__pixel { position: absolute; display: block; width: 14%; height: 14%; background: var(--block-light); opacity: .62; }
+  .voxel-block__pixel--one { top: 10%; left: 12%; }
+  .voxel-block__pixel--two { top: 38%; right: 14%; background: var(--block-dark); }
+  .voxel-block__pixel--three { right: 38%; bottom: 13%; }
+  .voxel-block__pixel--four { bottom: 26%; left: 18%; width: 9%; height: 9%; background: var(--block-dark); }
+</style>

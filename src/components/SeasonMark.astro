@@ -1,0 +1,55 @@
+---
+interface Props {
+  size?: 'small' | 'medium' | 'large';
+  label?: boolean;
+}
+
+const { size = 'medium', label = false } = Astro.props;
+---
+
+<span class:list={['season-mark', `season-mark--${size}`]} aria-hidden="true">
+  <span class="season-mark__quarter season-mark__quarter--spring"></span>
+  <span class="season-mark__quarter season-mark__quarter--summer"></span>
+  <span class="season-mark__quarter season-mark__quarter--autumn"></span>
+  <span class="season-mark__quarter season-mark__quarter--winter"></span>
+  <span class="season-mark__core">{label ? '李' : ''}</span>
+</span>
+
+<style>
+  .season-mark {
+    position: relative;
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    flex: none;
+    overflow: hidden;
+    border-radius: 28%;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 16%, transparent);
+    transform: rotate(4deg);
+  }
+
+  .season-mark--small { width: 1.75rem; height: 1.75rem; }
+  .season-mark--medium { width: 2.75rem; height: 2.75rem; }
+  .season-mark--large { width: 5.5rem; height: 5.5rem; }
+
+  .season-mark__quarter { display: block; }
+  .season-mark__quarter--spring { background: var(--spring); }
+  .season-mark__quarter--summer { background: var(--summer); }
+  .season-mark__quarter--autumn { background: var(--autumn); }
+  .season-mark__quarter--winter { background: var(--winter); }
+
+  .season-mark__core {
+    position: absolute;
+    inset: 27%;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.65rem;
+    transform: rotate(-4deg);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 14%, transparent);
+  }
+</style>
+

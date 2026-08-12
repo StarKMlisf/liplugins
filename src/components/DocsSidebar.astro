@@ -1,0 +1,45 @@
+---
+import type { DocSet } from '@/data/docs';
+import { withBase } from '@/lib/paths';
+import VoxelBlock from '@/components/VoxelBlock.astro';
+
+interface Props {
+  docSet: DocSet;
+  activeSlug?: string;
+}
+
+const { docSet, activeSlug } = Astro.props;
+const groupIcons = {
+  '文档总览': 'book',
+  '玩家文档': 'grass',
+  '管理员文档': 'redstone',
+  '开发者文档': 'ice',
+  '附魔详情': 'amethyst',
+} as const;
+const visibleDocs = docSet.docs.filter((doc) => doc.sidebar !== false);
+---
+
+<aside class="docs-sidebar" data-docs-sidebar>
+  <div class="docs-sidebar__heading">
+    <a href={withBase(`/docs/${docSet.slug}/`)}>
+      <span class="docs-sidebar__identity"><VoxelBlock type={docSet.icon} size="small" /><span><span class="eyebrow">{docSet.name} {docSet.version}</span><strong>文档集</strong></span></span>
+    </a>
+    <button class="docs-sidebar__close" type="button" data-docs-close aria-label="关闭目录">×</button>
+  </div>
+  <a class="docs-sidebar__back" href={withBase(`/works/${docSet.slug}/`)}>← 返回作品介绍</a>
+  <nav aria-label={`${docSet.name} 文档目录`}>
+    {docSet.groups.map((group) => (
+      <section class="docs-sidebar__group">
+        <h2><VoxelBlock type={groupIcons[group]} size="small" />{group}</h2>
+        {visibleDocs.filter((doc) => doc.group === group).map((doc) => (
+          <a
+            href={withBase(`/docs/${docSet.slug}/${doc.slug}/`)}
+            aria-current={doc.slug === activeSlug ? 'page' : undefined}
+          >
+            {doc.title}
+          </a>
+        ))}
+      </section>
+    ))}
+  </nav>
+</aside>
