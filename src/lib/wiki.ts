@@ -12,9 +12,17 @@ export interface WikiHeading {
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const sourceDirectories = new Map([
+  ['liemc', path.resolve(currentDirectory, '../../content/liemc')],
   ['liseasons', path.resolve(currentDirectory, '../../content/liseasons')],
   ['lititle', path.resolve(currentDirectory, '../../content/lititle')],
   ['lirealenchant', path.resolve(currentDirectory, '../../content/lirealenchant')],
+  ['enderdragon', path.resolve(currentDirectory, '../../content/enderdragon')],
+  ['lishop', path.resolve(currentDirectory, '../../content/lishop')],
+  ['lianimalscale', path.resolve(currentDirectory, '../../content/lianimalscale')],
+  ['lipet', path.resolve(currentDirectory, '../../content/lipet')],
+  ['lichqian', path.resolve(currentDirectory, '../../content/lichqian')],
+  ['liskin', path.resolve(currentDirectory, '../../content/liskin')],
+  ['jisseechessgames', path.resolve(currentDirectory, '../../content/jisseechessgames')],
 ]);
 
 function normalizeWikiPath(file: string) {
@@ -42,7 +50,7 @@ export function readWikiSource(doc: DocEntry) {
   if (!sourceDirectory) {
     throw new Error(`未知文档项目：${doc.project}`);
   }
-  return fs.readFileSync(path.join(sourceDirectory, doc.file), 'utf8');
+  return fs.readFileSync(path.join(sourceDirectory, doc.file), 'utf8').replace(/^\uFEFF/, '');
 }
 
 export function renderWikiDocument(doc: DocEntry) {

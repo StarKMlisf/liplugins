@@ -12,6 +12,7 @@ export type WorkAvailability = '免费' | '付费' | '暂不发售';
 export interface WorkEntry {
   slug: string;
   name: string;
+  catalogLabel: string;
   kicker: string;
   summary: string;
   description: string;
@@ -30,6 +31,7 @@ export const works: WorkEntry[] = [
   {
     slug: 'liseasons',
     name: 'LISeasons',
+    catalogLabel: '季节',
     kicker: '季节、节气与服务器自然系统',
     summary: '让季节不只是计时器，而是会真正改变天空、群系、冰雪、作物、温度与夜空的世界规则。',
     description:
@@ -53,6 +55,7 @@ export const works: WorkEntry[] = [
   {
     slug: 'lititle',
     name: 'LiTitle',
+    catalogLabel: '称号',
     kicker: '称号、聊天与跨服频道系统',
     summary: '把称号收集、商城、动态展示、聊天颜色与跨服频道整合成一套可长期运营的身份系统。',
     description:
@@ -77,6 +80,7 @@ export const works: WorkEntry[] = [
   {
     slug: 'lirealenchant',
     name: 'LiRealEnchant2',
+    catalogLabel: '附魔',
     kicker: '真实注册的原创附魔系统',
     summary: '以 Paper Registry 注册 122 个真实附魔，为装备加入获取、冲突、槽位、铁砧与祛魔的完整循环。',
     description:
@@ -101,6 +105,7 @@ export const works: WorkEntry[] = [
   {
     slug: 'liemc',
     name: 'LIEMC',
+    catalogLabel: '经济',
     kicker: 'EMC 资源经济与循环系统',
     summary: '用 EMC 串联物品回收、价值解锁、资源兑换与收藏检索，为生存服建立稳定的资源循环。',
     description:
@@ -125,6 +130,7 @@ export const works: WorkEntry[] = [
   {
     slug: 'enderdragon',
     name: 'EnderDragon',
+    catalogLabel: '末影龙',
     kicker: '末影龙复活、刷新与玩法增强',
     summary: '接管原版末影龙流程，通过多种龙配置、刷新规则、奖励和战斗反馈扩展末地长期玩法。',
     description:
@@ -148,6 +154,7 @@ export const works: WorkEntry[] = [
   {
     slug: 'lishop',
     name: 'liShop',
+    catalogLabel: '商店',
     kicker: 'GUI 商店、动态价格与玩家交易所',
     summary: '提供可视化商店、动态价格、每日商品、玩家交易所和多服数据能力；当前版本仍在完善，暂不发售。',
     description:
@@ -171,6 +178,7 @@ export const works: WorkEntry[] = [
   {
     slug: 'lianimalscale',
     name: 'LiAnimalScale',
+    catalogLabel: '体型',
     kicker: '动物体型缩放控制',
     summary: '直接使用 Bukkit 原生 SCALE 属性调整动物模型、碰撞箱与交互范围，不生成额外展示实体。',
     description:
@@ -194,6 +202,7 @@ export const works: WorkEntry[] = [
   {
     slug: 'lipet',
     name: 'LiPet',
+    catalogLabel: '宠物',
     kicker: '宠物养成、捕捉、骑乘与战斗',
     summary: '覆盖宠物获取、成长、喂养、跟随、骑乘、捕捉仪式、协助战斗、背包与跨服数据的一体化宠物系统。',
     description:
@@ -218,6 +227,7 @@ export const works: WorkEntry[] = [
   {
     slug: 'lichqian',
     name: 'LichQian',
+    catalogLabel: '抽签',
     kicker: '牢李抽签经济玩法',
     summary: '把抽签、经济扣款、结果反馈与奖励配置组合成轻量的服务器娱乐玩法。',
     description:
@@ -241,6 +251,7 @@ export const works: WorkEntry[] = [
   {
     slug: 'liskin',
     name: 'LiSkin',
+    catalogLabel: '换皮',
     kicker: 'CraftEngine 物品外观换皮',
     summary: '只改变物品外观，不替换原物品，也不破坏其材质、属性、附魔、耐久和其他插件数据。',
     description:
@@ -265,6 +276,7 @@ export const works: WorkEntry[] = [
   {
     slug: 'jisseechessgames',
     name: 'JisseeChessGames',
+    catalogLabel: '棋类',
     kicker: '五子棋、中国象棋与军棋玩法',
     summary: '自动生成棋盘并提供双人房间、回合控制、合法移动、吃子战斗、胜负结算、持久化和重启恢复。',
     description:
@@ -285,5 +297,41 @@ export const works: WorkEntry[] = [
       '房间、回合和胜负控制',
       '持久化与重启恢复',
     ],
+  },
+];
+
+export interface CatalogSection {
+  id: 'paid' | 'free' | 'developing';
+  number: number;
+  title: string;
+  description: string;
+  works: WorkEntry[];
+}
+
+const workBySlug = new Map(works.map((work) => [work.slug, work]));
+const selectWorks = (slugs: string[]) =>
+  slugs.map((slug) => workBySlug.get(slug)).filter((work): work is WorkEntry => Boolean(work));
+
+export const catalogSections: CatalogSection[] = [
+  {
+    id: 'paid',
+    number: 1,
+    title: '付费插件',
+    description: '公开标价并持续维护的商业插件；购买前可先阅读完整功能、安装和配置文档。',
+    works: selectWorks(['liemc', 'lirealenchant', 'lititle', 'lipet', 'liskin', 'jisseechessgames']),
+  },
+  {
+    id: 'free',
+    number: 2,
+    title: '免费插件',
+    description: '可免费获取的玩法与运维插件，同样提供完整使用和管理文档。',
+    works: selectWorks(['liseasons', 'enderdragon', 'lianimalscale', 'lichqian']),
+  },
+  {
+    id: 'developing',
+    number: 3,
+    title: '开发中 / 暂不发售',
+    description: '功能与文档可供了解，但当前版本尚未开放购买。',
+    works: selectWorks(['lishop']),
   },
 ];

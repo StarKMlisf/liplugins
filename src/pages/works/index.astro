@@ -1,24 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { works } from '@/data/site';
+import { catalogSections, works } from '@/data/site';
 import { withBase } from '@/lib/paths';
-
-const workOrder = [
-  'liemc',
-  'lirealenchant',
-  'liseasons',
-  'lititle',
-  'enderdragon',
-  'lishop',
-  'lianimalscale',
-  'lipet',
-  'lichqian',
-  'liskin',
-  'jisseechessgames',
-];
-const orderedWorks = [...works].sort(
-  (left, right) => workOrder.indexOf(left.slug) - workOrder.indexOf(right.slug),
-);
 const availabilityLabel = (work: (typeof works)[number]) =>
   work.availability === '付费' ? `付费插件 · ¥${work.priceCny}` : work.availability;
 const availabilityClass = (work: (typeof works)[number]) =>
@@ -37,22 +20,31 @@ const availabilityClass = (work: (typeof works)[number]) =>
     </div>
   </header>
   <section class="section shell">
-    <div class="works-list">
-      {orderedWorks.map((work, index) => (
-        <a class="work-row" href={withBase(`/works/${work.slug}/`)}>
-          <span class="work-row__number">{String(index + 1).padStart(2, '0')}</span>
-          <h2>{work.name}<span>{work.kicker}</span></h2>
-          <div class="work-row__summary">
-            <p>{work.summary}</p>
-            <div class="work-row__meta">
-              <span class="tag">v{work.version}</span>
-              <span class:list={['tag', availabilityClass(work)]}>{availabilityLabel(work)}</span>
-            </div>
-          </div>
-          <span class="work-row__arrow">↗</span>
-        </a>
-      ))}
-    </div>
+    {catalogSections.map((section) => (
+      <section class="catalog-section" id={section.id}>
+        <div class="catalog-section__heading">
+          <div><span class="eyebrow">{section.number}. Catalog group</span><h2>{section.number}. {section.title}</h2></div>
+          <p>{section.description}</p>
+          <span class="catalog-section__count">{section.works.length} 款</span>
+        </div>
+        <div class="works-list">
+          {section.works.map((work, index) => (
+            <article class="work-row">
+              <span class="work-row__number">{section.number}-{index + 1}</span>
+              <h2><a href={withBase(`/works/${work.slug}/`)}>[{work.catalogLabel}] {work.name}</a><span>{work.kicker}</span></h2>
+              <div class="work-row__summary">
+                <p>{work.summary}</p>
+                <div class="work-row__meta">
+                  <span class="tag">v{work.version}</span>
+                  <span class:list={['tag', availabilityClass(work)]}>{availabilityLabel(work)}</span>
+                </div>
+              </div>
+              <div class="work-row__actions"><a href={withBase(`/works/${work.slug}/`)}>介绍 ↗</a><a href={withBase(`/docs/${work.slug}/`)}>文档 ↗</a></div>
+            </article>
+          ))}
+        </div>
+      </section>
+    ))}
     <p style="margin: 2rem 0 0; color: var(--ink-soft); font-size: .8rem;">当前收录 {works.length} 款插件。免费、付费与暂不发售状态均按当前公开信息展示；付费插件的授权范围、交付方式和售后渠道以购买时说明为准。</p>
   </section>
 </BaseLayout>
