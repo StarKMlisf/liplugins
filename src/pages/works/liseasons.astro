@@ -2,7 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import SeasonMark from '@/components/SeasonMark.astro';
 import VoxelBlock from '@/components/VoxelBlock.astro';
-import { works, siteMeta } from '@/data/site';
+import { works } from '@/data/site';
 import { withBase } from '@/lib/paths';
 
 const work = works[0];
@@ -18,7 +18,7 @@ const work = works[0];
           <p class="work-hero__lead">{work.summary}</p>
           <div class="button-row" style="margin-top: 2rem;">
             <a class="button button--primary" href={withBase('/docs/liseasons/home/')}>开始阅读文档</a>
-            <a class="button" href={siteMeta.repository} target="_blank" rel="noreferrer">查看 GitHub <span>↗</span></a>
+            <a class="button" href="https://github.com/StarKMlisf/LiSeasons" target="_blank" rel="noreferrer">查看 GitHub <span>↗</span></a>
           </div>
         </div>
         <SeasonMark size="large" label />

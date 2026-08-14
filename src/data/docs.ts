@@ -120,7 +120,7 @@ const lirealEnchantDocs = fs.readdirSync(enchantDirectory)
 export const docSets: DocSet[] = [
   { slug: 'liseasons', name: 'LISeasons', version: '1.0.61', summary: '四季、节气、体温、世界规则、季节事件与运维开发文档。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },
   { slug: 'lititle', name: 'LiTitle', version: '0.1.93', summary: '称号、商店、仓库、聊天、昵称、存储与跨服部署文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lititleDocs },
-  { slug: 'lirealenchant', name: 'LiRealEnchant', version: '2.0.0-dev196-paper26', summary: '真实附魔、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
+  { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev196-paper26', summary: '真实附魔、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
 ];
 
 export const allDocs = docSets.flatMap((docSet) => docSet.docs);

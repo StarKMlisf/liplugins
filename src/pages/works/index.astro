@@ -2,6 +2,31 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { works } from '@/data/site';
 import { withBase } from '@/lib/paths';
+
+const workOrder = [
+  'liemc',
+  'lirealenchant',
+  'liseasons',
+  'lititle',
+  'enderdragon',
+  'lishop',
+  'lianimalscale',
+  'lipet',
+  'lichqian',
+  'liskin',
+  'jisseechessgames',
+];
+const orderedWorks = [...works].sort(
+  (left, right) => workOrder.indexOf(left.slug) - workOrder.indexOf(right.slug),
+);
+const availabilityLabel = (work: (typeof works)[number]) =>
+  work.availability === '付费' ? `付费插件 · ¥${work.priceCny}` : work.availability;
+const availabilityClass = (work: (typeof works)[number]) =>
+  work.availability === '付费'
+    ? 'tag--paid'
+    : work.availability === '免费'
+      ? 'tag--free'
+      : 'tag--unavailable';
 ---
 
 <BaseLayout title="作品" description="浏览牢李插件系列当前发布和持续维护的 Minecraft 服务器插件。">
@@ -13,7 +38,7 @@ import { withBase } from '@/lib/paths';
   </header>
   <section class="section shell">
     <div class="works-list">
-      {works.map((work, index) => (
+      {orderedWorks.map((work, index) => (
         <a class="work-row" href={withBase(`/works/${work.slug}/`)}>
           <span class="work-row__number">{String(index + 1).padStart(2, '0')}</span>
           <h2>{work.name}<span>{work.kicker}</span></h2>
@@ -21,13 +46,13 @@ import { withBase } from '@/lib/paths';
             <p>{work.summary}</p>
             <div class="work-row__meta">
               <span class="tag">v{work.version}</span>
-              {work.priceCny && <span class="tag tag--paid">付费插件 · ¥{work.priceCny}</span>}
+              <span class:list={['tag', availabilityClass(work)]}>{availabilityLabel(work)}</span>
             </div>
           </div>
           <span class="work-row__arrow">↗</span>
         </a>
       ))}
     </div>
-    <p style="margin: 2rem 0 0; color: var(--ink-soft); font-size: .8rem;">当前收录 {works.length} 款插件。LiTitle 与 LiRealEnchant 页面只展示已确认价格；具体授权和交付方式以购买时说明为准。</p>
+    <p style="margin: 2rem 0 0; color: var(--ink-soft); font-size: .8rem;">当前收录 {works.length} 款插件。免费、付费与暂不发售状态均按当前公开信息展示；付费插件的授权范围、交付方式和售后渠道以购买时说明为准。</p>
   </section>
 </BaseLayout>
