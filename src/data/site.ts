@@ -262,7 +262,7 @@ export const works: WorkEntry[] = [
     minecraft: '26.1.2 · 26.2',
     java: 'Java 25',
     availability: '付费',
-    priceCny: 50,
+    priceCny: 68,
     dependencies: ['CraftEngine 26.7.4（必需）', 'Vault（按经济功能）', 'PlaceholderAPI（可选）'],
     features: [
       'CraftEngine 外观来源',
