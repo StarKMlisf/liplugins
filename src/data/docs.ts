@@ -88,10 +88,28 @@ const lirealMainDocs = defineDocs('lirealenchant', [
 const liemcDocs = defineDocs('liemc', [
   { file: 'Home.md', slug: 'home', title: 'LIEMC 完整 Wiki', summary: 'EMC 兑换、回收、解锁、收藏、跨服、命令、权限、配置与常见问题。', group: '文档总览', order: 1 },
   { file: '玩家指南.md', slug: 'player', title: '玩家快速指南', summary: '从基础指令、解锁机制到经济来源与常见问题的玩家说明。', group: '玩家文档', order: 10 },
+  { file: '功能清单.md', slug: 'features', title: '功能清单', summary: '集中查看兑换、回收、解锁、搜索、收藏、自动补充和跨服能力。', group: '玩家文档', order: 11 },
+  { file: '兑换与回收.md', slug: 'conversion-economy', title: '兑换、回收与 EMC 经济', summary: '理解物品价值、转换菜单、一键出售、余额与玩家转账流程。', group: '玩家文档', order: 12 },
+  { file: '解锁搜索与自动补充.md', slug: 'unlock-search-refill', title: '解锁、搜索、收藏与自动补充', summary: '先获得再解锁的成长规则，以及搜索、收藏和建筑补货功能。', group: '玩家文档', order: 13 },
+  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: '运行环境、首次安装、依赖选择、升级备份与验证步骤。', group: '管理员文档', order: 20 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '玩家和管理员命令、权限节点与常用操作示例。', group: '管理员文档', order: 21 },
+  { file: '配置说明.md', slug: 'configuration', title: '配置说明', summary: '存储、经济来源、解锁规则、商店物品和变量配置参考。', group: '管理员文档', order: 22 },
+  { file: '存储与跨服.md', slug: 'storage-network', title: '存储与跨服', summary: 'SQLite、MySQL、共享数据、跨服上架与配置一致性。', group: '管理员文档', order: 23 },
+  { file: '测试与故障排查.md', slug: 'testing-troubleshooting', title: '测试与故障排查', summary: '上线前检查、兑换测试、数据库判断与常见故障定位。', group: '管理员文档', order: 24 },
+  { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '解答无法兑换、同步失败、收藏、下架和经济依赖问题。', group: '管理员文档', order: 25 },
 ]);
 
 const enderDragonDocs = defineDocs('enderdragon', [
   { file: 'Home.md', slug: 'home', title: 'EnderDragon 完整 Wiki', summary: '末影龙接管、召唤、奖励、指令、权限、变量、配置、自动复活与排错。', group: '文档总览', order: 1 },
+  { file: '玩家指南.md', slug: 'player', title: '玩家指南', summary: '查看龙状态、参与战斗、理解奖励与可用召唤方式。', group: '玩家文档', order: 10 },
+  { file: '召唤与自动复活.md', slug: 'summoning-revival', title: '召唤与自动复活', summary: '水晶、指令、倒计时和单龙独立复活规则。', group: '玩家文档', order: 11 },
+  { file: '战斗与奖励.md', slug: 'rewards', title: '战斗、伤害与奖励', summary: '伤害记录、参与判定、排名奖励、物品池与命令奖励。', group: '玩家文档', order: 12 },
+  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: '运行环境、首次启动、配置升级和完整重启流程。', group: '管理员文档', order: 20 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '召唤、状态、倒计时、奖励编辑和管理权限速查。', group: '管理员文档', order: 21 },
+  { file: '配置说明.md', slug: 'configuration', title: '配置说明', summary: '主配置、龙配置、奖励、GUI、数据和复活文件结构。', group: '管理员文档', order: 22 },
+  { file: '变量说明.md', slug: 'placeholders', title: 'PlaceholderAPI 变量', summary: '龙状态、是否可复活、单龙倒计时与格式化时间变量。', group: '管理员文档', order: 23 },
+  { file: '测试与故障排查.md', slug: 'testing-troubleshooting', title: '测试与故障排查', summary: '召唤、击杀、奖励、自动复活和配置加载的验证流程。', group: '管理员文档', order: 24 },
+  { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '集中解答重复召唤、奖励发放、龙 ID、重载和跨世界问题。', group: '管理员文档', order: 25 },
   { file: '项目说明.md', slug: 'project', title: '项目与源码说明', summary: '项目定位、公开仓库说明、统计信息与授权提示。', group: '开发者文档', order: 40 },
 ]);
 
@@ -118,12 +136,31 @@ const liShopDocs = defineDocs('lishop', [
 const liAnimalScaleDocs = defineDocs('lianimalscale', [
   { file: 'Home.md', slug: 'home', title: 'LiAnimalScale 完整 Wiki', summary: '安装、实体倍率、指令、权限、完整配置、Folia 兼容与技术验证。', group: '文档总览', order: 1 },
   { file: '快速开始.md', slug: 'quick-start', title: '快速开始', summary: '默认行为、常用指令、安装步骤、热加载与构建入口。', group: '玩家文档', order: 10 },
-  { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: 'LiAnimalScale 各版本的功能和兼容性变更。', group: '管理员文档', order: 20 },
+  { file: '玩家指南.md', slug: 'player', title: '玩家与管理操作', summary: '瞄准动物、设置倍率、查询、恢复和批量操作。', group: '玩家文档', order: 11 },
+  { file: '倍率规则.md', slug: 'scaling-rules', title: '倍率与自动缩放规则', summary: '原生 SCALE 属性、倍率范围、白名单黑名单和已加载实体处理。', group: '玩家文档', order: 12 },
+  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: '兼容范围、首次安装、升级、热加载边界和验证。', group: '管理员文档', order: 20 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '单体与批量缩放指令、权限节点和 Tab 补全。', group: '管理员文档', order: 21 },
+  { file: '配置说明.md', slug: 'configuration', title: '配置说明', summary: '距离、最小最大倍率、默认倍率和自动缩放节点。', group: '管理员文档', order: 22 },
+  { file: '兼容与线程.md', slug: 'compatibility', title: 'Paper、Folia 与热加载', summary: 'Bukkit 原生属性、区域线程调度、插件停用与重新启用。', group: '管理员文档', order: 23 },
+  { file: '故障排查.md', slug: 'troubleshooting', title: '故障排查', summary: '目标选择、倍率不生效、旧实体残留和插件加载问题。', group: '管理员文档', order: 24 },
+  { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '持久化、怪物玩家支持、关闭自动缩放和配置重载说明。', group: '管理员文档', order: 25 },
+  { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: 'LiAnimalScale 各版本的功能和兼容性变更。', group: '管理员文档', order: 26 },
 ]);
 
 const liPetDocs = defineDocs('lipet', [
   { file: 'docs/WIKI.md', slug: 'home', title: 'LiPet 完整 Wiki', summary: '安装、存储、指令、权限、宠物类型、成长、捕捉、商城、骑乘与排错。', group: '文档总览', order: 1 },
   { file: 'docs/PET_FEATURE_MATRIX.md', slug: 'feature-matrix', title: '功能矩阵', summary: '逐项核对宠物能力的实现范围、入口和当前状态。', group: '文档总览', order: 2 },
+  { file: 'docs/玩家入门.md', slug: 'player', title: '玩家入门', summary: '创建、召唤、收回宠物并读懂状态、成长与冷却。', group: '玩家文档', order: 10 },
+  { file: 'docs/成长与喂养.md', slug: 'growth-feeding', title: '成长、属性与喂养', summary: '等级、经验、属性成长、食物恢复和成长节奏。', group: '玩家文档', order: 11 },
+  { file: 'docs/捕捉与商城.md', slug: 'capture-shop', title: '捕捉、宠物商城与道具商城', summary: '捕捉仪式、宠物购买、道具购买与经济依赖。', group: '玩家文档', order: 12 },
+  { file: 'docs/跟随骑乘与战斗.md', slug: 'behavior-combat', title: '跟随、骑乘与战斗', summary: '坐下、跟随、传送、骑乘、寻路、协战和死亡冷却。', group: '玩家文档', order: 13 },
+  { file: 'docs/背包与宠物道具.md', slug: 'items-inventory', title: '背包、信号棒与技能书', summary: '宠物背包、改名、信号棒、技能书和物品保存规则。', group: '玩家文档', order: 14 },
+  { file: 'docs/安装与更新.md', slug: 'install', title: '安装与更新', summary: '运行环境、依赖、首次启动、备份和升级流程。', group: '管理员文档', order: 20 },
+  { file: 'docs/命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '玩家管理、商城、捕捉、调试和管理员权限。', group: '管理员文档', order: 21 },
+  { file: 'docs/配置说明.md', slug: 'configuration', title: '配置说明', summary: '主配置、消息、宠物类型、食物、商城、技能和菜单文件。', group: '管理员文档', order: 22 },
+  { file: 'docs/存储与跨服.md', slug: 'storage-network', title: '存储与跨服', summary: 'SQLite、MySQL、Redis、租约、切服和异常恢复。', group: '管理员文档', order: 23 },
+  { file: 'docs/测试与故障排查.md', slug: 'testing-troubleshooting', title: '测试与故障排查', summary: '宠物持久化、背包、AI、商城、声音和依赖故障检查。', group: '管理员文档', order: 24 },
+  { file: 'docs/常见问题.md', slug: 'faq', title: '常见问题', summary: '集中解答宠物丢失、插件停用、背包保存和信号棒问题。', group: '管理员文档', order: 25 },
   { file: 'README.md', slug: 'project', title: '项目说明', summary: '项目目标、当前能力、指令、架构目标和构建要求。', group: '开发者文档', order: 40 },
   { file: 'docs/LIPET_DESIGN.md', slug: 'design', title: '设计与配置', summary: '宠物生命周期、数据结构、行为系统和扩展设计。', group: '开发者文档', order: 41 },
   { file: 'docs/ARCHITECTURE.md', slug: 'architecture', title: '架构与扩展', summary: '模块边界、服务职责、数据流和二次开发结构。', group: '开发者文档', order: 42 },
@@ -132,20 +169,45 @@ const liPetDocs = defineDocs('lipet', [
 
 const lichQianDocs = defineDocs('lichqian', [
   { file: 'Home.md', slug: 'home', title: 'LichQian 使用说明', summary: '安装、命令、权限、时间、文本、GUI、变量和配置升级。', group: '文档总览', order: 1 },
-  { file: 'resource-pack/README.md', slug: 'resource-pack', title: '配套资源包', summary: '资源包目录、安装方式和客户端使用说明。', group: '玩家文档', order: 10 },
+  { file: '玩家入门.md', slug: 'player', title: '玩家入门', summary: '打开抽签菜单、直接抽签、查看次数和理解每日重置。', group: '玩家文档', order: 10 },
+  { file: '签文与奖励.md', slug: 'draw-rules', title: '签文、费用与奖励', summary: '抽签条件、扣费、签文效果、持续时间和异常退款规则。', group: '玩家文档', order: 11 },
+  { file: 'resource-pack/README.md', slug: 'resource-pack', title: '配套资源包', summary: '资源包目录、安装方式和客户端使用说明。', group: '玩家文档', order: 12 },
+  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: 'Paper、Java、Vault、首次启动、升级和配置保护。', group: '管理员文档', order: 20 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '玩家抽签、状态查询、管理员重载和权限节点。', group: '管理员文档', order: 21 },
+  { file: '配置说明.md', slug: 'configuration', title: '配置说明', summary: '每日次数、时区、重置、签文、标题动画、GUI 与消息。', group: '管理员文档', order: 22 },
+  { file: '变量与文本.md', slug: 'placeholders', title: '变量、占位符与文本格式', summary: 'GUI 消息变量、PlaceholderAPI、MiniMessage 和时间格式。', group: '管理员文档', order: 23 },
+  { file: '故障排查.md', slug: 'troubleshooting', title: '故障排查', summary: '经济依赖、无有效签文、YAML 错误、退款和背包已满问题。', group: '管理员文档', order: 24 },
+  { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '每日重置、次数限制、药水等级、重载和奖励异常说明。', group: '管理员文档', order: 25 },
   { file: '开发与构建.md', slug: 'development', title: '开发与构建', summary: '兼容基线、分层结构、构建命令和验证记录。', group: '开发者文档', order: 40 },
-  { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: 'LichQian 版本功能、修复与兼容性变更。', group: '管理员文档', order: 20 },
+  { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: 'LichQian 版本功能、修复与兼容性变更。', group: '管理员文档', order: 26 },
 ]);
 
 const liSkinDocs = defineDocs('liskin', [
   { file: 'Home.md', slug: 'home', title: 'LiSkin 完整文档', summary: '基础用法、资源安装、皮肤配置、菜单、商店、权限、跨服与外观还原。', group: '文档总览', order: 1 },
   { file: '功能介绍.md', slug: 'features', title: '功能与获取介绍', summary: '3D 武器与时装皮肤、试穿、经济、跨服、指令、权限和安装说明。', group: '玩家文档', order: 10 },
+  { file: '玩家入门.md', slug: 'player', title: '玩家入门', summary: '打开综合菜单、解锁、应用、试穿和移除物品皮肤。', group: '玩家文档', order: 11 },
+  { file: '皮肤应用与还原.md', slug: 'application', title: '皮肤应用与安全还原', summary: '兼容物品、分类、权限、PDC 标记和原始外观恢复。', group: '玩家文档', order: 12 },
+  { file: '商店与试穿.md', slug: 'shop-preview', title: '皮肤商店与试穿', summary: 'Vault、PlayerPoints、购买、临时试穿和到期恢复。', group: '玩家文档', order: 13 },
+  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: 'CraftEngine 资源、运行环境、首次安装、升级与验证。', group: '管理员文档', order: 20 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '菜单、解锁、应用、试穿、商店、调试和管理权限。', group: '管理员文档', order: 21 },
+  { file: '配置说明.md', slug: 'configuration', title: '配置说明', summary: '皮肤条目、CE 物品、模型、装备资产、分类和预览节点。', group: '管理员文档', order: 22 },
+  { file: '跨服与数据安全.md', slug: 'storage-network', title: '跨服与数据安全', summary: '解锁数据、所有者保护、跨服防刷、外观保存和恢复。', group: '管理员文档', order: 23 },
+  { file: '故障排查.md', slug: 'troubleshooting', title: '故障排查', summary: '资源缺失、模型错误、权限还原、商店和跨服问题定位。', group: '管理员文档', order: 24 },
+  { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '解答皮肤 ID、CE 模型、试穿、权限、价格和外观恢复问题。', group: '管理员文档', order: 25 },
 ]);
 
 const jisseeChessDocs = defineDocs('jisseechessgames', [
   { file: 'Home.md', slug: 'home', title: 'JisseeChessGames 使用文档', summary: '运行要求、安装、棋盘生成、对局、指令、交互、持久化与配置。', group: '文档总览', order: 1 },
-  { file: '验证与排错.md', slug: 'validation', title: '验证与排错', summary: '五子棋、中国象棋和军棋的规则验证、迁移和运行测试边界。', group: '管理员文档', order: 20 },
-  { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: 'JisseeChessGames 各版本功能、修复和数据兼容变更。', group: '管理员文档', order: 21 },
+  { file: '玩家入门.md', slug: 'player', title: '玩家入门', summary: '通过全息或指令加入棋局，完成落子、走棋、认输和离开。', group: '玩家文档', order: 10 },
+  { file: '棋类规则.md', slug: 'game-rules', title: '五子棋、象棋与军棋规则', summary: '三种自动对局的回合、合法移动、胜负和重置规则。', group: '玩家文档', order: 11 },
+  { file: '棋盘与房间.md', slug: 'arenas-rooms', title: '棋盘、全息与房间', summary: '五类棋盘、右击全息、双人房间和手动玩法边界。', group: '玩家文档', order: 12 },
+  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: 'CraftEngine 资源、运行环境、安装顺序、验证和升级。', group: '管理员文档', order: 20 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '玩家房间、棋盘生成、管理、验证和权限节点。', group: '管理员文档', order: 21 },
+  { file: '配置与存储.md', slug: 'configuration-storage', title: '配置、保护与持久化', summary: '主配置、消息、棋盘、房间、保护和升级合并规则。', group: '管理员文档', order: 22 },
+  { file: '故障排查.md', slug: 'troubleshooting', title: '故障排查', summary: 'CE 资源、生成空间、房间恢复、全息和规则问题定位。', group: '管理员文档', order: 23 },
+  { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '自动玩法范围、棋盘尺寸、围棋飞行棋、重启恢复和保护说明。', group: '管理员文档', order: 24 },
+  { file: '验证与排错.md', slug: 'validation', title: '验证报告', summary: '五子棋、中国象棋和军棋的规则验证、迁移和运行测试边界。', group: '管理员文档', order: 25 },
+  { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: 'JisseeChessGames 各版本功能、修复和数据兼容变更。', group: '管理员文档', order: 26 },
 ]);
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -181,14 +243,14 @@ const lirealEnchantDocs = fs.readdirSync(enchantDirectory)
   });
 
 export const docSets: DocSet[] = [
-  { slug: 'liemc', name: 'LIEMC', version: '0.1.0', summary: 'EMC 经济、物品回收、解锁兑换、收藏检索、跨服同步与配置文档。', icon: 'gold', groups: ['文档总览', '玩家文档'], docs: liemcDocs },
+  { slug: 'liemc', name: 'LIEMC', version: '0.1.0', summary: 'EMC 经济、物品回收、解锁兑换、收藏检索、跨服同步与配置文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liemcDocs },
   { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev196-paper26', summary: '真实附魔、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
   { slug: 'lititle', name: 'LiTitle', version: '0.1.93', summary: '称号、商店、仓库、聊天、昵称、存储与跨服部署文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lititleDocs },
-  { slug: 'lipet', name: 'LiPet', version: '0.25.9-SNAPSHOT', summary: '宠物养成、捕捉、商城、背包、骑乘、战斗、存储与扩展设计文档。', icon: 'leaf', groups: ['文档总览', '开发者文档'], docs: liPetDocs },
-  { slug: 'liskin', name: 'LiSkin', version: '1.9.0', summary: 'CraftEngine 外观皮肤、菜单、商店、试穿、权限、跨服与还原文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档'], docs: liSkinDocs },
+  { slug: 'lipet', name: 'LiPet', version: '0.25.9-SNAPSHOT', summary: '宠物养成、捕捉、商城、背包、骑乘、战斗、存储与扩展设计文档。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
+  { slug: 'liskin', name: 'LiSkin', version: '1.9.0', summary: 'CraftEngine 外观皮肤、菜单、商店、试穿、权限、跨服与还原文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liSkinDocs },
   { slug: 'jisseechessgames', name: 'JisseeChessGames', version: '2.1.0', summary: '棋盘生成、五子棋、中国象棋、军棋、房间、持久化与验证文档。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: jisseeChessDocs },
   { slug: 'liseasons', name: 'LISeasons', version: '1.0.61', summary: '四季、节气、体温、世界规则、季节事件与运维开发文档。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },
-  { slug: 'enderdragon', name: 'EnderDragon', version: '26.1.14', summary: '末影龙接管、召唤、复活、奖励、配置、变量与故障排查文档。', icon: 'meteor', groups: ['文档总览', '开发者文档'], docs: enderDragonDocs },
+  { slug: 'enderdragon', name: 'EnderDragon', version: '26.1.14', summary: '末影龙接管、召唤、复活、奖励、配置、变量与故障排查文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: enderDragonDocs },
   { slug: 'lianimalscale', name: 'LiAnimalScale', version: '1.1.0', summary: '动物缩放、命令权限、配置、Folia 兼容、热加载与验证文档。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liAnimalScaleDocs },
   { slug: 'lichqian', name: 'LichQian', version: '1.1.0', summary: '抽签玩法、时间配置、文本、GUI、变量、资源包与构建文档。', icon: 'redstone', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: lichQianDocs },
   { slug: 'lishop', name: 'liShop', version: '1.9.0', summary: 'GUI 商店、动态价格、交易所、编辑器、经济、数据库与集群文档。', icon: 'ice', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liShopDocs },
