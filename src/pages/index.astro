@@ -1,7 +1,5 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import MinecraftServerStage from '@/components/MinecraftServerStage.astro';
-import VoxelBlock from '@/components/VoxelBlock.astro';
 import { works } from '@/data/site';
 import { allDocs } from '@/data/docs';
 import { withBase } from '@/lib/paths';
@@ -9,159 +7,185 @@ import { withBase } from '@/lib/paths';
 const paidWorks = works.filter((work) => work.availability === '付费');
 const freeWorks = works.filter((work) => work.availability === '免费');
 const workBySlug = new Map(works.map((work) => [work.slug, work]));
-const featuredWorks = ['liemc', 'lirealenchant', 'liseasons', 'lipet']
-  .map((slug) => workBySlug.get(slug))
-  .filter((work) => Boolean(work));
+const featuredWorks = [
+  {
+    work: workBySlug.get('liemc')!,
+    image: '/images/featured-liemc.webp',
+    imageAlt: '夕阳中的 EMC 炼成工坊与发光资源方块',
+    tone: 'ember',
+  },
+  {
+    work: workBySlug.get('lirealenchant')!,
+    image: '/images/featured-lirealenchant.webp',
+    imageAlt: '蓝紫色夜色中的真实附魔图书馆与锻造工坊',
+    tone: 'arcane',
+  },
+  {
+    work: workBySlug.get('liseasons')!,
+    image: '/images/featured-liseasons.webp',
+    imageAlt: '由春夏过渡到秋冬的同一座山谷与河流',
+    tone: 'season',
+  },
+];
 
-const voxelTypes = ['grass', 'gold', 'amethyst', 'redstone', 'meteor', 'book', 'leaf', 'ice'] as const;
-const workVoxel: Record<string, (typeof voxelTypes)[number]> = {
-  liseasons: 'grass',
-  lititle: 'gold',
-  lirealenchant: 'amethyst',
-  liemc: 'redstone',
-  enderdragon: 'meteor',
-  lishop: 'gold',
-  lianimalscale: 'leaf',
-  lipet: 'redstone',
-  lichqian: 'gold',
-  liskin: 'ice',
-  jisseechessgames: 'book',
-};
-
-const shortcutSlugs = ['liseasons', 'liemc', 'lirealenchant', 'lipet', 'lititle', 'enderdragon'];
-const shortcutWorks = shortcutSlugs.map((slug) => workBySlug.get(slug)).filter((work) => Boolean(work));
 const availabilityLabel = (work: (typeof works)[number]) =>
   work.availability === '付费' ? `¥${work.priceCny}` : work.availability;
 ---
 
-<BaseLayout>
-  <section class="home-hero">
-    <div class="home-hero__pixels" aria-hidden="true"></div>
-    <div class="home-hero__inner shell">
+<BaseLayout bodyClass="home-page">
+  <section class="home-hero" aria-labelledby="home-title">
+    <img
+      class="home-hero__image"
+      src={withBase('/images/home-world-hero.webp')}
+      alt=""
+      width="1672"
+      height="941"
+      fetchpriority="high"
+      decoding="async"
+    />
+    <div class="home-hero__veil" aria-hidden="true"></div>
+    <div class="home-hero__content shell">
       <div class="home-hero__copy">
-        <span class="server-badge"><i></i> SERVER PLUGINS · PAPER 26.1.2</span>
-        <h1>给服务器世界<br /><em>加点真玩法。</em></h1>
-        <p>从 EMC 经济、真实附魔到四季气候与宠物养成，牢李插件把一个想法做成玩家能感受到、服主能长期维护的完整系统。</p>
-        <div class="button-row">
-          <a class="button button--primary" href={withBase('/works/')}>进入插件大厅 <span>→</span></a>
-          <a class="button" href={withBase('/docs/')}>打开中文 Wiki</a>
+        <span class="home-overline">LAOLI PLUGINS · PAPER 26.1.2</span>
+        <h1 id="home-title">牢李插件系列</h1>
+        <p class="home-hero__tagline">把玩法，写进世界。</p>
+        <p class="home-hero__lead">
+          为 Minecraft 服务器制作完整、可靠、能够长期维护的玩法插件。
+          从资源经济与真实附魔，到四季气候、宠物养成和跨服体验。
+        </p>
+        <div class="home-hero__actions">
+          <a class="home-hero__button home-hero__button--primary" href="#featured">浏览精选作品 <span>↓</span></a>
+          <a class="home-hero__button" href={withBase('/docs/')}>查看中文文档 <span>↗</span></a>
         </div>
-        <dl class="home-stats" aria-label="网站数据">
+        <dl class="home-hero__facts" aria-label="网站数据">
           <div><dt>{works.length}</dt><dd>款插件</dd></div>
           <div><dt>{allDocs.length}</dt><dd>篇文档</dd></div>
           <div><dt>26.1.2</dt><dd>基准支持</dd></div>
         </dl>
       </div>
-
-      <MinecraftServerStage />
     </div>
+    <a class="home-hero__scroll" href="#featured"><span>SCROLL TO EXPLORE</span><i aria-hidden="true"></i></a>
   </section>
 
-  <nav class="home-shortcuts" aria-label="热门插件快捷入口">
-    <div class="home-hotbar shell">
-      {shortcutWorks.map((work, index) => work && (
-        <a class="home-hotbar__slot" href={withBase(`/works/${work.slug}/`)}>
-          <kbd>{index + 1}</kbd>
-          <VoxelBlock type={workVoxel[work.slug] ?? 'grass'} size="medium" />
-          <span><strong>{work.name}</strong><small>{work.catalogLabel}</small></span>
-        </a>
-      ))}
-    </div>
-  </nav>
-
-  <section class="home-section home-section--gameplay shell">
-    <div class="home-section__heading">
-      <div><span class="pixel-kicker">01 / GAMEPLAY MODULES</span><h2>不是工具箱，<br />是能玩的世界模组。</h2></div>
-      <p>四个代表性系统，分别改变服务器里的资源循环、装备构筑、自然环境与伙伴关系。</p>
-    </div>
-
-    <div class="gameplay-grid">
-      {featuredWorks.map((work, index) => work && (
-        <article class:list={['gameplay-card', `gameplay-card--${index + 1}`]}>
-          <div class="gameplay-card__top">
-            <span class="gameplay-card__icon"><VoxelBlock type={workVoxel[work.slug] ?? 'grass'} size="large" /></span>
-            <span class="pixel-tag">{availabilityLabel(work)}</span>
-          </div>
-          <span class="gameplay-card__category">{work.catalogLabel} / {String(index + 1).padStart(2, '0')}</span>
-          <h3>{work.name}</h3>
-          <p>{work.summary}</p>
-          <a href={withBase(`/works/${work.slug}/`)} aria-label={`查看 ${work.name}`}>查看玩法 <span>↗</span></a>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="home-section home-section--inventory">
+  <section class="home-featured" id="featured">
     <div class="shell">
-      <div class="home-section__heading">
-        <div><span class="pixel-kicker">02 / PLUGIN INVENTORY</span><h2>插件背包，<br />共 {works.length} 个栏位。</h2></div>
-        <div class="inventory-summary"><span>{paidWorks.length} 款付费</span><span>{freeWorks.length} 款免费</span><span>1 款开发中</span></div>
-      </div>
+      <header class="home-section-heading">
+        <div>
+          <span class="home-overline">01 · SELECTED WORKS</span>
+          <h2>精选作品</h2>
+        </div>
+        <div class="home-section-heading__aside">
+          <p>三个不同方向的代表项目：资源循环、装备构筑与自然世界。每一款都有独立玩法和完整中文文档。</p>
+          <a href={withBase('/works/')}>查看全部作品 <span>↗</span></a>
+        </div>
+      </header>
 
-      <div class="plugin-grid">
-        {works.map((work, index) => (
-          <article class:list={['plugin-card', `plugin-card--${work.availability === '免费' ? 'free' : work.availability === '付费' ? 'paid' : 'dev'}`]}>
-            <div class="plugin-card__top">
-              <span class="plugin-card__number">SLOT {String(index + 1).padStart(2, '0')}</span>
-              <span class="plugin-card__availability">{availabilityLabel(work)}</span>
-            </div>
-            <div class="plugin-card__identity">
-              <span class="plugin-card__block"><VoxelBlock type={workVoxel[work.slug] ?? 'grass'} size="medium" /></span>
-              <div><small>{work.catalogLabel}</small><h3><a href={withBase(`/works/${work.slug}/`)}>{work.name}</a></h3></div>
-            </div>
-            <p>{work.summary}</p>
-            <div class="plugin-card__footer">
-              <span>v{work.version}</span>
-              <span class="plugin-card__links">
-                <a href={withBase(`/works/${work.slug}/`)}>介绍</a>
-                <a href={withBase(`/docs/${work.slug}/`)}>Wiki</a>
-              </span>
+      <div class="featured-work-list">
+        {featuredWorks.map(({ work, image, imageAlt, tone }, index) => (
+          <article class:list={['featured-work', `featured-work--${tone}`]}>
+            <a class="featured-work__visual" href={withBase(`/works/${work.slug}/`)} aria-label={`查看 ${work.name}`}>
+              <img src={withBase(image)} alt={imageAlt} width="1600" height="1000" loading="lazy" decoding="async" />
+              <span class="featured-work__index">{String(index + 1).padStart(2, '0')}</span>
+              <span class="featured-work__price">{availabilityLabel(work)}</span>
+            </a>
+            <div class="featured-work__copy">
+              <span>{work.catalogLabel} · {work.status}</span>
+              <h3>
+                <a href={withBase(`/works/${work.slug}/`)}>
+                  {work.slug === 'lirealenchant' ? <>LiReal<wbr />Enchant2</> : work.name}
+                </a>
+              </h3>
+              <p>{work.summary}</p>
+              <div class="featured-work__links">
+                <a href={withBase(`/works/${work.slug}/`)}>功能介绍 <span>→</span></a>
+                <a href={withBase(`/docs/${work.slug}/`)}>完整 Wiki <span>→</span></a>
+              </div>
             </div>
           </article>
         ))}
       </div>
-
-      <div class="home-section__more">
-        <a class="button" href={withBase('/works/')}>按付费 / 免费分类查看全部作品 <span>→</span></a>
-      </div>
     </div>
   </section>
 
-  <section class="home-section shell">
-    <div class="docs-console">
-      <div class="docs-console__copy">
-        <span class="pixel-kicker">03 / COMPLETE WIKI</span>
-        <h2>每个插件，<br />都配一整套说明书。</h2>
-        <p>不是只写几条指令。安装、权限、配置、玩法、管理、排错与开发接口，都能从目录继续查下去。</p>
-        <div class="button-row">
-          <a class="button button--primary" href={withBase('/docs/')}>进入 {allDocs.length} 篇中文文档</a>
-          <a class="button" href={withBase('/support/')}>查看支持方式</a>
-        </div>
-      </div>
-      <div class="docs-console__screen" aria-label="文档检索状态">
-        <div><span>LAOLI_WIKI</span><span>● ONLINE</span></div>
-        <pre><code>&gt; /wiki index --all
-
-[OK]  插件目录 ........ {works.length}/{works.length}
-[OK]  中文页面 ........ {allDocs.length}
-[OK]  安装与配置 ...... READY
-[OK]  指令与权限 ...... READY
-[OK]  故障排查 ........ READY
-
-输入插件名即可开始查询_</code></pre>
-      </div>
-    </div>
-  </section>
-
-  <section class="home-section home-section--quality">
+  <section class="home-catalog">
     <div class="shell">
-      <div class="home-section__heading">
-        <div><span class="pixel-kicker">04 / SERVER RULES</span><h2>上线能玩，<br />更新也能放心。</h2></div>
+      <header class="home-section-heading home-section-heading--compact">
+        <div>
+          <span class="home-overline">02 · ALL PLUGINS</span>
+          <h2>全部插件</h2>
+        </div>
+        <div class="home-catalog__summary" aria-label="插件销售状态">
+          <span>{paidWorks.length} 款付费</span>
+          <span>{freeWorks.length} 款免费</span>
+          <span>{works.length - paidWorks.length - freeWorks.length} 款开发中</span>
+        </div>
+      </header>
+
+      <div class="home-catalog__list">
+        {works.map((work, index) => (
+          <a class="home-catalog__item" href={withBase(`/works/${work.slug}/`)}>
+            <span class="home-catalog__number">{String(index + 1).padStart(2, '0')}</span>
+            <div class="home-catalog__identity">
+              <small>{work.catalogLabel}</small>
+              <h3>{work.name}</h3>
+              <p>{work.kicker}</p>
+            </div>
+            <span class:list={['home-catalog__availability', work.availability === '免费' && 'is-free', work.availability === '暂不发售' && 'is-dev']}>
+              {availabilityLabel(work)}
+            </span>
+            <span class="home-catalog__arrow">↗</span>
+          </a>
+        ))}
       </div>
-      <div class="quality-grid">
-        <article><span>01</span><h3>玩家有反馈</h3><p>每个系统都要变成看得见、听得到、能参与的游戏体验。</p></article>
-        <article><span>02</span><h3>服主能判断</h3><p>依赖、兼容范围、配置说明与故障路径尽量写清楚。</p></article>
-        <article><span>03</span><h3>升级不拆家</h3><p>新增配置自动补齐，并尽可能保留已经调整好的长期设定。</p></article>
+
+      <div class="home-catalog__more">
+        <a class="text-link" href={withBase('/works/')}>按付费、免费与开发状态浏览作品目录</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-wiki">
+    <div class="home-wiki__inner shell">
+      <div class="home-wiki__copy">
+        <span class="home-overline">03 · COMPLETE WIKI</span>
+        <h2>不只给插件，<br />也把使用方法讲清楚。</h2>
+        <p>
+          安装、依赖、权限、指令、配置、玩法、管理与故障排查，
+          每款插件都配有可以继续向下查阅的完整中文文档。
+        </p>
+        <a class="home-wiki__primary" href={withBase('/docs/')}>打开 {allDocs.length} 篇中文文档 <span>↗</span></a>
+      </div>
+      <div class="home-wiki__links">
+        <a href={withBase('/docs/')}>
+          <span>01</span>
+          <div><strong>文档中心</strong><p>按插件查看安装、配置、指令与完整玩法说明。</p></div>
+          <i>↗</i>
+        </a>
+        <a href={withBase('/support/')}>
+          <span>02</span>
+          <div><strong>支持与购买</strong><p>查看购买说明、提问前准备与问题反馈方式。</p></div>
+          <i>↗</i>
+        </a>
+        <a href={withBase('/about/')}>
+          <span>03</span>
+          <div><strong>关于项目</strong><p>了解牢李插件的维护原则、兼容范围与项目边界。</p></div>
+          <i>↗</i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-belief">
+    <div class="shell">
+      <span class="home-overline">04 · BUILT FOR LONG-TERM WORLDS</span>
+      <p class="home-belief__statement">
+        好插件不该只是“能启动”。它要让玩家感受到玩法，让服主看得懂配置，
+        也让一次更新不必拆掉已经经营很久的世界。
+      </p>
+      <div class="home-belief__principles">
+        <article><span>01</span><h2>玩家有反馈</h2><p>系统变化应该看得见、听得到，也能真正参与。</p></article>
+        <article><span>02</span><h2>服主能判断</h2><p>兼容范围、配置含义和排错路径都尽量说清楚。</p></article>
+        <article><span>03</span><h2>升级不拆家</h2><p>新增配置自动补齐，并尽可能保留已有长期设定。</p></article>
       </div>
     </div>
   </section>
