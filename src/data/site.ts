@@ -29,6 +29,30 @@ export interface WorkEntry {
 
 export const works: WorkEntry[] = [
   {
+    slug: 'blockcraft',
+    name: 'BlockCraft',
+    catalogLabel: '合成',
+    kicker: '八基座多方块祭坛合成',
+    summary: '参考植物魔法流程的环形基座合成系统，支持多文件配方、物品来源挂钩、粒子动画与成功率机制。',
+    description:
+      'BlockCraft 在 Paper 26.2 下提供 NORMAL 与 ADVANCED 双模式祭坛合成：基座材料、环绕材料、前置物可混用原版、MMOItems、CraftEngine 与 CustomFishing 来源。支持费用类型、失败策略、粒子路径、展示浮动与完整中文配置文档。',
+    version: '1.0.11',
+    status: '持续维护',
+    platform: 'Paper',
+    minecraft: '26.2',
+    java: 'Java 25',
+    availability: '免费',
+    dependencies: ['MMOItems（可选）', 'CraftEngine（可选）', 'CustomFishing（可选）', 'Vault（按经济类型）', 'PlaceholderAPI（按功能）'],
+    features: [
+      '八基座祭坛与可定制纯结构方块',
+      'NORMAL 与 ADVANCED 祭坛合成模式',
+      '原版、MMOItems、CraftEngine、CustomFishing 统一挂钩',
+      '金币/点券/等级费用与成功率系统',
+      '多文件配方目录与兼容性迁移',
+      '中文 Wiki、GUI 配方预览与完整故障排查',
+    ],
+  },
+  {
     slug: 'liseasons',
     name: 'LISeasons',
     catalogLabel: '季节',
@@ -325,7 +349,7 @@ export const catalogSections: CatalogSection[] = [
     number: 2,
     title: '免费插件',
     description: '可免费获取的玩法与运维插件，同样提供完整使用和管理文档。',
-    works: selectWorks(['liseasons', 'enderdragon', 'lianimalscale', 'lichqian']),
+    works: selectWorks(['liseasons', 'enderdragon', 'lianimalscale', 'lichqian', 'blockcraft']),
   },
   {
     id: 'developing',

@@ -113,6 +113,13 @@ const enderDragonDocs = defineDocs('enderdragon', [
   { file: '项目说明.md', slug: 'project', title: '项目与源码说明', summary: '项目定位、公开仓库说明、统计信息与授权提示。', group: '开发者文档', order: 40 },
 ]);
 
+const blockCraftDocs = defineDocs('blockcraft', [
+  { file: 'Home.md', slug: 'home', title: 'BlockCraft 完整文档', summary: '八基座祭坛合成、NORMAL/ADVANCED 模式、物品挂钩、费用、粒子、音效和常见故障排查。', group: '文档总览', order: 1 },
+  { file: '快速开始.md', slug: 'quick-start', title: '快速开始', summary: '搭建祭坛、放置配方材料、启动合成和领取产物。', group: '玩家文档', order: 10 },
+  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: 'Paper、Java、前置插件、配置文件生成、配方与结构更新流程。', group: '管理员文档', order: 20 },
+  { file: '兼容性说明.md', slug: 'compatibility', title: '兼容性说明', summary: '当前平台适配范围、未支持平台、已知边界与迁移建议。', group: '管理员文档', order: 21 },
+]);
+
 const liShopDocs = defineDocs('lishop', [
   { file: 'README.md', slug: 'home', title: 'liShop Wiki 首页', summary: '文档索引、核心功能、文件结构与兼容范围总览。', group: '文档总览', order: 1 },
   { file: 'Complete-Guide.md', slug: 'complete-guide', title: '完整使用手册', summary: '从安装、建店、交易到数据库、性能和故障排查的一站式手册。', group: '文档总览', order: 2 },
@@ -251,6 +258,7 @@ export const docSets: DocSet[] = [
   { slug: 'jisseechessgames', name: 'JisseeChessGames', version: '2.1.0', summary: '棋盘生成、五子棋、中国象棋、军棋、房间、持久化与验证文档。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: jisseeChessDocs },
   { slug: 'liseasons', name: 'LISeasons', version: '1.0.61', summary: '四季、节气、体温、世界规则、季节事件与运维开发文档。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },
   { slug: 'enderdragon', name: 'EnderDragon', version: '26.1.14', summary: '末影龙接管、召唤、复活、奖励、配置、变量与故障排查文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: enderDragonDocs },
+  { slug: 'blockcraft', name: 'BlockCraft', version: '1.0.11', summary: '八基座祭坛合成、物品来源挂钩、费用与成功率、粒子与音效、故障排查与命令说明。', icon: 'redstone', groups: ['文档总览', '玩家文档', '管理员文档'], docs: blockCraftDocs },
   { slug: 'lianimalscale', name: 'LiAnimalScale', version: '1.1.0', summary: '动物缩放、命令权限、配置、Folia 兼容、热加载与验证文档。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liAnimalScaleDocs },
   { slug: 'lichqian', name: 'LichQian', version: '1.1.0', summary: '抽签玩法、时间配置、文本、GUI、变量、资源包与构建文档。', icon: 'redstone', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: lichQianDocs },
   { slug: 'lishop', name: 'liShop', version: '1.9.0', summary: 'GUI 商店、动态价格、交易所、编辑器、经济、数据库与集群文档。', icon: 'ice', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liShopDocs },
