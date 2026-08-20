@@ -81,8 +81,13 @@ const lirealMainDocs = defineDocs('lirealenchant', [
   { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '玩家菜单、管理员发放、重载、测试和权限节点。', group: '管理员文档', order: 21 },
   { file: '配置说明.md', slug: 'configuration', title: '配置说明', summary: '来源、槽位、铁砧、祛魔、表现与兼容配置说明。', group: '管理员文档', order: 22 },
   { file: '管理员测试与排错.md', slug: 'testing-troubleshooting', title: '管理员测试与排错', summary: '部署前检查、测试命令、日志判断与常见故障定位。', group: '管理员文档', order: 23 },
-  { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '关于真实注册、附魔来源、铁砧、Lore 和兼容性的集中解答。', group: '管理员文档', order: 24 },
-  { file: '更新日志-dev196.md', slug: 'changelog-dev196', title: 'dev196 更新说明', summary: 'dev196 文档与默认说明更新，以及 dev195 机制验证基线。', group: '管理员文档', order: 25 },
+  { file: 'YML自定义附魔.md', slug: 'yaml-custom-enchantments', title: 'YML 自定义附魔', summary: '使用变量、条件、六类触发器和安全动作白名单创建真实附魔。', group: '管理员文档', order: 24 },
+  { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '关于真实注册、附魔来源、铁砧、Lore 和兼容性的集中解答。', group: '管理员文档', order: 25 },
+  { file: '更新日志-dev196.md', slug: 'changelog-dev196', title: 'dev196 更新说明', summary: 'dev196 文档与默认说明更新，以及 dev195 机制验证基线。', group: '管理员文档', order: 30 },
+  { file: '更新日志-dev197.md', slug: 'changelog-dev197', title: 'dev197 更新说明', summary: 'dev197 获取路径、槽位、适用性和矛附魔更新。', group: '管理员文档', order: 31 },
+  { file: '更新日志-dev198.md', slug: 'changelog-dev198', title: 'dev198 更新说明', summary: 'dev198 自定义附魔 API、领地保护与行为测试更新。', group: '管理员文档', order: 32 },
+  { file: '更新日志-dev199.md', slug: 'changelog-dev199', title: 'dev199 更新说明', summary: 'dev199 纯 YML 附魔机制、变量、条件与安全动作更新。', group: '管理员文档', order: 33 },
+  { file: 'API自定义附魔.md', slug: 'api-custom-enchantments', title: 'API 自定义附魔', summary: '通过 API v1 扩展复杂事件、第三方插件联动和自定义 Java 行为。', group: '开发者文档', order: 40 },
 ]);
 
 const liemcDocs = defineDocs('liemc', [
@@ -262,7 +267,7 @@ const lirealEnchantDocs = fs.readdirSync(enchantDirectory)
 
 export const docSets: DocSet[] = [
   { slug: 'liemc', name: 'LIEMC', version: '0.1.0', summary: 'EMC 经济、物品回收、解锁兑换、收藏检索、跨服同步与配置文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liemcDocs },
-  { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev196-paper26', summary: '真实附魔、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
+  { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev199-paper26', summary: '真实附魔、YML/API 扩展、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
   { slug: 'lititle', name: 'LiTitle', version: '0.1.93', summary: '称号、商店、仓库、聊天、昵称、存储与跨服部署文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lititleDocs },
   { slug: 'lipet', name: 'LiPet', version: '0.25.9-SNAPSHOT', summary: '宠物养成、捕捉、商城、背包、骑乘、战斗、存储与扩展设计文档。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
   { slug: 'liskin', name: 'LiSkin', version: '1.9.0', summary: 'CraftEngine 外观皮肤、菜单、商店、试穿、权限、跨服与还原文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liSkinDocs },

@@ -18,6 +18,7 @@ const work = works.find((entry) => entry.slug === 'lirealenchant')!;
           <p class="work-hero__lead">{work.summary}</p>
           <div class="button-row" style="margin-top: 2rem;">
             <a class="button button--primary" href={withBase('/docs/lirealenchant/home/')}>阅读完整 Wiki</a>
+            <a class="button" href={withBase('/docs/lirealenchant/yaml-custom-enchantments/')}>创建 YML 附魔</a>
             <a class="button" href="#environment">运行要求</a>
           </div>
         </div>
@@ -91,13 +92,26 @@ const work = works.find((entry) => entry.slug === 'lirealenchant')!;
         </div>
       </div>
     </div>
+
+    <div class="feature-chapter">
+      <div><span class="feature-chapter__number">04 / EXTENSION</span><h2>用 YML 或 API 创建新附魔</h2></div>
+      <div class="feature-chapter__body">
+        <p>dev199 提供安全的纯 YML 行为系统和 API v1。管理员可用变量、条件、六类触发器和动作白名单制作常规附魔；复杂方块、数据库与第三方插件联动交给 Java 扩展。</p>
+        <div class="feature-list">
+          <div><strong>YML 自定义附魔</strong><span>无需额外 Jar，支持概率、冷却、PVP/PVE、伤害、药水、粒子、声音和击退。</span></div>
+          <div><strong>Java API v1</strong><span>面向复杂事件、持久状态、领地保护和其他插件接口。</span></div>
+          <div><strong>严格安全边界</strong><span>YML 不执行命令、Kether、脚本、反射或任意 Java 类。</span></div>
+          <div><strong>独立故障隔离</strong><span>单个错误定义会给出中文诊断并停止自然获取，不影响原版和其他附魔。</span></div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section class="section section--bordered" id="environment">
     <div class="shell">
       <div class="section-heading">
         <span class="eyebrow">Environment / 运行环境</span>
-        <div><h2>这是 Paper 26 专用构建。</h2><p>当前介绍对应 dev196。真实附魔注册链与服务端版本紧密相关，不应部署到旧 Paper、Spigot 或混合核心。</p></div>
+        <div><h2>这是 Paper 26 专用构建。</h2><p>当前介绍对应 dev199。真实附魔注册链与服务端版本紧密相关，不应部署到旧 Paper、Spigot 或混合核心。</p></div>
       </div>
       <div class="directory-grid">
         <div class="directory-card"><span class="directory-card__group">基准核心</span><h2>Paper 26.1.2</h2><p>当前正式构建使用 Paper 26 的真实附魔 Bootstrap 与 Registry 注册链。</p></div>
@@ -105,7 +119,7 @@ const work = works.find((entry) => entry.slug === 'lirealenchant')!;
         <div class="directory-card"><span class="directory-card__group">必须前置</span><h2>无</h2><p>核心玩法不要求其他插件；缺少可选依赖时相应联动自动停用。</p></div>
         <div class="directory-card"><span class="directory-card__group">可选联动</span><h2>Vault · PAPI · Bedrock</h2><p>用于经济费用、占位符与基岩玩家兼容流程。</p></div>
       </div>
-      <div class="notice" style="margin-top: 2rem;"><strong>实服验证基线</strong><p>dev195 已完成 122 个附魔、385 个等级的双客户端实服回归，共 2815 行结果、0 个失败，并对 35 个随机附魔执行 59500 次概率采样。dev196 只增加 Wiki 与修正文案，不改变该机制基线。</p></div>
+      <div class="notice" style="margin-top: 2rem;"><strong>实服验证基线</strong><p>dev199 已在 Paper 26.1.2 使用双协议客户端完成 122 个内置附魔和一个三等级 YML 示例的回归，共 2843 行结果、0 个失败；35 个随机战斗附魔、119 个等级分别执行 500 次概率采样。</p></div>
       <div class="paid-notice">
         <div><span class="eyebrow">Commercial license / 付费插件</span><strong>LiRealEnchant2 标价 ¥{work.priceCny}</strong></div>
         <p>本站当前仅展示插件价格，未接入在线支付。具体交付方式、授权范围和后续更新服务以购买时的作者说明为准。</p>

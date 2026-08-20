@@ -128,7 +128,7 @@ export const works: WorkEntry[] = [
     summary: '以 Paper Registry 注册 122 个真实附魔，为装备加入获取、冲突、槽位、铁砧与祛魔的完整循环。',
     description:
       'LiRealEnchant 为 Paper 26.1.2 提供 122 个 yunmengze 命名空间真实附魔和 385 个等级机制，覆盖武器、工具、护甲、远程、矛、盾牌、钓竿与鞘翅。',
-    version: '2.0.0-dev196-paper26',
+    version: '2.0.0-dev199-paper26',
     status: '持续维护',
     platform: 'Paper',
     minecraft: '26.1.2',
@@ -143,6 +143,7 @@ export const works: WorkEntry[] = [
       '铁砧和真实附魔书',
       '祛魔、抽魔成书与净咒',
       'Java / 基岩玩家菜单适配',
+      'YML 安全机制与 Java API 扩展',
     ],
   },
   {
