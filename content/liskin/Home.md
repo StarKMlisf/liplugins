@@ -40,7 +40,7 @@ CraftEngine-resources/
 
 1. 将发行包中的 `CraftEngine-resources/skins` 整个复制到
    `plugins/CraftEngine/resources/skins`。
-2. 将 `LiSkin-1.9.0.jar` 放入 `plugins`。
+2. 将 `LiSkin-1.9.5.jar` 放入 `plugins`。
 3. 首次安装可直接使用 LiSkin 自动生成的默认 `skins.yml`；发行包中的
    `all-packs-skins.yml` 也提供同一份完整皮肤配置，方便手动合并。
 4. 完整重启服务器，让 CraftEngine 重新生成并分发资源包。
@@ -63,6 +63,10 @@ LiSkin 默认 `skins.yml` 已内置 101 个皮肤：原有 `可爱武器套装 /
 - `/liskin apply <皮肤ID>`：给主手物品应用皮肤。
 - `/liskin preview <皮肤ID>`：临时试穿皮肤，默认 15 秒后自动恢复。
 - `/liskin preview stop`：立即结束当前试穿。
+- `/liskin fitting` 或 `/liskin fitting menu`：打开全部服装试衣菜单。
+- `/liskin fitting start <皮肤ID>`：直接在旋转玩家人偶上试用指定皮肤。
+- `/liskin fitting stop`：结束人偶试衣并返回原位置。
+- `/liskin fitting set <a|b>`：管理员设置人偶展示点 A 和玩家观看点 B。
 - `/liskin remove`：移除主手物品皮肤并恢复原外观。
 - `/liskin wardrobe`：直接打开综合菜单的“已经拥有”筛选。
 - `/liskin shop`：直接打开综合菜单的“全部皮肤”筛选。
@@ -81,6 +85,20 @@ LiSkin 默认 `skins.yml` 已内置 101 个皮肤：原有 `可爱武器套装 /
 - 购买成功后原菜单会立即刷新为“已拥有”，不会关闭，也不需要重新输入指令。
 - 收藏在 YAML 模式本服保存，在 MySQL 模式跨服同步。
 - `/liskin wardrobe` 与 `/liskin shop` 仅作为兼容旧习惯的快捷入口，旧权限节点仍可使用。
+
+## 常驻 NPC 试衣间
+
+LiSkin 1.9.5 可以在 A 点常驻一个原生玩家人偶 NPC。玩家蹲下并用主手右键 NPC 后，会直接看到全部皮肤的分页菜单；点击服装只启动试衣，不会购买、解锁或修改玩家手中的物品。
+
+管理员设置步骤：
+
+1. 站在模型展示位置执行 `/liskin fitting set a`。
+2. 站在玩家观看位置，面向 A 点执行 `/liskin fitting set b`。
+3. 执行 `/liskin reload`，或等待设置 A 点后 NPC 自动刷新。
+
+开始试衣后，玩家会传送到 B 点，只看到 A 点生成的个人试穿人偶。人偶套用该玩家自己的皮肤并自动旋转，武器拿在主手，头饰、胸甲、护腿和靴子进入对应装备槽；背包等展示实体会跟随人偶一起旋转。到期、退出、死亡或执行 `/liskin fitting stop` 后，展示实体会清理，玩家按配置返回原位置。
+
+常驻 NPC 被命令或其他方式移除后会自动恢复。服务器无人在线时，LiSkin 会保留 NPC 所在区块的插件加载票，确保它不会因为区块卸载而消失。
 
 ## Vault / PlayerPoints 商店
 

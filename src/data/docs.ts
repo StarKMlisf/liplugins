@@ -206,14 +206,14 @@ const lichQianDocs = defineDocs('lichqian', [
 ]);
 
 const liSkinDocs = defineDocs('liskin', [
-  { file: 'Home.md', slug: 'home', title: 'LiSkin 完整文档', summary: '基础用法、资源安装、皮肤配置、菜单、商店、权限、跨服与外观还原。', group: '文档总览', order: 1 },
-  { file: '功能介绍.md', slug: 'features', title: '功能与获取介绍', summary: '3D 武器与时装皮肤、试穿、经济、跨服、指令、权限和安装说明。', group: '玩家文档', order: 10 },
-  { file: '玩家入门.md', slug: 'player', title: '玩家入门', summary: '打开综合菜单、解锁、应用、试穿和移除物品皮肤。', group: '玩家文档', order: 11 },
+  { file: 'Home.md', slug: 'home', title: 'LiSkin 完整文档', summary: '基础用法、资源安装、常驻 NPC 试衣间、皮肤配置、商店、权限、跨服与还原。', group: '文档总览', order: 1 },
+  { file: '功能介绍.md', slug: 'features', title: '功能与获取介绍', summary: '3D 武器与时装皮肤、玩家人偶试衣间、经济、跨服、指令、权限和安装说明。', group: '玩家文档', order: 10 },
+  { file: '玩家入门.md', slug: 'player', title: '玩家入门', summary: '使用综合菜单或试衣 NPC 选择、试穿、解锁、应用和移除物品皮肤。', group: '玩家文档', order: 11 },
   { file: '皮肤应用与还原.md', slug: 'application', title: '皮肤应用与安全还原', summary: '兼容物品、分类、权限、PDC 标记和原始外观恢复。', group: '玩家文档', order: 12 },
-  { file: '商店与试穿.md', slug: 'shop-preview', title: '皮肤商店与试穿', summary: 'Vault、PlayerPoints、购买、临时试穿和到期恢复。', group: '玩家文档', order: 13 },
+  { file: '商店与试穿.md', slug: 'shop-preview', title: '商店、试穿与试衣间', summary: '购买、主手临时试穿、常驻 NPC、人偶旋转展示和到期恢复。', group: '玩家文档', order: 13 },
   { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: 'CraftEngine 资源、运行环境、首次安装、升级与验证。', group: '管理员文档', order: 20 },
   { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '菜单、解锁、应用、试穿、商店、调试和管理权限。', group: '管理员文档', order: 21 },
-  { file: '配置说明.md', slug: 'configuration', title: '配置说明', summary: '皮肤条目、CE 物品、模型、装备资产、分类和预览节点。', group: '管理员文档', order: 22 },
+  { file: '配置说明.md', slug: 'configuration', title: '配置说明', summary: '皮肤条目、CE 模型、装备资产、分类、预览和试衣 NPC 节点。', group: '管理员文档', order: 22 },
   { file: '跨服与数据安全.md', slug: 'storage-network', title: '跨服与数据安全', summary: '解锁数据、所有者保护、跨服防刷、外观保存和恢复。', group: '管理员文档', order: 23 },
   { file: '故障排查.md', slug: 'troubleshooting', title: '故障排查', summary: '资源缺失、模型错误、权限还原、商店和跨服问题定位。', group: '管理员文档', order: 24 },
   { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '解答皮肤 ID、CE 模型、试穿、权限、价格和外观恢复问题。', group: '管理员文档', order: 25 },
@@ -270,7 +270,7 @@ export const docSets: DocSet[] = [
   { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev199-paper26', summary: '真实附魔、YML/API 扩展、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
   { slug: 'lititle', name: 'LiTitle', version: '0.1.93', summary: '称号、商店、仓库、聊天、昵称、存储与跨服部署文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lititleDocs },
   { slug: 'lipet', name: 'LiPet', version: '0.25.9-SNAPSHOT', summary: '宠物养成、捕捉、商城、背包、骑乘、战斗、存储与扩展设计文档。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
-  { slug: 'liskin', name: 'LiSkin', version: '1.9.0', summary: 'CraftEngine 外观皮肤、菜单、商店、试穿、权限、跨服与还原文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liSkinDocs },
+  { slug: 'liskin', name: 'LiSkin', version: '1.9.5', summary: 'CraftEngine 外观皮肤、常驻 NPC 试衣间、菜单、商店、权限、跨服与还原文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liSkinDocs },
   { slug: 'jisseechessgames', name: 'JisseeChessGames', version: '2.1.0', summary: '棋盘生成、五子棋、中国象棋、军棋、房间、持久化与验证文档。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: jisseeChessDocs },
   { slug: 'liseasons', name: 'LISeasons', version: '1.0.61', summary: '四季、节气、体温、世界规则、季节事件与运维开发文档。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },
   { slug: 'enderdragon', name: 'EnderDragon', version: '26.1.14', summary: '末影龙接管、召唤、复活、奖励、配置、变量与故障排查文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: enderDragonDocs },
