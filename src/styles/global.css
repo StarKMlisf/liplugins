@@ -469,7 +469,8 @@ img, svg { display: block; max-width: 100%; }
 .work-emblem::after { right: 12px; bottom: 12px; border-right: 2px solid; border-bottom: 2px solid; }
 .work-emblem__code { color: var(--ink-soft); font-family: "Cascadia Code", Consolas, monospace; font-size: .62rem; letter-spacing: .16em; }
 .work-emblem strong { padding-bottom: 3rem; font-family: var(--font-display); font-size: 1.25rem; }
-.work-emblem__price { position: absolute; right: -1px; bottom: -1px; min-width: 72px; padding: .55rem .7rem; background: var(--ink); color: var(--canvas); font-family: var(--font-display); font-size: 1.05rem; text-align: center; }
+.work-emblem__price { position: absolute; right: -1px; bottom: -1px; display: flex; min-width: 72px; gap: .45rem; align-items: baseline; justify-content: center; padding: .55rem .7rem; background: var(--ink); color: var(--canvas); font-family: var(--font-display); font-size: 1.05rem; text-align: center; }
+.work-emblem__price del { color: color-mix(in srgb, var(--canvas) 65%, transparent); font-family: var(--font-body); font-size: .68rem; }
 .work-emblem--gold { background: linear-gradient(145deg, color-mix(in srgb, var(--summer) 12%, var(--canvas-raised)), var(--canvas-raised)); }
 .work-emblem--amethyst { background: linear-gradient(145deg, color-mix(in srgb, #9b66c2 13%, var(--canvas-raised)), var(--canvas-raised)); }
 .work-emblem--catalog strong { max-width: 100%; padding: 0 1rem 3rem; overflow-wrap: anywhere; font-size: 1.05rem; line-height: 1.15; text-align: center; }

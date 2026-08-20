@@ -19,7 +19,11 @@ const catalogSection = catalogSections.find((section) => section.works.some((ent
 const catalogIndex = catalogSection?.works.findIndex((entry) => entry.slug === work.slug) ?? 0;
 const workNumber = catalogSection ? `${catalogSection.number}-${catalogIndex + 1}` : String(works.findIndex((entry) => entry.slug === work.slug) + 1).padStart(2, '0');
 const availabilityLabel =
-  work.availability === '付费' ? `付费插件 · ¥${work.priceCny}` : work.availability;
+  work.availability === '付费'
+    ? work.originalPriceCny
+      ? `付费插件 · 优惠 ¥${work.priceCny} · 原价 ¥${work.originalPriceCny}`
+      : `付费插件 · ¥${work.priceCny}`
+    : work.availability;
 const availabilityClass =
   work.availability === '付费'
     ? 'tag--paid'
@@ -43,7 +47,11 @@ const availabilityClass =
         <div class:list={['work-emblem', 'work-emblem--catalog', work.availability === '付费' && 'work-emblem--gold']} aria-label={`${work.name}，${availabilityLabel}`}>
           <span class="work-emblem__code">LAOLI PLUGINS</span>
           <strong>{work.name}</strong>
-          <span class="work-emblem__price">{work.availability === '付费' ? `¥${work.priceCny}` : work.availability}</span>
+          <span class="work-emblem__price">
+            {work.availability === '付费' ? (
+              work.originalPriceCny ? <><span>¥{work.priceCny}</span><del>¥{work.originalPriceCny}</del></> : `¥${work.priceCny}`
+            ) : work.availability}
+          </span>
         </div>
       </div>
       <div class="work-facts">

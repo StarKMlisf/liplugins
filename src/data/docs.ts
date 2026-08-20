@@ -115,9 +115,20 @@ const enderDragonDocs = defineDocs('enderdragon', [
 
 const blockCraftDocs = defineDocs('blockcraft', [
   { file: 'Home.md', slug: 'home', title: 'BlockCraft 完整文档', summary: '八基座祭坛合成、NORMAL/ADVANCED 模式、物品挂钩、费用、粒子、音效和常见故障排查。', group: '文档总览', order: 1 },
-  { file: '快速开始.md', slug: 'quick-start', title: '快速开始', summary: '搭建祭坛、放置配方材料、启动合成和领取产物。', group: '玩家文档', order: 10 },
-  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: 'Paper、Java、前置插件、配置文件生成、配方与结构更新流程。', group: '管理员文档', order: 20 },
-  { file: '兼容性说明.md', slug: 'compatibility', title: '兼容性说明', summary: '当前平台适配范围、未支持平台、已知边界与迁移建议。', group: '管理员文档', order: 21 },
+  { file: 'Quick-Start.md', slug: 'quick-start', title: '五分钟快速开始', summary: '搭建祭坛、放置配方材料、启动合成和领取产物。', group: '玩家文档', order: 10 },
+  { file: 'Item-Interaction.md', slug: 'item-interaction', title: '物品放置与领取', summary: '整组放置、潜行取回、悬浮显示、环绕材料与成品领取规则。', group: '玩家文档', order: 11 },
+  { file: 'Preview-GUI.md', slug: 'preview-gui', title: '配方预览 GUI', summary: '使用指令预览配方，并自定义菜单布局、图标与说明文字。', group: '玩家文档', order: 12 },
+  { file: 'Installation.md', slug: 'install', title: '安装与更新', summary: 'Paper/Folia、Java、前置插件、配置文件生成、配方与结构更新流程。', group: '管理员文档', order: 20 },
+  { file: 'Compatibility.md', slug: 'compatibility', title: '兼容性说明', summary: 'Paper 26.2、Folia 1.21.11、Java 25、外部前置与当前边界。', group: '管理员文档', order: 21 },
+  { file: 'Multiblock-Structures.md', slug: 'multiblock-structures', title: '多方块结构', summary: '核心、八基座、CraftEngine 方块、支持方块、旋转与结构专用特效。', group: '管理员文档', order: 22 },
+  { file: 'Recipe-Configuration.md', slug: 'recipe-configuration', title: '配方配置', summary: 'NORMAL/ADVANCED、多文件配方、中心物、基座材料、环绕材料与附魔继承。', group: '管理员文档', order: 23 },
+  { file: 'Item-Sources.md', slug: 'item-sources', title: '物品来源与前置挂钩', summary: '原版、MMOItems、CraftEngine 与 CustomFishing 物品识别和生成。', group: '管理员文档', order: 24 },
+  { file: 'Economy-and-Success.md', slug: 'economy-and-success', title: '经济、成功率与失败', summary: '免费、金币、点券、玩家等级、成功概率和失败消耗规则。', group: '管理员文档', order: 25 },
+  { file: 'Effects-Displays-and-Sounds.md', slug: 'effects-displays-sounds', title: '展示、粒子与音效', summary: '悬浮旋转、显示高度大小、四种粒子轨迹、粒子寿命和音效。', group: '管理员文档', order: 26 },
+  { file: 'Commands-and-Permissions.md', slug: 'commands-permissions', title: '指令与权限', summary: '玩家与管理员指令、权限节点和 Tab 补全速查。', group: '管理员文档', order: 27 },
+  { file: 'Configuration-Reference.md', slug: 'configuration-reference', title: '配置文件索引', summary: 'config、messages、structures、preview、recipes 与数据文件完整索引。', group: '管理员文档', order: 28 },
+  { file: 'Troubleshooting.md', slug: 'troubleshooting', title: '故障排查', summary: '结构、配方、物品挂钩、费用、粒子、显示和 Folia 常见问题。', group: '管理员文档', order: 29 },
+  { file: 'Developer-API.md', slug: 'developer-api', title: '开发者 API', summary: '只读祭坛查询 API、Bukkit 合成事件与扩展接入示例。', group: '开发者文档', order: 40 },
 ]);
 
 const liShopDocs = defineDocs('lishop', [
@@ -258,7 +269,7 @@ export const docSets: DocSet[] = [
   { slug: 'jisseechessgames', name: 'JisseeChessGames', version: '2.1.0', summary: '棋盘生成、五子棋、中国象棋、军棋、房间、持久化与验证文档。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: jisseeChessDocs },
   { slug: 'liseasons', name: 'LISeasons', version: '1.0.61', summary: '四季、节气、体温、世界规则、季节事件与运维开发文档。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },
   { slug: 'enderdragon', name: 'EnderDragon', version: '26.1.14', summary: '末影龙接管、召唤、复活、奖励、配置、变量与故障排查文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: enderDragonDocs },
-  { slug: 'blockcraft', name: 'BlockCraft', version: '1.0.11', summary: '八基座祭坛合成、物品来源挂钩、费用与成功率、粒子与音效、故障排查与命令说明。', icon: 'redstone', groups: ['文档总览', '玩家文档', '管理员文档'], docs: blockCraftDocs },
+  { slug: 'blockcraft', name: 'BlockCraft', version: '1.0.13', summary: '八基座祭坛合成、物品来源挂钩、费用与成功率、粒子与音效、故障排查与命令说明。', icon: 'redstone', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: blockCraftDocs },
   { slug: 'lianimalscale', name: 'LiAnimalScale', version: '1.1.0', summary: '动物缩放、命令权限、配置、Folia 兼容、热加载与验证文档。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liAnimalScaleDocs },
   { slug: 'lichqian', name: 'LichQian', version: '1.1.0', summary: '抽签玩法、时间配置、文本、GUI、变量、资源包与构建文档。', icon: 'redstone', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: lichQianDocs },
   { slug: 'lishop', name: 'liShop', version: '1.9.0', summary: 'GUI 商店、动态价格、交易所、编辑器、经济、数据库与集群文档。', icon: 'ice', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liShopDocs },

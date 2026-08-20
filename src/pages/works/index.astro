@@ -3,7 +3,11 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { catalogSections, works } from '@/data/site';
 import { withBase } from '@/lib/paths';
 const availabilityLabel = (work: (typeof works)[number]) =>
-  work.availability === '付费' ? `付费插件 · ¥${work.priceCny}` : work.availability;
+  work.availability === '付费'
+    ? work.originalPriceCny
+      ? `付费插件 · 优惠 ¥${work.priceCny} · 原价 ¥${work.originalPriceCny}`
+      : `付费插件 · ¥${work.priceCny}`
+    : work.availability;
 const availabilityClass = (work: (typeof works)[number]) =>
   work.availability === '付费'
     ? 'tag--paid'

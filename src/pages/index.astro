@@ -29,7 +29,11 @@ const featuredWorks = [
 ];
 
 const availabilityLabel = (work: (typeof works)[number]) =>
-  work.availability === '付费' ? `¥${work.priceCny}` : work.availability;
+  work.availability === '付费'
+    ? work.originalPriceCny
+      ? `优惠 ¥${work.priceCny} / 原价 ¥${work.originalPriceCny}`
+      : `¥${work.priceCny}`
+    : work.availability;
 ---
 
 <BaseLayout bodyClass="home-page">

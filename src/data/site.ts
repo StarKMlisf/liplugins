@@ -23,6 +23,7 @@ export interface WorkEntry {
   java: string;
   availability: WorkAvailability;
   priceCny?: number;
+  originalPriceCny?: number;
   dependencies: string[];
   features: string[];
 }
@@ -36,12 +37,14 @@ export const works: WorkEntry[] = [
     summary: '参考植物魔法流程的环形基座合成系统，支持多文件配方、物品来源挂钩、粒子动画与成功率机制。',
     description:
       'BlockCraft 在 Paper 26.2 下提供 NORMAL 与 ADVANCED 双模式祭坛合成：基座材料、环绕材料、前置物可混用原版、MMOItems、CraftEngine 与 CustomFishing 来源。支持费用类型、失败策略、粒子路径、展示浮动与完整中文配置文档。',
-    version: '1.0.11',
+    version: '1.0.13',
     status: '持续维护',
-    platform: 'Paper',
-    minecraft: '26.2',
+    platform: 'Paper / Folia',
+    minecraft: '1.21.11 · 26.2',
     java: 'Java 25',
-    availability: '免费',
+    availability: '付费',
+    priceCny: 88,
+    originalPriceCny: 108,
     dependencies: ['MMOItems（可选）', 'CraftEngine（可选）', 'CustomFishing（可选）', 'Vault（按经济类型）', 'PlaceholderAPI（按功能）'],
     features: [
       '八基座祭坛与可定制纯结构方块',
@@ -342,14 +345,14 @@ export const catalogSections: CatalogSection[] = [
     number: 1,
     title: '付费插件',
     description: '公开标价并持续维护的商业插件；购买前可先阅读完整功能、安装和配置文档。',
-    works: selectWorks(['liemc', 'lirealenchant', 'lititle', 'lipet', 'liskin', 'jisseechessgames']),
+    works: selectWorks(['blockcraft', 'liemc', 'lirealenchant', 'lititle', 'lipet', 'liskin', 'jisseechessgames']),
   },
   {
     id: 'free',
     number: 2,
     title: '免费插件',
     description: '可免费获取的玩法与运维插件，同样提供完整使用和管理文档。',
-    works: selectWorks(['liseasons', 'enderdragon', 'lianimalscale', 'lichqian', 'blockcraft']),
+    works: selectWorks(['liseasons', 'enderdragon', 'lianimalscale', 'lichqian']),
   },
   {
     id: 'developing',

@@ -23,6 +23,7 @@ const sourceDirectories = new Map([
   ['lichqian', path.resolve(currentDirectory, '../../content/lichqian')],
   ['liskin', path.resolve(currentDirectory, '../../content/liskin')],
   ['jisseechessgames', path.resolve(currentDirectory, '../../content/jisseechessgames')],
+  ['blockcraft', path.resolve(currentDirectory, '../../content/blockcraft')],
 ]);
 
 function normalizeWikiPath(file: string) {
@@ -32,7 +33,16 @@ function normalizeWikiPath(file: string) {
 function rewriteWikiLinks(markdown: string, doc: DocEntry) {
   const docSet = getDocSet(doc.project);
   const fileToSlug = new Map(docSet?.docs.map((entry) => [normalizeWikiPath(entry.file), entry.slug]));
-  return markdown.replace(/\(([^)#?]+?\.md)(#[^)]+)?\)/g, (_match, file: string, hash = '') => {
+  const wikiTargetToSlug = new Map(docSet?.docs.map((entry) => [
+    normalizeWikiPath(entry.file).replace(/\.md$/i, '').toLowerCase(),
+    entry.slug,
+  ]));
+  const withWikiLinks = markdown.replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, (_match, label: string, target: string) => {
+    const normalizedTarget = normalizeWikiPath(target).replace(/\.md$/i, '').toLowerCase();
+    const slug = wikiTargetToSlug.get(normalizedTarget);
+    return slug ? `[${label}](../${slug}/)` : label;
+  });
+  const withMarkdownLinks = withWikiLinks.replace(/\(([^)#?]+?\.md)(#[^)]+)?\)/g, (_match, file: string, hash = '') => {
     let decodedFile = file;
     try {
       decodedFile = decodeURIComponent(file);
@@ -43,6 +53,11 @@ function rewriteWikiLinks(markdown: string, doc: DocEntry) {
     const slug = fileToSlug.get(resolvedFile);
     return slug ? `(../${slug}/${hash})` : `(${file}${hash})`;
   });
+  if (doc.project !== 'blockcraft') {
+    return withMarkdownLinks;
+  }
+  const base = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL.replace(/\/$/, '');
+  return withMarkdownLinks.replace(/\(images\/([^)]+)\)/g, `(${base}/images/blockcraft/$1)`);
 }
 
 export function readWikiSource(doc: DocEntry) {
