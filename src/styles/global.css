@@ -599,6 +599,7 @@ img, svg { display: block; max-width: 100%; }
 .prose table { display: block; width: 100%; overflow-x: auto; margin: 1.5rem 0; border-collapse: collapse; font-size: .85rem; }
 .prose th, .prose td { min-width: 110px; padding: .65rem .75rem; border: 1px solid var(--line); text-align: left; vertical-align: top; }
 .prose th { background: var(--canvas-soft); font-weight: 750; }
+.prose video { display: block; width: 100%; max-height: 72vh; margin: 1.25rem 0 1.8rem; border: 1px solid var(--line); border-radius: 6px; background: #0c100e; box-shadow: 0 12px 30px color-mix(in srgb, var(--ink) 12%, transparent); }
 .prose hr { height: 1px; margin: 2.5rem 0; border: 0; background: var(--line); }
 .docs-pagination { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--line); }
 .docs-pagination a { padding: 1rem; border: 1px solid var(--line); border-radius: 5px; }

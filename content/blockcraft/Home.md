@@ -6,6 +6,19 @@
 
 ![BlockCraft 祭坛实景](images/altar-perspective.png)
 
+## 实机展示
+
+下图展示 BlockCraft 配方可使用的 CraftEngine 自定义物品内容；这些物品可以作为祭坛中心物、基座材料、环绕材料或合成结果。
+
+![CraftEngine 自定义物品目录](images/craftengine-item-catalog.png)
+
+下面是 BlockCraft 在 Minecraft 26.2 第三方服务器中的实机演示。点击播放器即可查看完整流程。
+
+<video controls preload="metadata" poster="images/craftengine-item-catalog.png">
+  <source src="videos/blockcraft-demo-26.2.mp4" type="video/mp4">
+  当前浏览器不支持视频播放，请下载 `blockcraft-demo-26.2.mp4` 后查看。
+</video>
+
 ## 核心特性
 
 - 自定义祭坛核心、基座方块和相对坐标；

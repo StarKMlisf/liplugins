@@ -57,7 +57,10 @@ function rewriteWikiLinks(markdown: string, doc: DocEntry) {
     return withMarkdownLinks;
   }
   const base = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL.replace(/\/$/, '');
-  return withMarkdownLinks.replace(/\(images\/([^)]+)\)/g, `(${base}/images/blockcraft/$1)`);
+  return withMarkdownLinks
+    .replace(/\(images\/([^)]+)\)/g, `(${base}/images/blockcraft/$1)`)
+    .replace(/(["'])images\/([^"']+)\1/g, `$1${base}/images/blockcraft/$2$1`)
+    .replace(/(["'])videos\/([^"']+)\1/g, `$1${base}/videos/blockcraft/$2$1`);
 }
 
 export function readWikiSource(doc: DocEntry) {
