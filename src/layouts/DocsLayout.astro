@@ -34,7 +34,7 @@ const { title, description, docSet, activeSlug, group, headings = [], previous, 
     <article class="docs-content">
       <header class="docs-content__header">
         <nav class="docs-breadcrumbs" aria-label="面包屑">
-          <a href={withBase('/docs/')}>文档</a><span>/</span><a href={withBase(`/docs/${docSet.slug}/`)}>{docSet.name}</a><span>/</span><span>{group}</span>
+          <a href={withBase(`/docs/${docSet.slug}/home/`)}>{docSet.name} 文档</a><span>/</span><span>{group}</span>
         </nav>
         <div class="docs-title-row"><VoxelBlock type={group === '玩家文档' ? 'grass' : group === '管理员文档' ? 'redstone' : group === '开发者文档' ? 'ice' : group === '附魔详情' ? 'amethyst' : 'book'} size="medium" /><h1>{title}</h1></div>
         <p>{description}</p>

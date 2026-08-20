@@ -104,9 +104,8 @@ const availabilityClass =
     <div class="cta-band__inner shell">
       <h2>{work.availability === '暂不发售' ? '关注后续更新，\n等待正式开放。' : '先了解功能，\n再决定是否适合服务器。'}</h2>
       <div class="button-row">
-        <a class="button button--primary" href={withBase(`/docs/${work.slug}/`)}>阅读完整文档</a>
+        <a class="button button--primary" href={withBase(`/docs/${work.slug}/home/`)}>阅读完整文档</a>
         <a class="button" href={withBase('/works/')}>返回作品目录</a>
-        <a class="button" href={withBase('/support/')}>查看获取与支持说明</a>
       </div>
     </div>
   </section>

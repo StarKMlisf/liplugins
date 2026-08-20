@@ -29,7 +29,6 @@ const availabilityLabel = (work: (typeof works)[number]) =>
       </p>
       <div class="editorial-intro__links">
         <a href={withBase('/works/')}>查看全部作品</a>
-        <a href={withBase('/docs/')}>进入文档中心</a>
       </div>
     </div>
 
@@ -64,7 +63,7 @@ const availabilityLabel = (work: (typeof works)[number]) =>
           <p>{work.summary}</p>
           <div class="editorial-featured__links">
             <a href={withBase(`/works/${work.slug}/`)}>功能介绍</a>
-            <a href={withBase(`/docs/${work.slug}/`)}>使用文档</a>
+            <a href={withBase(`/docs/${work.slug}/home/`)}>使用文档</a>
           </div>
         </article>
       ))}
@@ -94,18 +93,4 @@ const availabilityLabel = (work: (typeof works)[number]) =>
     </div>
   </section>
 
-  <section class="editorial-docs">
-    <div class="editorial-docs__inner shell">
-      <div>
-        <span class="editorial-kicker">使用说明</span>
-        <h2>文档中心</h2>
-        <p>安装步骤、依赖、命令、权限和配置都按项目整理。遇到问题时，可以直接从对应插件的文档开始查。</p>
-      </div>
-      <nav class="editorial-docs__links" aria-label="文档相关入口">
-        <a href={withBase('/docs/')}><strong>浏览全部文档</strong><span>{allDocs.length} 篇</span></a>
-        <a href={withBase('/support/')}><strong>支持与购买</strong><span>购买说明与问题反馈</span></a>
-        <a href={withBase('/about/')}><strong>关于这些项目</strong><span>维护范围与兼容说明</span></a>
-      </nav>
-    </div>
-  </section>
 </BaseLayout>

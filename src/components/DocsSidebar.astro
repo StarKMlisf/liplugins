@@ -21,7 +21,7 @@ const visibleDocs = docSet.docs.filter((doc) => doc.sidebar !== false);
 
 <aside class="docs-sidebar" data-docs-sidebar>
   <div class="docs-sidebar__heading">
-    <a href={withBase(`/docs/${docSet.slug}/`)}>
+    <a href={withBase(`/docs/${docSet.slug}/home/`)}>
       <span class="docs-sidebar__identity"><VoxelBlock type={docSet.icon} size="small" /><span><span class="eyebrow">{docSet.name} {docSet.version}</span><strong>文档集</strong></span></span>
     </a>
     <button class="docs-sidebar__close" type="button" data-docs-close aria-label="关闭目录">×</button>
