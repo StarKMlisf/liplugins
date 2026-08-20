@@ -2,53 +2,70 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { catalogSections, works } from '@/data/site';
 import { withBase } from '@/lib/paths';
+
 const availabilityLabel = (work: (typeof works)[number]) =>
   work.availability === '付费'
     ? work.originalPriceCny
-      ? `付费插件 · 优惠 ¥${work.priceCny} · 原价 ¥${work.originalPriceCny}`
-      : `付费插件 · ¥${work.priceCny}`
+      ? `付费 · ¥${work.priceCny}（原价 ¥${work.originalPriceCny}）`
+      : `付费 · ¥${work.priceCny}`
     : work.availability;
-const availabilityClass = (work: (typeof works)[number]) =>
-  work.availability === '付费'
-    ? 'tag--paid'
-    : work.availability === '免费'
-      ? 'tag--free'
-      : 'tag--unavailable';
 ---
 
-<BaseLayout title="作品" description="浏览牢李插件系列当前发布和持续维护的 Minecraft 服务器插件。" bodyClass="works-page">
-  <header class="page-heading">
-    <div class="page-heading__grid shell">
-      <div><span class="eyebrow">Works / 作品</span><h1>为真实服务器<br />解决真实问题。</h1></div>
-      <p>作品目录会说明每款插件解决什么问题、适用什么环境，以及免费或付费状态。付费插件直接展示当前标价，不隐藏在咨询流程里。</p>
-    </div>
+<BaseLayout title="作品" description="浏览牢李插件系列当前发布和持续维护的 Minecraft 服务器插件。" bodyClass="editorial-works">
+  <header class="directory-intro shell">
+    <span class="editorial-kicker">插件目录</span>
+    <h1>作品</h1>
+    <p>服务器玩法插件、管理工具与配套内容。每个项目都标明当前版本、运行平台、公开状态和中文文档。</p>
+
+    <nav class="directory-tabs" aria-label="作品分类">
+      <a href="#catalog">全部 <span>{works.length}</span></a>
+      {catalogSections.map((section) => <a href={`#${section.id}`}>{section.title} <span>{section.works.length}</span></a>)}
+    </nav>
   </header>
-  <section class="section shell">
+
+  <div class="directory shell" id="catalog">
     {catalogSections.map((section) => (
-      <section class="catalog-section" id={section.id}>
-        <div class="catalog-section__heading">
-          <div><span class="eyebrow">{section.number}. Catalog group</span><h2>{section.number}. {section.title}</h2></div>
+      <section class="directory-section" id={section.id}>
+        <header class="directory-section__heading">
+          <h2>{section.title}</h2>
           <p>{section.description}</p>
-          <span class="catalog-section__count">{section.works.length} 款</span>
-        </div>
-        <div class="works-list">
+          <span>{section.works.length} 款</span>
+        </header>
+
+        <div class="directory-grid">
           {section.works.map((work, index) => (
-            <article class="work-row">
-              <span class="work-row__number">{section.number}-{index + 1}</span>
-              <h2><a href={withBase(`/works/${work.slug}/`)}>[{work.catalogLabel}] {work.name}</a><span>{work.kicker}</span></h2>
-              <div class="work-row__summary">
+            <article class="directory-work">
+              <a
+                class:list={['directory-work__visual', !work.artwork && `directory-work__visual--tone-${index % 4}`]}
+                href={withBase(`/works/${work.slug}/`)}
+                aria-label={`查看 ${work.name}`}
+              >
+                {work.artwork ? (
+                  <img src={withBase(work.artwork.src)} alt={work.artwork.alt} width="1600" height="1000" loading="lazy" decoding="async" />
+                ) : (
+                  <span><small>{work.catalogLabel}</small><strong>{work.name}</strong></span>
+                )}
+              </a>
+
+              <div class="directory-work__body">
+                <p class="directory-work__meta">{work.catalogLabel} · {availabilityLabel(work)} · {work.status}</p>
+                <h3><a href={withBase(`/works/${work.slug}/`)}>{work.name}</a></h3>
                 <p>{work.summary}</p>
-                <div class="work-row__meta">
-                  <span class="tag">v{work.version}</span>
-                  <span class:list={['tag', availabilityClass(work)]}>{availabilityLabel(work)}</span>
+                <dl>
+                  <div><dt>版本</dt><dd>{work.version}</dd></div>
+                  <div><dt>平台</dt><dd>{work.platform}</dd></div>
+                </dl>
+                <div class="directory-work__links">
+                  <a href={withBase(`/works/${work.slug}/`)}>功能介绍</a>
+                  <a href={withBase(`/docs/${work.slug}/`)}>使用文档</a>
                 </div>
               </div>
-              <div class="work-row__actions"><a href={withBase(`/works/${work.slug}/`)}>介绍 ↗</a><a href={withBase(`/docs/${work.slug}/`)}>文档 ↗</a></div>
             </article>
           ))}
         </div>
       </section>
     ))}
-    <p style="margin: 2rem 0 0; color: var(--ink-soft); font-size: .8rem;">当前收录 {works.length} 款插件。免费、付费与暂不发售状态均按当前公开信息展示；付费插件的授权范围、交付方式和售后渠道以购买时说明为准。</p>
-  </section>
+
+    <p class="directory-note">当前收录 {works.length} 款插件。价格、交付方式和售后范围以购买时的公开说明为准。</p>
+  </div>
 </BaseLayout>

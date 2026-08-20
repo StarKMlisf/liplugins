@@ -26,6 +26,10 @@ export interface WorkEntry {
   originalPriceCny?: number;
   dependencies: string[];
   features: string[];
+  artwork?: {
+    src: string;
+    alt: string;
+  };
 }
 
 export const works: WorkEntry[] = [
@@ -33,6 +37,10 @@ export const works: WorkEntry[] = [
     slug: 'blockcraft',
     name: 'BlockCraft',
     catalogLabel: '合成',
+    artwork: {
+      src: '/images/blockcraft/altar-perspective.png',
+      alt: 'BlockCraft 八基座祭坛的游戏内透视画面',
+    },
     kicker: '八基座多方块祭坛合成',
     summary: '参考植物魔法流程的环形基座合成系统，支持多文件配方、物品来源挂钩、粒子动画与成功率机制。',
     description:
@@ -59,6 +67,10 @@ export const works: WorkEntry[] = [
     slug: 'liseasons',
     name: 'LISeasons',
     catalogLabel: '季节',
+    artwork: {
+      src: '/images/featured-liseasons.webp',
+      alt: '同一座山谷从春夏过渡到秋冬的季节变化',
+    },
     kicker: '季节、节气与服务器自然系统',
     summary: '让季节不只是计时器，而是会真正改变天空、群系、冰雪、作物、温度与夜空的世界规则。',
     description:
@@ -108,6 +120,10 @@ export const works: WorkEntry[] = [
     slug: 'lirealenchant',
     name: 'LiRealEnchant2',
     catalogLabel: '附魔',
+    artwork: {
+      src: '/images/featured-lirealenchant.webp',
+      alt: '夜色中的附魔图书馆与锻造工坊',
+    },
     kicker: '真实注册的原创附魔系统',
     summary: '以 Paper Registry 注册 122 个真实附魔，为装备加入获取、冲突、槽位、铁砧与祛魔的完整循环。',
     description:
@@ -133,6 +149,10 @@ export const works: WorkEntry[] = [
     slug: 'liemc',
     name: 'LIEMC',
     catalogLabel: '经济',
+    artwork: {
+      src: '/images/featured-liemc.webp',
+      alt: '夕阳中的 EMC 炼成工坊与资源方块',
+    },
     kicker: 'EMC 资源经济与循环系统',
     summary: '用 EMC 串联物品回收、价值解锁、资源兑换与收藏检索，为生存服建立稳定的资源循环。',
     description:
