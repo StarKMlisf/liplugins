@@ -104,6 +104,14 @@ const liemcDocs = defineDocs('liemc', [
   { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '解答无法兑换、同步失败、收藏、下架和经济依赖问题。', group: '管理员文档', order: 25 },
 ]);
 
+const lweDocs = defineDocs('lwe', [
+  { file: 'Home.md', slug: 'home', title: 'LWE 小创世神完整文档', summary: '轻量选区施工、材料消耗、LIEMC 自动补料、安装与兼容边界。', group: '文档总览', order: 1 },
+  { file: '玩家指南.md', slug: 'player', title: '玩家快速指南', summary: '设定选区并使用填充、覆盖、清液、清空及任务控制。', group: '玩家文档', order: 10 },
+  { file: 'EMC联动与自动补充.md', slug: 'emc-auto-refill', title: 'EMC 联动与自动补充', summary: '材料查找顺序、自动补料开关、计费方式与失败条件。', group: '玩家文档', order: 11 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '全部玩家和管理员命令、参数补全与权限节点。', group: '管理员文档', order: 20 },
+  { file: '安装配置与排错.md', slug: 'install-configuration-troubleshooting', title: '安装、配置与故障排查', summary: '版本要求、完整配置、升级步骤、Folia 边界与常见问题。', group: '管理员文档', order: 21 },
+]);
+
 const enderDragonDocs = defineDocs('enderdragon', [
   { file: 'Home.md', slug: 'home', title: 'EnderDragon 完整 Wiki', summary: '末影龙接管、召唤、奖励、指令、权限、变量、配置、自动复活与排错。', group: '文档总览', order: 1 },
   { file: '玩家指南.md', slug: 'player', title: '玩家指南', summary: '查看龙状态、参与战斗、理解奖励与可用召唤方式。', group: '玩家文档', order: 10 },
@@ -267,6 +275,7 @@ const lirealEnchantDocs = fs.readdirSync(enchantDirectory)
 
 export const docSets: DocSet[] = [
   { slug: 'liemc', name: 'LIEMC', version: '0.1.0', summary: 'EMC 经济、物品回收、解锁兑换、收藏检索、跨服同步与配置文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liemcDocs },
+  { slug: 'lwe', name: 'LWE 小创世神', version: '0.1.0+build.15', summary: '轻量选区施工、材料消耗、LIEMC 自动补料、配置与故障排查。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lweDocs },
   { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev199-paper26', summary: '真实附魔、YML/API 扩展、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
   { slug: 'lititle', name: 'LiTitle', version: '0.1.93', summary: '称号、商店、仓库、聊天、昵称、存储与跨服部署文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lititleDocs },
   { slug: 'lipet', name: 'LiPet', version: '0.25.9-SNAPSHOT', summary: '宠物养成、捕捉、商城、背包、骑乘、战斗、存储与扩展设计文档。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
