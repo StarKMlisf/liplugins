@@ -157,8 +157,8 @@ export const works: WorkEntry[] = [
     kicker: 'EMC 资源经济与循环系统',
     summary: '用 EMC 串联物品回收、价值解锁、资源兑换与收藏检索，为生存服建立稳定的资源循环。',
     description:
-      'LIEMC 是面向 Paper / Luminol 26.1.2 的 EMC 资源经济插件，提供物品回收、解锁兑换、收藏检索、自动补充与跨服同步能力。',
-    version: '0.1.0',
+      'LIEMC 是面向 Paper / Luminol 26.1.2 的 EMC 资源经济插件，提供物品回收、解锁兑换、收藏检索、自定义 GUI、自动补充与跨服同步能力。',
+    version: '0.1.0+build.98',
     status: '持续维护',
     platform: 'Paper / Luminol',
     minecraft: '26.1.2',
@@ -170,6 +170,7 @@ export const works: WorkEntry[] = [
       'EMC 价值与资源经济',
       '物品回收和解锁兑换',
       '收藏、检索与批量操作',
+      '完全自定义 GUI 与动态按钮',
       '资源自动补充',
       '跨服数据同步',
       'Paper / Folia 调度适配',

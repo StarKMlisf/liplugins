@@ -322,6 +322,14 @@ unlock:
 
 ---
 
+## 自定义 GUI
+
+build.98 起，获取、搜索、收藏和转换菜单统一由独立的 `plugins/LIEMC/gui.yml` 管理。服主可以配置标题、大小、槽位、按钮、Lore、渐变、动态变量、CustomModelData 和点击指令。
+
+详细字段、完整示例、迁移规则与排错步骤见[自定义 GUI 完整教程](./自定义GUI教程.md)。
+
+---
+
 ## 物品配置示例
 
 ```yml
@@ -356,14 +364,14 @@ unlock:
 
 1. 将插件 jar 放入 `plugins` 文件夹。
 2. 启动服务器生成配置。
-3. 修改 `plugins/LIEMC/config.yml`。
+3. 修改 `plugins/LIEMC/config.yml`；需要调整菜单时修改 `plugins/LIEMC/gui.yml`。
 4. 重启服务器或执行 `/emc reload`。
 5. 输入 `/emc` 打开菜单测试。
 
 当前构建：
 
 ```text
-LIEMC-0.1.0+build.81.jar
+LIEMC-0.1.0+build.98.jar
 ```
 
 ---
