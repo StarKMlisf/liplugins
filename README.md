@@ -12,7 +12,7 @@ GitHub Pages：<https://starkmlisf.github.io/liplugins/>
 - LiTitle：称号、商店、聊天、昵称、存储与跨服文档。
 - LiRealEnchant：真实附魔系统文档与 122 篇独立附魔详情。
 - BlockCraft：八基座祭坛合成插件 Wiki（NORMAL/ADVANCED、配方与粒子动画），当前优惠价 88 元、原价 108 元。
-- CraftEngine 中文教程：安装、资源目录、自定义物品、模型、方块、家具、配方、事件、命令、排错与插件 API 联动。
+- LiPet：宠物养成、捕捉、商城、属性、AI、背包、数据库、外部模型与兼容性完整 Wiki。
 
 ## 本地运行
 
@@ -30,7 +30,7 @@ pnpm build
 ## 目录
 
 ```text
-content/       各款插件与教程项目的 Markdown Wiki
+content/       各款插件的 Markdown Wiki
 public/        站点静态资源
 src/           Astro 页面、组件、样式与文档渲染器
 .github/       GitHub Pages 自动部署工作流

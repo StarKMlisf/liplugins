@@ -15,7 +15,6 @@ interface Props {
 }
 
 const { work } = Astro.props;
-const workKind = work.kind ?? '插件';
 const catalogSection = catalogSections.find((section) => section.works.some((entry) => entry.slug === work.slug));
 const catalogIndex = catalogSection?.works.findIndex((entry) => entry.slug === work.slug) ?? 0;
 const workNumber = catalogSection ? `${catalogSection.number}-${catalogIndex + 1}` : String(works.findIndex((entry) => entry.slug === work.slug) + 1).padStart(2, '0');
@@ -24,9 +23,7 @@ const availabilityLabel =
     ? work.originalPriceCny
       ? `付费插件 · 优惠 ¥${work.priceCny} · 原价 ¥${work.originalPriceCny}`
       : `付费插件 · ¥${work.priceCny}`
-    : workKind === '教程' && work.availability === '免费'
-      ? '免费教程'
-      : work.availability;
+    : work.availability;
 const availabilityClass =
   work.availability === '付费'
     ? 'tag--paid'
@@ -41,7 +38,7 @@ const availabilityClass =
       <div class="work-hero__top">
         <div>
           <div class="work-hero__labels">
-            <span class="eyebrow">Work {workNumber} / [{work.catalogLabel}] {workKind === '教程' ? 'Guide profile' : 'Plugin profile'}</span>
+            <span class="eyebrow">Work {workNumber} / [{work.catalogLabel}] Plugin profile</span>
             <span class:list={['tag', availabilityClass]}>{availabilityLabel}</span>
           </div>
           <h1>{work.name}</h1>
@@ -69,7 +66,7 @@ const availabilityClass =
 
   <section class="section shell">
     <div class="section-heading">
-      <span class="eyebrow">Overview / {workKind === '教程' ? '教程介绍' : '插件介绍'}</span>
+      <span class="eyebrow">Overview / 插件介绍</span>
       <div>
         <h2>{work.kicker}</h2>
         <p>{work.description}</p>
@@ -77,7 +74,7 @@ const availabilityClass =
     </div>
 
     <div class="feature-chapter">
-      <div><span class="feature-chapter__number">01 / FEATURES</span><h2>{workKind === '教程' ? '核心内容' : '核心功能'}</h2></div>
+      <div><span class="feature-chapter__number">01 / FEATURES</span><h2>核心功能</h2></div>
       <div class="feature-chapter__body">
         <div class="feature-list">
           {work.features.map((feature) => (
@@ -91,8 +88,8 @@ const availabilityClass =
   <section class="section section--bordered">
     <div class="shell">
       <div class="section-heading">
-        <span class="eyebrow">Environment / {workKind === '教程' ? '学习环境' : '运行环境'}</span>
-        <div><h2>{workKind === '教程' ? '动手前先确认版本与前置。' : '安装前先确认版本与前置。'}</h2><p>兼容范围以当前项目说明为准，正式服更新前建议先在测试环境验证配置和数据。</p></div>
+        <span class="eyebrow">Environment / 运行环境</span>
+        <div><h2>安装前先确认版本与前置。</h2><p>兼容范围以当前作品说明为准，正式服更新前建议先在测试环境验证配置和数据。</p></div>
       </div>
       <div class="directory-grid">
         <div class="directory-card"><span class="directory-card__group">支持核心</span><h2>{work.platform}</h2><p>Minecraft {work.minecraft}</p></div>
@@ -105,9 +102,9 @@ const availabilityClass =
 
   <section class="cta-band">
     <div class="cta-band__inner shell">
-      <h2>{workKind === '教程' ? '从入门开始，\n一步步完成资源。' : work.availability === '暂不发售' ? '关注后续更新，\n等待正式开放。' : '先了解功能，\n再决定是否适合服务器。'}</h2>
+      <h2>{work.availability === '暂不发售' ? '关注后续更新，\n等待正式开放。' : '先了解功能，\n再决定是否适合服务器。'}</h2>
       <div class="button-row">
-        <a class="button button--primary" href={withBase(`/docs/${work.slug}/home/`)}>{workKind === '教程' ? '开始阅读教程' : '阅读完整文档'}</a>
+        <a class="button button--primary" href={withBase(`/docs/${work.slug}/home/`)}>阅读完整文档</a>
         <a class="button" href={withBase('/works/')}>返回作品目录</a>
       </div>
     </div>

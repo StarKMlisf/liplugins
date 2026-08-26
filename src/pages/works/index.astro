@@ -8,14 +8,12 @@ const availabilityLabel = (work: (typeof works)[number]) =>
     ? work.originalPriceCny
       ? `付费 · ¥${work.priceCny}（原价 ¥${work.originalPriceCny}）`
       : `付费 · ¥${work.priceCny}`
-    : work.kind === '教程'
-      ? '免费教程'
-      : work.availability;
+    : work.availability;
 ---
 
-<BaseLayout title="作品" description="浏览牢李插件系列当前发布和持续维护的 Minecraft 服务器插件、工具与中文教程。" bodyClass="editorial-works">
+<BaseLayout title="作品" description="浏览牢李插件系列当前发布和持续维护的 Minecraft 服务器插件。" bodyClass="editorial-works">
   <header class="directory-intro shell">
-    <span class="editorial-kicker">项目目录</span>
+    <span class="editorial-kicker">插件目录</span>
     <h1>作品</h1>
     <p>服务器玩法插件、管理工具与配套内容。每个项目都标明当前版本、运行平台、公开状态和中文文档。</p>
 
@@ -31,7 +29,7 @@ const availabilityLabel = (work: (typeof works)[number]) =>
         <header class="directory-section__heading">
           <h2>{section.title}</h2>
           <p>{section.description}</p>
-          <span>{section.works.length} 项</span>
+          <span>{section.works.length} 款</span>
         </header>
 
         <div class="directory-grid">
@@ -68,6 +66,6 @@ const availabilityLabel = (work: (typeof works)[number]) =>
       </section>
     ))}
 
-    <p class="directory-note">当前收录 {works.length} 个项目。付费插件的价格、交付方式和售后范围以购买时的公开说明为准。</p>
+    <p class="directory-note">当前收录 {works.length} 款插件。价格、交付方式和售后范围以购买时的公开说明为准。</p>
   </div>
 </BaseLayout>

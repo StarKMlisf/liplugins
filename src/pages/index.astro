@@ -8,8 +8,7 @@ const workBySlug = new Map(works.map((work) => [work.slug, work]));
 const featuredWorks = ['blockcraft', 'liseasons', 'liemc']
   .map((slug) => workBySlug.get(slug))
   .filter((work): work is (typeof works)[number] => Boolean(work));
-const pluginWorks = works.filter((work) => (work.kind ?? '插件') === '插件');
-const tutorialWorks = works.filter((work) => work.kind === '教程');
+const maintainedWorks = works.filter((work) => work.status === '持续维护');
 
 const availabilityLabel = (work: (typeof works)[number]) =>
   work.availability === '付费'
@@ -22,10 +21,10 @@ const availabilityLabel = (work: (typeof works)[number]) =>
 <BaseLayout bodyClass="editorial-home">
   <section class="editorial-intro shell" aria-labelledby="home-title">
     <div class="editorial-intro__copy">
-      <span class="editorial-kicker">Minecraft 服务器项目</span>
+      <span class="editorial-kicker">Minecraft 服务器插件</span>
       <h1 id="home-title">牢李插件</h1>
       <p>
-        这里收录我正在维护的插件、工具、教程和对应中文说明。版本、兼容范围、价格与依赖都会直接写明，
+        这里收录我正在维护的插件和对应的中文说明。版本、兼容范围、价格与依赖都会直接写明，
         可以先看功能和文档，再判断是否适合你的服务器。
       </p>
       <div class="editorial-intro__links">
@@ -34,8 +33,8 @@ const availabilityLabel = (work: (typeof works)[number]) =>
     </div>
 
     <dl class="editorial-intro__facts" aria-label="网站内容概况">
-      <div><dt>{pluginWorks.length}</dt><dd>款插件</dd></div>
-      <div><dt>{tutorialWorks.length}</dt><dd>套教程</dd></div>
+      <div><dt>{works.length}</dt><dd>款插件</dd></div>
+      <div><dt>{maintainedWorks.length}</dt><dd>款持续维护</dd></div>
       <div><dt>{allDocs.length}</dt><dd>篇中文文档</dd></div>
     </dl>
   </section>
@@ -76,7 +75,7 @@ const availabilityLabel = (work: (typeof works)[number]) =>
       <header class="editorial-section__heading editorial-section__heading--compact">
         <div>
           <span class="editorial-kicker">项目索引</span>
-          <h2>全部项目</h2>
+          <h2>全部插件</h2>
         </div>
         <p>按当前公开状态排列，点击项目名称可查看版本、兼容范围和完整功能。</p>
       </header>

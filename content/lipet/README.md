@@ -2,7 +2,7 @@
 
 LiPet 是一个面向群组服的 Bukkit 宠物插件框架，兼容 Paper/Folia 1.21.11、Paper/Folia 26.1.2 与 Paper 26.2。
 
-`0.25.7-SNAPSHOT` 已使用同一通用 Jar 在 Paper 26.1.2 Build 70 与 Paper 26.2 Build 111 完成启动、`/lipet status` 和优雅关服验证。
+`0.26.10-SNAPSHOT` 移除会与 LuckPerms 等权限插件冲突的 `/lp` 短指令别名，只注册 `/lipet` 主指令；Bukkit 不再生成 `/lipet:lp` 命名空间指令。73 项自动测试全部通过，Paper 26.2 实际启动验证了 `/lipet` 与 `/lipet:lipet` 正常、`/lp` 与 `/lipet:lp` 均为未知指令。此前加入的 CraftEngine 自定义物品喂食、完整 ID 精确匹配和旧版 Bukkit Material 食物兼容能力保持不变。
 
 当前版本包含配置、持久化、宠物创建与召唤、属性成长、衍生战斗属性、喂养升级、骑乘、捕捉仪式、信息 GUI、跟随、坐下控制、放生、协助战斗、死亡冷却和扩展点。
 
@@ -32,6 +32,17 @@ LiPet 是一个面向群组服的 Bukkit 宠物插件框架，兼容 Paper/Folia
 `0.25.8-SNAPSHOT` 清理旧品牌字样，统一移除界面、道具和宠物名称斜体，并修复飞行宠物召唤后感知被关闭的问题；非坐下宠物会自动恢复原版 AI、感知与站立状态。
 
 `0.25.9-SNAPSHOT` 重做战斗接近逻辑：具备攻击寻路的生物完全使用原版 AI，不再被自定义速度覆盖；被动生物使用高频平滑辅助移动，并同步身体朝向，修复攻击时被拖拽和倒着移动。
+`0.26.0-SNAPSHOT` 重做跟随与追击导航：加入开始、停止、回传三段距离和回传冷却，主人飞行或滑翔时等待安全落地；全部地面宠物由高优先级受控 Goal 配合服务端原生 Pathfinder 绕障，原版闲逛、逃跑和仇恨不会再反向覆盖路径，新路径不可达时会停止旧路径而不会直线拖拽；消息、悬浮文本、GUI、道具和宠物名称在写入前统一强制非斜体。
+`0.26.1-SNAPSHOT` 修复 SQLite 完成回调越过线程边界读取区块实体导致的喂养、属性加点、召回和收回连锁失败；活动宠物改用加载实体索引并随区块装卸维护，连续寻路失败会安全回传；全部菜单新增可配置打开、点击、关闭音效，宠物背包默认与最小容量调整为 54 格。
+`0.26.2-SNAPSHOT` 修复可驯服生物收回残留：移除实体前解除原版主人、驯服与坐下状态，鹦鹉不再进入原版肩部数据；收回会同时检查左右肩，数据库保存失败时自动恢复肩部实体。主菜单、管理菜单和放生确认默认扩展为 5 行并仅绘制边框；GUI 的尺寸、槽位、填充模式、图标高级属性、按钮启停、普通/左右键动作及自定义指令均可在 `gui.yml` 配置。
+`0.26.3-SNAPSHOT` 为 `/lipet reload` 加入 SQLite / MySQL 数据库热切换：候选驱动、连接与表结构先在后台验证，活动宠物保存完成后宠物数据与内置货币请求原子转向新库；切换窗口内的新请求自动排队，失败时继续使用旧库。MySQL 新增连接与读写超时配置，`/lipet status` 会显示当前实际数据库目标。
+`0.26.4-SNAPSHOT` 为活动宠物增加双行头顶名牌：第一行显示宠物名称，第二行显示主人玩家名；文字、颜色、偏移、背景、透明度与可视范围可在 `pet-types.yml` 调整。名牌会随重命名和热重载刷新，并在区块恢复、传送、死亡、收回和孤儿清理流程中自动修复或删除。
+`0.26.5-SNAPSHOT` 修复属性加点提示显示 `STRENGTH` 等英文枚举的问题；四项属性与五种宠物状态改为 `messages.yml` 可配置中文名称。属性成功/失败消息和全部宠物 GUI 补齐玩家、宠物、成长、衍生属性及原始键变量，PlaceholderAPI 对外目录同步扩展并保证无活动宠物时返回稳定默认值。
+`0.26.6-SNAPSHOT` 新增 `/lipet daily`、主菜单每日领取入口及宠物战斗/升级/捕捉奖励；新增 `rewards.yml` 完整配置和 `lipet_currency_reward` 防重表。奖励额度与余额在同一事务内更新，并与宠物、技能、背包、货币账户共享数据库热切换屏障。
+`0.26.7-SNAPSHOT` 美化全部内置 GUI 与商城商品 Lore，增加清晰分区、渐变色操作引导和更完整的用途提示；旧默认值自动升级，自定义 Lore 不覆盖。
+`0.26.8-SNAPSHOT` 修复 ModelEngine/MEG 模型与原版载体重叠，加入幂等模型恢复、热重载刷新及可配置的载体隐藏与碰撞箱覆盖。
+`0.26.9-SNAPSHOT` 新增 CraftEngine 物品喂食支持，按完整命名空间 ID 精确识别与扣除，并保留全部旧版 Bukkit Material 食物配置。
+`0.26.10-SNAPSHOT` 取消 `/lp` 指令别名，仅保留 `/lipet`，避免与 LuckPerms 等权限插件的常用主指令冲突。
 `0.25.4-SNAPSHOT` 增加 Paper 26.2 兼容声明与 Maven 兼容编译 profile：`-Ppaper-26.2`。
 
 `0.25.3-SNAPSHOT` 修复捕捉仪式音效兼容问题：无效 Bukkit Sound/Particle 会自动回退并写回安全默认值，不再导致插件启动失败。
@@ -43,16 +54,25 @@ LiPet 是一个面向群组服的 Bukkit 宠物插件框架，兼容 Paper/Folia
 - 空手右键自己的已召唤宠物：骑乘，可用方向键驾驶并按跳跃键起跳。
 - 潜行并空手右键自己的已召唤宠物：打开属性与管理界面。
 - 在管理界面点击“修改宠物名字”后，直接在聊天框输入新名字；输入“取消”可退出。
-- 手持 `pet-types.yml` 中配置的食物右键自己的宠物：回血并获得经验。
+- 手持 `pet-types.yml` 中配置的原版或 CraftEngine 食物右键自己的宠物：回血并获得经验。
 - 仓库左键宠物：召唤；右键宠物：查看等级、经验、属性和食物。
 
 PlaceholderAPI 变量：
 
 ```text
 %lipet_active_name%
+%lipet_active_id%
+%lipet_active_owner_id%
+%lipet_active_owner_name%
 %lipet_active_type%
+%lipet_active_type_id%
+%lipet_active_state%
+%lipet_active_state_key%
 %lipet_active_level%
+%lipet_active_max_level%
 %lipet_active_experience%
+%lipet_active_required_experience%
+%lipet_active_experience_percent%
 %lipet_active_attribute_points%
 %lipet_active_critical_chance%
 %lipet_active_critical_damage%
@@ -65,15 +85,25 @@ PlaceholderAPI 变量：
 %lipet_active_agility%
 %lipet_active_health%
 %lipet_active_max_health%
+%lipet_active_health_percent%
 %lipet_active_damage%
+%lipet_active_speed%
+%lipet_active_riding_speed%
 %lipet_active_resistance%
 %lipet_active_regeneration%
-%lipet_active_state%
+%lipet_attribute_strength_name%
+%lipet_attribute_vitality_name%
+%lipet_attribute_defense_name%
+%lipet_attribute_agility_name%
 %lipet_pet_count%
 %lipet_server_id%
 ```
 
+`%lipet_active_state%` 返回可配置中文状态，需读取数据库原始状态键时使用 `%lipet_active_state_key%`。玩家没有召唤宠物时，数值变量返回 `0` 或 `0.0`，文本变量返回空文本。
+
 Vault 通过 `LiPetApi#economy()` 暴露统一经济接口，供后续购买、复活和技能升级使用。仅安装 Vault 而未安装经济插件时，LiPet 会关闭经济挂钩但继续运行。
+
+Paper 26.2 使用 PlaceholderAPI 时建议安装 [`2.12.3+`](https://github.com/PlaceholderAPI/PlaceholderAPI/releases/tag/2.12.3)；LiPet 只调用稳定的 `PlaceholderExpansion` 接口，PlaceholderAPI 仍是可选软依赖。
 
 完整功能实施顺序见 [docs/FEATURE_ROADMAP.md](docs/FEATURE_ROADMAP.md)。
 服主与玩家使用 Wiki 见 [docs/WIKI.md](docs/WIKI.md)。
@@ -85,7 +115,9 @@ Vault 通过 `LiPetApi#economy()` 暴露统一经济接口，供后续购买、�
 - 宠物实体、技能、存储、同步、第三方插件 Hook 均通过接口隔离。
 - 主类只负责组装，配置、指令、监听器、管理器和 API 分层独立。
 - 外部公共依赖不打入插件 Jar，统一下载到插件数据目录的 `lib/`。
-- `pet-types.yml` 配置宠物实体、生命、伤害、速度、食物、升级经验、等级上限、跟随距离和复活时间。
+- `pet-types.yml` 配置宠物实体、双行主人名牌、生命、伤害、速度、食物、升级经验、等级上限、跟随开始/停止/回传距离和复活时间。
+- 修改 `storage.type`、`storage.sqlite.file` 或 `storage.mysql.*` 后执行 `/lipet reload` 即可热切换；`server` 与 `cluster` 身份/通道变更仍需重启。
+- 热切换负责连接生命周期，不会把两个独立数据库的历史数据自动互相复制；迁移前应先将完整数据导入目标库并做好备份。
 
 ## 当前指令
 
@@ -103,6 +135,7 @@ Vault 通过 `LiPetApi#economy()` 暴露统一经济接口，供后续购买、�
 /lipet shop
 /lipet warehouse
 /lipet balance
+/lipet daily
 /lipet captureball <类型> [数量] [玩家]
 /lipet skillbook <技能> [数量] [玩家]
 /lipet signalstick [数量] [玩家]
@@ -122,6 +155,6 @@ Vault 通过 `LiPetApi#economy()` 暴露统一经济接口，供后续购买、�
 mvn clean package
 ```
 
-输出：`target/LiPet-0.25.9-SNAPSHOT.jar`
+输出：`target/LiPet-0.26.10-SNAPSHOT.jar`
 
 每次迭代必须同步更新 `pom.xml` 版本。`plugin.yml` 会从 Maven 版本自动生成。

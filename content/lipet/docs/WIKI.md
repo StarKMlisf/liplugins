@@ -1,6 +1,6 @@
 # LiPet Wiki
 
-适用版本：`0.25.9-SNAPSHOT`
+适用版本：`0.26.10-SNAPSHOT`
 
 适用服务端：
 
@@ -18,6 +18,7 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 
 - 宠物创建、召唤、收回、放生、改名
 - 宠物商城、道具商城、宠物仓库 GUI
+- 每日领取、宠物战斗、升级与捕捉宠物币奖励
 - 捕捉球与捕捉仪式
 - 宠物等级、经验、属性点和衍生战斗属性
 - 宠物喂养、战斗经验、死亡冷却
@@ -30,7 +31,7 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 
 ## 2. 安装
 
-1. 将 `LiPet-0.25.9-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
+1. 将 `LiPet-0.26.10-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
 2. 启动服务器一次，让插件生成默认配置。
 3. 停服，编辑 `plugins/LiPet/` 下的配置文件。
 4. 再次启动服务器。
@@ -45,9 +46,10 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 | `config.yml` | 存储、服务器 ID、群组、依赖下载、内置货币 |
 | `pet-types.yml` | 宠物类型、实体、模型、属性、行为、背包、成长、食物 |
 | `shop.yml` | 宠物商城和宠物道具商城 |
-| `gui.yml` | GUI 标题、槽位、图标、按钮 |
+| `gui.yml` | GUI 标题、尺寸、槽位、留白/边框、图标、点击动作与音效 |
 | `capture.yml` | 捕捉球、捕捉概率、捕捉仪式、音效、粒子、实体映射 |
 | `skills.yml` | 技能书、技能等级、技能效果 |
+| `rewards.yml` | 每日、战斗、升级、捕捉宠物币奖励与反馈效果 |
 | `messages.yml` | 所有玩家提示文本 |
 
 所有文本建议使用 MiniMessage 格式。插件会自动补全新增配置节点，不会覆盖已有自定义值。
@@ -86,9 +88,13 @@ storage:
     username: "root"
     password: "change-me"
     maximum-pool-size: 10
+    connect-timeout-seconds: 10
+    socket-timeout-seconds: 30
 ```
 
 群组服必须使用 MySQL。每个子服需要设置不同的 `server.id`，同一组服务器使用相同的 `server.group`。
+
+`connect-timeout-seconds` 控制连接失败需要等待多久，范围 `1-30` 秒；`socket-timeout-seconds` 控制查询和写入等待响应的时间，范围 `1-120` 秒。这两个限制也用于热切换候选库验证，避免错误地址长期卡住。
 
 ```yaml
 server:
@@ -96,7 +102,31 @@ server:
   group: "main"
 ```
 
+### 数据库热切换
+
+以下配置修改后可直接执行 `/lipet reload`，不需要重启服务器：
+
+- `storage.type`
+- `storage.sqlite.file`
+- `storage.mysql.host / port / database / username / password`
+- `storage.mysql.maximum-pool-size`
+- `storage.mysql.connect-timeout-seconds / socket-timeout-seconds`
+
+切换顺序：
+
+1. 在后台下载或加载目标 JDBC 驱动。
+2. 连接候选数据库并完成建表/迁移验证；此时旧库继续服务。
+3. 安全保存并收回当前服务器的活动宠物。
+4. 等待旧库已受理操作结束，切换窗口内的新请求进入队列。
+5. 宠物、技能、背包、内置货币和奖励防重记录同时转向新库，再关闭旧连接。
+
+任一步失败都会保留旧数据库运行时，并在控制台给出原因。`/lipet status` 显示的是当前真正生效的数据库类型与目标，而不是尚未成功应用的文件值。
+
+重要：热切换不是数据迁移工具，不会自动复制两个独立数据库中的历史宠物和货币数据。更换为另一份 SQLite 文件或全新的 MySQL 库前，请停服备份并先完整迁移数据；切换到空库后看到的也会是空数据。`server`、`cluster` 和 Redis 通道设置仍需重启生效。
+
 ## 5. 玩家指令
+
+`0.26.10-SNAPSHOT` 起只注册 `/lipet` 主指令，不再提供 `/lp` 别名，也不会再生成 `/lipet:lp`，避免与 LuckPerms 等权限插件冲突。
 
 | 指令 | 说明 |
 | --- | --- |
@@ -106,6 +136,7 @@ server:
 | `/lipet itemshop` | 打开宠物道具商城 |
 | `/lipet warehouse` | 打开宠物仓库 |
 | `/lipet balance` | 查看宠物币余额 |
+| `/lipet daily` | 领取每日宠物币 |
 | `/lipet call <宠物名称>` | 召唤仓库中的宠物 |
 | `/lipet store` | 收回当前已召唤宠物 |
 | `/lipet sit` | 当前宠物坐下 / 继续跟随 |
@@ -126,7 +157,7 @@ server:
 | `/lipet skillbook <技能> [数量] [玩家]` | 发放技能书 |
 | `/lipet signalstick [数量] [玩家]` | 发放宠物信号棒 |
 | `/lipet status` | 查看插件状态 |
-| `/lipet reload` | 重载配置 |
+| `/lipet reload` | 重载配置并热切换 SQLite / MySQL |
 
 ## 7. 权限
 
@@ -138,6 +169,7 @@ server:
 | `lipet.command.itemshop` | true | 打开宠物道具商城 |
 | `lipet.command.warehouse` | true | 打开宠物仓库 |
 | `lipet.command.balance` | true | 查看宠物币余额 |
+| `lipet.command.daily` | true | 领取每日宠物币 |
 | `lipet.command.call` | true | 召唤宠物 |
 | `lipet.command.store` | true | 收回宠物 |
 | `lipet.command.sit` | true | 坐下 / 跟随 |
@@ -173,6 +205,13 @@ types:
     model:
       provider: "NATIVE"
       id: ""
+      hide-base-entity: true
+      override-hitbox: true
+    behavior:
+      follow-enabled: true
+      follow-distance: 10.0
+      stop-distance: 3.0
+      teleport-distance: 30.0
 ```
 
 说明：
@@ -180,7 +219,51 @@ types:
 - `entity-type` 必须是当前 Paper 版本存在的 Bukkit 实体类型。
 - `owner-limit` 当前固定用于“一种宠物只能拥有一只”的限制。
 - `model.provider` 支持 `NATIVE`、`MODEL_ENGINE`、`CRAFT_ENGINE`。
+- `model.hide-base-entity` 仅在外部模型提供器中生效；ModelEngine/MEG 建议保持 `true`，它只隐藏原版载体外观，不会关闭宠物 AI。
+- `model.override-hitbox` 控制 ModelEngine 是否使用模型蓝图碰撞箱；它与隐藏原版外观是两个独立选项。
 - `auto-register-vanilla: true` 时会自动注册可生成的原版实体宠物类型。
+- `follow-distance` 是开始追赶距离，`stop-distance` 是停止追赶距离；后者必须更小，避免宠物在临界点反复启停。
+- 超过 `teleport-distance` 时只会在主人落地且未飞行、未滑翔时安全回传；回传带有短冷却，避免异步传送失败时连续刷传送。
+- 原生寻路连续拒绝路径时，宠物会在主人安全落地后回传，不会停在原地，也不会使用速度强拖穿过障碍。
+
+### ModelEngine / MEG 模型
+
+给宠物使用 ModelEngine 模型时，至少填写：
+
+```yaml
+model:
+  provider: "MODEL_ENGINE"
+  id: "你的模型ID"
+  hide-base-entity: true
+  override-hitbox: true
+```
+
+`hide-base-entity: true` 会通过 ModelEngine 的载体可见性接口隐藏脚下的原版生物，同时继续使用该实体承载 LiPet 的 AI、寻路、属性与碰撞。不要用隐身药水代替这个选项。重复召唤、区块重新加载和宠物运行状态恢复都会复用已有同 ID 模型，不会再次叠加；修改模型配置后执行 `/lipet reload`，当前已召唤宠物也会在其实体线程刷新。若将 `id` 改成另一个模型，插件会先卸载本轮运行期记录的旧模型再挂载新模型。
+
+ModelEngine 的显示版本同为 `R4.1.0` 时，不同构建支持的 NMS 版本仍可能不同。Paper 26.x 必须安装包含 Java 25 / 26.x NMS 适配层的更新构建；若控制台出现 `Unsupported NMS Version: 26.1.2` 或类似错误，是当前 ModelEngine 构建不支持服务端版本，应先升级 ModelEngine。LiPet 不会把 ModelEngine 打进自身 Jar。
+
+### 双行宠物名牌
+
+召唤后的宠物默认使用两行头顶文字：第一行是宠物名称，第二行是主人玩家名。配置位于 `pet-types.yml` 顶层：
+
+```yaml
+nameplate:
+  enabled: true
+  owner-line: "<gradient:#7DD3FC:#C4B5FD>主人：</gradient><white><owner_name></white>"
+  vertical-offset: 0.55
+  view-range: 1.0
+  line-width: 200
+  text-opacity: 255
+  shadowed: true
+  see-through: false
+  default-background: false
+  background-color: "#00000000"
+```
+
+- `owner-line` 支持 MiniMessage、RGB、渐变和 `<owner_name>` 占位符。
+- `enabled: false` 会删除双行显示实体并恢复原版单行宠物名称。
+- 修改后执行 `/lipet reload`，已召唤宠物会在下一轮行为刷新时自动应用新样式。
+- 名牌使用独立 PDC 关联宠物实体；区块重新载入时会校验并恢复，传送导致挂载脱离时会自动重建，死亡、收回和放生时会同步删除，不写入宠物数据库。
 
 ## 9. 属性与成长
 
@@ -215,12 +298,33 @@ growth:
 
 宠物可通过喂食和战斗获得经验。升级后获得自由属性点，玩家可在 GUI 中加点。
 
+属性与宠物状态的中文名称位于 `messages.yml`：
+
+```yaml
+labels:
+  unknown-pet: "未知宠物"
+  attributes:
+    strength: "力量"
+    vitality: "体质"
+    defense: "防御"
+    agility: "敏捷"
+  pet-states:
+    stored: "已收回"
+    active: "已召唤"
+    transferring: "转移中"
+    dead: "复活冷却"
+    disabled: "已禁用"
+```
+
+属性加点消息可使用完整上下文变量，常用变量包括 `<pet_name>`、`<attribute>`、`<attribute_key>`、`<previous_value>`、`<value>`、`<previous_points>`、`<points>`、`<strength>`、`<vitality>`、`<defense>` 和 `<agility>`。`<attribute>` / `<attribute_name>` 是中文显示名，`<attribute_key>` 保留 `STRENGTH` 等稳定英文键，适合动作和外部插件。
+
 ## 10. 喂食
 
 食物配置在 `pet-types.yml`：
 
 ```yaml
 foods:
+  # 旧版 Bukkit Material 写法继续支持。
   COOKED_BEEF:
     display-name: "熟牛肉"
     experience: 20
@@ -228,11 +332,26 @@ foods:
     attribute-points: 0
     minimum-level: 1
     maximum-level: 0
+
+  # CraftEngine 物品必须填写完整 namespace:item_id。
+  # 节点名只是管理员自定别名；使用 item-id 后也完整支持含点号的合法 ID。
+  pet-biscuit:
+    item-id: 'my.pack:pet.food'
+    display-name: "灵宠饼干"
+    experience: 35
+    healing: 8.0
+    attribute-points: 0
+    minimum-level: 1
+    maximum-level: 0
 ```
 
 规则：
 
-- 玩家手持配置食物右键自己的宠物即可喂食。
+- 玩家手持配置的原版或 CraftEngine 食物右键自己的宠物即可喂食。
+- CraftEngine 物品按完整自定义 ID 精确识别；即使多个物品都以 `PAPER` 为底材，也只会匹配配置的那一个。
+- 简单 CE ID 可直接作为节点名，例如 `'default:pet_biscuit':`；ID 含 `.` 时请使用普通节点别名并填写 `item-id`。
+- `CraftEngine` 是可选软依赖。未安装时原版食物仍可使用，CE 食物配置会保留但不会匹配。
+- 修改食物规则后执行 `/lipet reload` 即可生效；CraftEngine 自身重载物品后无需重启 LiPet，因为插件不会缓存物品实例。
 - 不符合等级限制时不会消耗食物。
 - 没有产生回血、经验或属性点效果时不会消耗食物。
 - 数据保存失败时会退还食物。
@@ -292,6 +411,41 @@ entries:
 
 如果玩家已经拥有该类型宠物，购买会被拒绝。
 
+### 宠物币获取
+
+`0.26.6+` 默认提供四条可持续获取路径：
+
+- `/lipet daily`：每个自然日领取一次；主菜单中央默认也有领取按钮。
+- 宠物战斗：由已召唤宠物完成有效击杀，按“固定值 + 目标最大生命倍率”结算。
+- 宠物升级：喂养或战斗升级成功并保存后，按实际提升等级数结算。
+- 成功捕捉：捕捉结果保存成功后结算。
+
+所有金额、每日上限、排除实体、重置时区、音效和粒子位于 `rewards.yml`。示例：
+
+```yaml
+reset-time-zone: "Asia/Shanghai"
+daily:
+  enabled: true
+  amount: 100.0
+combat:
+  enabled: true
+  base-amount: 1.0
+  maximum-health-multiplier: 0.10
+  minimum-amount: 1.0
+  maximum-amount: 20.0
+  daily-limit: 300.0
+level-up:
+  enabled: true
+  amount-per-level: 25.0
+  daily-limit: 300.0
+capture:
+  enabled: true
+  amount: 15.0
+  daily-limit: 150.0
+```
+
+`daily-limit: 0` 表示对应玩法不限制每日额度。每日领取防重复与三种玩法额度存入 `lipet_currency_reward`，奖励记录和余额会在同一数据库事务中更新，因此同时点击、跨服并发、重启或执行数据库热切换都不会重复领取。群组服必须让所有子服使用相同的 `reset-time-zone`；存储层会拒绝比已记录日期更早的周期，避免服务器时钟或时区不一致被用于反复领奖。热切换只切换数据目标，不会自动迁移旧库记录，迁库前仍需完整导入数据库。
+
 ## 13. 宠物道具商城
 
 道具商城配置在 `shop.yml` 的 `item-entries`。
@@ -325,6 +479,56 @@ item-entries:
 - 删除宠物时清理背包数据。
 - `inventory.size: 0` 表示禁用。
 - 背包大小必须是 9 的倍数，最大 54。
+- 默认背包为 54 格（6 行）。`inventory.minimum-size: 54` 会让旧版 18 格配置以 54 格运行，同时保留管理员原来的类型配置值。
+
+菜单音效位于 `gui.yml` 的 `sounds` 节点，可分别配置打开、有效按钮点击和关闭音效；设置 `sounds.enabled: false` 可全部关闭。
+
+### GUI 完整自定义
+
+`gui.yml` 中每个界面均可独立设置标题、1-6 行尺寸、动态内容槽位和空槽填充。主菜单、宠物管理和放生确认默认使用 5 行；全部菜单默认使用 `BORDER` 边框填充，中央不会再被玻璃板铺满。
+
+`0.26.7+` 的默认 Lore 使用青蓝紫灵契主色，经济信息使用金色，危险操作使用红色，并按功能定位、详细说明和操作引导分层。商城商品 Lore 同样支持完全自定义，`<price>`、`<currency>`、`<amount>` 等变量均会保留。升级时只有与旧版默认文本逐行完全一致的 Lore 才会自动换成新样式；管理员自定义过任意一行都会原样保留。
+
+填充模式：
+
+- `ALL`：填满全部空槽。
+- `BORDER`：只填菜单四周边框。
+- `NONE`：不放置任何填充物。
+- `CUSTOM`：只填 `filler.slots` 指定的槽位。
+
+所有内置按钮和 `custom-items` 都支持：
+
+- `enabled`：显示或隐藏。
+- `slot`：按钮槽位。
+- `material`、`amount`：材质与数量。
+- `custom-model-data`、`item-model`：资源包模型标识。
+- `glow`、`hide-tooltip`：附魔光效与提示隐藏。
+- `name`、`lore`：MiniMessage 名称与描述。
+- `action`：任意点击的默认动作。
+- `actions.LEFT`、`RIGHT`、`SHIFT_LEFT`、`SHIFT_RIGHT`、`MIDDLE`、`DROP`：按点击方式覆盖动作。
+
+常用动作：
+
+```yaml
+action: "nav:warehouse"                # 打开插件内菜单
+action: "command:balance"              # 执行 /lipet balance
+action: "player-command:spawn"          # 玩家执行 /spawn
+action: "console-command:give <player> apple 1"
+action: "store"                         # 收回当前宠物
+action: "close"                         # 关闭菜单
+```
+
+变量会同时应用于 GUI 标题、填充物、名称、Lore 和点击动作：
+
+- 全部界面：`<player>`、`<player_name>`、`<player_uuid>`。
+- 宠物商城：`<entry_id>`、`<pet_type>`、`<pet_type_id>`、`<pet_name>`、`<price>`、`<currency>`、`<permission>`。
+- 道具商城：`<entry_id>`、`<item_type>`、`<item_name>`、`<amount>`、`<price>`、`<currency>`、`<permission>`。
+- 宠物界面：`<owner_name>`、`<owner_id>`、`<pet_id>`、`<entity_id>`、`<pet_name>`、`<pet_type>`、`<pet_type_id>`、`<pet_state>`、`<pet_state_key>`、等级、经验、四维属性和全部衍生属性变量。
+- 属性按钮：额外提供 `<attribute>`、`<attribute_name>`、`<attribute_key>`、`<value>`、`<attribute_value>`、`<points>`。显示文本中的 `<attribute>` 为中文；旧版动作中的 `<attribute>` 仍按英文键替换，推荐新动作明确使用 `<attribute_key>`。
+
+`warehouse.pet-item.actions.LEFT/RIGHT` 默认分别为召唤和查看属性，可自由互换或留空禁用。
+
+旧版紧凑默认布局会在升级时迁移到 5 行宽松布局；只要管理员改动过旧版行数或按钮槽位，就视为自定义布局并保留原值。其他新增节点只补缺项，不覆盖已有配置和值或注释。
 
 ## 15. 改名
 
@@ -403,9 +607,18 @@ behavior:
 
 ```text
 %lipet_active_name%
+%lipet_active_id%
+%lipet_active_owner_id%
+%lipet_active_owner_name%
 %lipet_active_type%
+%lipet_active_type_id%
+%lipet_active_state%
+%lipet_active_state_key%
 %lipet_active_level%
+%lipet_active_max_level%
 %lipet_active_experience%
+%lipet_active_required_experience%
+%lipet_active_experience_percent%
 %lipet_active_attribute_points%
 %lipet_active_critical_chance%
 %lipet_active_critical_damage%
@@ -418,15 +631,24 @@ behavior:
 %lipet_active_agility%
 %lipet_active_health%
 %lipet_active_max_health%
+%lipet_active_health_percent%
 %lipet_active_damage%
+%lipet_active_speed%
+%lipet_active_riding_speed%
 %lipet_active_resistance%
 %lipet_active_regeneration%
-%lipet_active_state%
+%lipet_attribute_strength_name%
+%lipet_attribute_vitality_name%
+%lipet_attribute_defense_name%
+%lipet_attribute_agility_name%
 %lipet_pet_count%
 %lipet_server_id%
 ```
 
+`active_state` 返回 `messages.yml` 中配置的中文状态；`active_state_key` 返回 `ACTIVE` 等原始键。四个 `attribute_*_name` 变量返回可配置中文属性名称。没有活动宠物时，数值变量稳定返回 `0` / `0.0`，文本变量返回空文本，不会把未解析变量留在计分板上。
+
 PlaceholderAPI 是软依赖。未安装时 LiPet 会跳过 PAPI Hook，不影响主体功能。
+Paper 26.2 建议搭配 [PlaceholderAPI `2.12.3+`](https://github.com/PlaceholderAPI/PlaceholderAPI/releases/tag/2.12.3)；LiPet 不调用其版本专用内部接口。
 
 ## 20. 兼容说明
 
@@ -434,17 +656,33 @@ PlaceholderAPI 是软依赖。未安装时 LiPet 会跳过 PAPI Hook，不影响
 
 宠物每次召唤都会强制恢复原版 AI、Mob 感知和站立状态。行为循环也会修复被外部模型插件或旧实体数据意外关闭的 AI。只有玩家主动切换到“坐下”时，插件才会暂停 AI；再次切换为“跟随”会立即恢复。
 
-战斗接近采用双模式导航：狼、敌对生物和傀儡等具备原版攻击寻路的实体完全交由原版 AI 控制，不覆盖速度；没有原版攻击寻路的被动生物使用每 2 tick 更新的平滑辅助移动，并主动面向目标。这样既保留了复杂地形寻路，也避免宠物被速度脉冲拖行或倒着靠近目标。
+狼、猫等可驯服实体在收回前会先解除原版主人、驯服和坐下状态，再移除世界实体，避免原版驯服数据把实体继续保留下来。鹦鹉使用 LiPet 自己的主人标记，不再绑定原版主人，因此新召唤的鹦鹉不会自动飞到玩家肩上。
+
+对于升级前已经停留在肩上的鹦鹉，`/lipet store`、管理菜单收回、信号棒收回和玩家退出流程都会同时检查左右肩。肩部数据会在发起保存时先安全摘除；若数据库保存失败，插件会把原肩部实体恢复，保存成功后才彻底清理。因此不会再出现聊天提示“已收回”但肩上仍有鹦鹉的情况。
+
+跟随逻辑每 10 tick 更新一次：宠物超过 `follow-distance` 后启动原生寻路，进入 `stop-distance` 后停止；两者之间保持已有路径，避免来回启停。超过 `teleport-distance`，或原生寻路连续四次拒绝路径时，只有主人已落地且没有飞行或滑翔才会安全回传；主人仍在空中时宠物会等待。
+
+召唤时会为宠物安装高优先级移动与目标控制 Goal，原版闲逛、逃跑和自动仇恨不能再反向覆盖插件路径。全部地面宠物都由服务端原生 Pathfinder 绕开方块：跟随每 10 tick 更新落点，战斗每 10 tick 刷新路径、每 2 tick 检查攻击距离；路径不可达时会停止旧路径，不会把宠物直线拖过障碍。飞行类或运行端确实没有寻路接口时才使用平滑速度兜底，并同步身体朝向；实际伤害仍由统一属性与攻击冷却计算。
 
 ### 文本样式
 
-LiPet 会统一移除消息组件、GUI 图标、宠物道具和宠物名称的斜体装饰。即使旧配置使用 `&o` 或斜体标签，显示时也会强制转换为非斜体。
+LiPet 会在最终写入前统一移除聊天消息、ActionBar、悬浮文本、GUI 标题与图标、捕捉球、技能书、信号棒和宠物名称的斜体装饰。根组件、嵌套组件和悬浮提示都会递归处理；即使旧配置使用 `&o` 或斜体标签，显示时也会强制转换为非斜体。
+
+双行宠物名牌同样通过统一 MiniMessage 组件生成，宠物名和“主人”行都不会使用斜体。
 
 ### Paper 26.1.2 / 26.2
 
 LiPet 当前使用 Java 21 字节码构建，运行端推荐 Java 25。调度逻辑封装在 `PlatformScheduler`，业务层不直接散落调度调用。
 
-本版同一通用 Jar 已在 Paper 26.1.2 Build 70 与 Paper 26.2 Build 111 完成真实启动、`/lipet status` 和优雅关服验证。
+活动宠物实体由加载索引维护。SQLite / MySQL 完成回调只读取线程安全状态，再把生命读取、属性刷新、召回和移除交给实体调度器；不会再从数据库线程调用区块实体查询。
+
+`0.26.10-SNAPSHOT` 移除了 `/lp` 别名；73 项自动测试全部通过，资源描述符回归测试会确保插件只注册 `lipet` 一个主指令且不存在别名节点。Paper 26.2 Build 111 实际启动验证了 `/lipet status` 与 `/lipet:lipet status` 正常，`/lp` 与 `/lipet:lp` 均返回未知指令，并完成安全关闭。
+
+`0.26.9-SNAPSHOT` 同一通用 Jar 已在 Paper 26.1.2 Build 70 与 Paper 26.2 Build 111 搭配 CraftEngine 26.8-SNAPSHOT 完成真实运行探针：CE 物品 `default:topaz_pickaxe` 被识别为完整自定义 ID，同底材原版物品独立识别为 `minecraft:golden_pickaxe`，并成功命中 `pet-types.yml` 食物规则；72 项自动测试全部通过。
+
+`0.26.8-SNAPSHOT` 同一通用 Jar 已在 Paper 26.1.2 Build 70 与 Paper 26.2 Build 111 完成真实启动及 ModelEngine R4.1.0 更新构建运行探针；真实 `magecat` 模型验证了原版载体不可见、重复挂载只有一份模型、卸载后载体恢复可见，68 项自动测试全部通过。`0.26.7-SNAPSHOT` 另已验证旧版 GUI/商城 Lore 自动迁移和优雅关服，管理员自定义 Lore 保持不变。
+
+`0.26.6-SNAPSHOT` 同一通用 Jar 已在 Paper 26.1.2 Build 70 与 Paper 26.2 Build 111 完成真实启动、`rewards.yml` 加载、奖励表建表、每日指令注册、PlaceholderAPI 2.12.3 挂钩和优雅关服检查；SQLite 奖励事务另行验证了首次到账、同日防重、次日重置和余额同步，58 项自动测试全部通过。`0.26.5-SNAPSHOT` 已验证旧 `messages.yml` 中文名称节点增量补全和中文变量解析。`0.26.4-SNAPSHOT` 的 TextDisplay 双行主人名牌实体测试已验证实际生成、玩家名文本、重命名复用、透明背景和收回即时删除。`0.26.3-SNAPSHOT` 已验证 SQLite 在线热切换、`/lipet status` 实际目标检查，以及无效 MySQL 候选连接失败后继续使用原 SQLite。当前测试环境没有可用 MySQL 服务，因此 MySQL 到 MySQL 的成功在线切换仍应先在测试服验证后再用于生产服。
 
 默认交付包使用最低兼容 API 构建，以便同一 Jar 继续运行于 Paper 26.1.2。项目提供锁定 `26.2.build.111-stable` 的 26.2 编译检查 profile：
 
@@ -460,7 +698,7 @@ mvn -Ppaper-26.2 clean package
 
 ### 外部依赖
 
-Vault、PlaceholderAPI、ModelEngine 等为软依赖或 provided 依赖，不会打入 LiPet Jar。
+Vault、PlaceholderAPI、ModelEngine、CraftEngine 等为软依赖或 provided 依赖，不会打入 LiPet Jar。CraftEngine 喂食识别只调用其官方稳定 `bukkit.api` 包中的 `CraftEngineItems#getCustomItemId`，不缓存物品实例，因此 CraftEngine 重载配置后仍会读取当前物品 ID。
 
 SQLite / MySQL 驱动由运行时依赖管理器按配置下载到插件数据目录，不直接塞进成品 Jar。
 
@@ -492,6 +730,14 @@ storage:
 
 这是旧配置里的无效音效名。`0.25.3+` 已修复：插件会自动回退为 `ENTITY_PLAYER_LEVELUP`，不再因此禁用。
 
+### Thread LiPet-SQLite failed main thread check
+
+这是 `0.26.0` 的数据库回调错误。升级到 `0.26.1+` 后，属性加点、喂养、召回和收回不再从 SQLite 线程查询区块实体。若升级后仍看到该堆栈，请先确认服务器实际加载的 Jar 版本不是旧版。
+
+### 提示已收回，但可驯服宠物仍在
+
+这是旧版本把狼、猫、鹦鹉等实体同时交给原版驯服系统管理造成的生命周期冲突。升级到 `0.26.2+` 后，收回会先清理原版驯服/坐下状态，并额外处理左右肩实体。升级后首次召回旧鹦鹉时会自动解除原版肩部行为。
+
 ### 宠物背包没有保存
 
 背包在关闭界面时保存。如果服务器崩溃，最后一次打开中的背包可能来不及保存。生产服建议定期备份数据库。
@@ -512,6 +758,16 @@ storage:
 - `shop.yml` 中的 `pet-type` 是否存在且启用。
 - 玩家是否已经拥有该类型宠物。
 - Vault 模式下是否安装了 Vault 和经济插件。
+
+### 宠物币只能消费，无法获取
+
+升级到 `0.26.6+` 后检查：
+
+- `rewards.yml` 顶层 `enabled` 以及对应玩法的 `enabled` 是否为 `true`。
+- 玩家是否拥有 `lipet.command.daily` 权限。
+- 战斗必须由当前召唤的宠物完成最后一击；玩家自己击杀不会获得宠物战斗奖励。
+- 对应玩法是否已经达到 `daily-limit`；每日额度按 `reset-time-zone` 的零点重置。
+- 数据库异常时查看控制台中的 `LiPet-Rewards` 错误，并确认当前 Jar 确实为新版本。
 
 ## 22. 升级建议
 
@@ -544,5 +800,5 @@ mvn -Ppaper-26.2 clean package
 输出：
 
 ```text
-target/LiPet-0.25.9-SNAPSHOT.jar
+target/LiPet-0.26.10-SNAPSHOT.jar
 ```

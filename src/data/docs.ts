@@ -30,19 +30,6 @@ type DocDefinition = Omit<DocEntry, 'project'>;
 const defineDocs = (project: string, definitions: DocDefinition[]): DocEntry[] =>
   definitions.map((definition) => ({ project, ...definition }));
 
-const craftEngineDocs = defineDocs('craftengine', [
-  { file: 'Home.md', slug: 'home', title: 'CraftEngine 中文教程', summary: '从安装、资源目录和自定义内容，到命令、API 联动与排错的非官方中文学习入口。', group: '文档总览', order: 1 },
-  { file: '安装与资源包托管.md', slug: 'installation-hosting', title: '安装、更新与资源包托管', summary: '运行要求、首次安装、资源包分发、版本更新和上线前检查。', group: '管理员文档', order: 10 },
-  { file: '资源目录与命名空间.md', slug: 'project-structure', title: '资源目录、命名空间与热重载', summary: '创建资源包、理解 configuration/resourcepack、规范 ID 并选择正确重载范围。', group: '管理员文档', order: 11 },
-  { file: '自定义物品.md', slug: 'custom-items', title: '第一个自定义物品', summary: '从三行 YAML 开始，加入中文名称、Lore、贴图、精确 ID 与发放验证。', group: '管理员文档', order: 12 },
-  { file: '模型与贴图.md', slug: 'models-textures', title: '模型、贴图与 BlockBench', summary: '资源路径、texture 简写、自动生成、外部模型和紫黑贴图检查。', group: '管理员文档', order: 13 },
-  { file: '方块与家具.md', slug: 'blocks-furniture', title: '自定义方块与家具', summary: '放置物品、视觉方块状态、硬度掉落、家具变体、碰撞箱和座位。', group: '管理员文档', order: 14 },
-  { file: '配方事件与条件.md', slug: 'recipes-events', title: '配方、事件、函数与条件', summary: '有序和无序配方、标签、交互事件、执行函数与条件边界。', group: '管理员文档', order: 15 },
-  { file: '命令与热重载.md', slug: 'commands-reload', title: '常用命令、热重载与调试', summary: '物品、资源、上传、搜索、重载命令及必须完整重启的场景。', group: '管理员文档', order: 16 },
-  { file: '故障排查.md', slug: 'troubleshooting', title: '故障排查与上线检查', summary: '定位启动失败、YAML 错误、紫黑贴图、资源包下载、ID 和插件联动问题。', group: '管理员文档', order: 17 },
-  { file: '插件联动与API.md', slug: 'plugin-api', title: '插件联动与稳定 API', summary: '软依赖、Maven/Gradle、物品精确 ID、CraftEngineReloadEvent 和线程边界。', group: '开发者文档', order: 30 },
-]);
-
 const liseasonsDocs = defineDocs('liseasons', [
   { file: 'Home.md', slug: 'home', title: 'LISeasons', summary: 'LISeasons 的使用、配置、维护和扩展指南。', group: '文档总览', order: 1 },
   { file: '玩家文档.md', slug: 'player', title: '玩家文档 · 总览', summary: '从查询季节、打开手账到应对冷暖与流星雨，快速开始 LISeasons 生存。', group: '玩家文档', order: 10 },
@@ -193,19 +180,19 @@ const liAnimalScaleDocs = defineDocs('lianimalscale', [
 ]);
 
 const liPetDocs = defineDocs('lipet', [
-  { file: 'docs/WIKI.md', slug: 'home', title: 'LiPet 完整 Wiki', summary: '安装、存储、指令、权限、宠物类型、成长、捕捉、商城、骑乘与排错。', group: '文档总览', order: 1 },
+  { file: 'docs/WIKI.md', slug: 'home', title: 'LiPet 完整 Wiki', summary: '0.26.10 安装、数据库热切换、命令权限、成长、CE 喂食、模型、奖励与排错。', group: '文档总览', order: 1 },
   { file: 'docs/PET_FEATURE_MATRIX.md', slug: 'feature-matrix', title: '功能矩阵', summary: '逐项核对宠物能力的实现范围、入口和当前状态。', group: '文档总览', order: 2 },
-  { file: 'docs/玩家入门.md', slug: 'player', title: '玩家入门', summary: '创建、召唤、收回宠物并读懂状态、成长与冷却。', group: '玩家文档', order: 10 },
-  { file: 'docs/成长与喂养.md', slug: 'growth-feeding', title: '成长、属性与喂养', summary: '等级、经验、属性成长、食物恢复和成长节奏。', group: '玩家文档', order: 11 },
-  { file: 'docs/捕捉与商城.md', slug: 'capture-shop', title: '捕捉、宠物商城与道具商城', summary: '捕捉仪式、宠物购买、道具购买与经济依赖。', group: '玩家文档', order: 12 },
-  { file: 'docs/跟随骑乘与战斗.md', slug: 'behavior-combat', title: '跟随、骑乘与战斗', summary: '坐下、跟随、传送、骑乘、寻路、协战和死亡冷却。', group: '玩家文档', order: 13 },
-  { file: 'docs/背包与宠物道具.md', slug: 'items-inventory', title: '背包、信号棒与技能书', summary: '宠物背包、改名、信号棒、技能书和物品保存规则。', group: '玩家文档', order: 14 },
+  { file: 'docs/玩家入门.md', slug: 'player', title: '玩家入门', summary: '创建、召唤、收回、改名、骑乘宠物并使用完整 /lipet 指令。', group: '玩家文档', order: 10 },
+  { file: 'docs/成长与喂养.md', slug: 'growth-feeding', title: '成长、属性与喂养', summary: '中文属性、衍生战斗数值、原版及 CraftEngine 食物和技能书。', group: '玩家文档', order: 11 },
+  { file: 'docs/捕捉与商城.md', slug: 'capture-shop', title: '捕捉、宠物商城与道具商城', summary: '捕捉仪式、唯一拥有、宠物币获取、每日奖励与商城。', group: '玩家文档', order: 12 },
+  { file: 'docs/跟随骑乘与战斗.md', slug: 'behavior-combat', title: '跟随、骑乘与战斗', summary: '原生寻路、坐下、召回、安全回传、骑乘、协战和模型兼容。', group: '玩家文档', order: 13 },
+  { file: 'docs/背包与宠物道具.md', slug: 'items-inventory', title: '背包、信号棒与技能书', summary: '54 格宠物背包、聊天改名、信号棒、技能书和保存规则。', group: '玩家文档', order: 14 },
   { file: 'docs/安装与更新.md', slug: 'install', title: '安装与更新', summary: '运行环境、依赖、首次启动、备份和升级流程。', group: '管理员文档', order: 20 },
-  { file: 'docs/命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '玩家管理、商城、捕捉、调试和管理员权限。', group: '管理员文档', order: 21 },
-  { file: 'docs/配置说明.md', slug: 'configuration', title: '配置说明', summary: '主配置、消息、宠物类型、食物、商城、技能和菜单文件。', group: '管理员文档', order: 22 },
-  { file: 'docs/存储与跨服.md', slug: 'storage-network', title: '存储与跨服', summary: 'SQLite、MySQL、Redis、租约、切服和异常恢复。', group: '管理员文档', order: 23 },
-  { file: 'docs/测试与故障排查.md', slug: 'testing-troubleshooting', title: '测试与故障排查', summary: '宠物持久化、背包、AI、商城、声音和依赖故障检查。', group: '管理员文档', order: 24 },
-  { file: 'docs/常见问题.md', slug: 'faq', title: '常见问题', summary: '集中解答宠物丢失、插件停用、背包保存和信号棒问题。', group: '管理员文档', order: 25 },
+  { file: 'docs/命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '仅使用 /lipet 的玩家、商城、捕捉、奖励和管理员权限。', group: '管理员文档', order: 21 },
+  { file: 'docs/配置说明.md', slug: 'configuration', title: '配置说明', summary: '主配置、消息、模型、食物、奖励、商城、技能和百分百自定义菜单。', group: '管理员文档', order: 22 },
+  { file: 'docs/存储与跨服.md', slug: 'storage-network', title: '存储与跨服', summary: 'SQLite/MySQL 热切换、Redis、租约、切服和异常恢复。', group: '管理员文档', order: 23 },
+  { file: 'docs/测试与故障排查.md', slug: 'testing-troubleshooting', title: '测试与故障排查', summary: '持久化、线程边界、AI、收回、商城、声音、模型和依赖检查。', group: '管理员文档', order: 24 },
+  { file: 'docs/常见问题.md', slug: 'faq', title: '常见问题', summary: '解答宠物丢失、插件停用、线程报错、收回残留、背包与宠物币问题。', group: '管理员文档', order: 25 },
   { file: 'README.md', slug: 'project', title: '项目说明', summary: '项目目标、当前能力、指令、架构目标和构建要求。', group: '开发者文档', order: 40 },
   { file: 'docs/LIPET_DESIGN.md', slug: 'design', title: '设计与配置', summary: '宠物生命周期、数据结构、行为系统和扩展设计。', group: '开发者文档', order: 41 },
   { file: 'docs/ARCHITECTURE.md', slug: 'architecture', title: '架构与扩展', summary: '模块边界、服务职责、数据流和二次开发结构。', group: '开发者文档', order: 42 },
@@ -288,12 +275,11 @@ const lirealEnchantDocs = fs.readdirSync(enchantDirectory)
   });
 
 export const docSets: DocSet[] = [
-  { slug: 'craftengine', name: 'CraftEngine 中文教程', version: '26.8', summary: '物品、模型、方块、家具、配方、资源包、命令、API 联动与故障排查。', icon: 'amethyst', groups: ['文档总览', '管理员文档', '开发者文档'], docs: craftEngineDocs },
   { slug: 'liemc', name: 'LIEMC', version: '0.1.0+build.98', summary: 'EMC 经济、物品回收、解锁兑换、收藏检索、自定义 GUI、跨服同步与配置文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liemcDocs },
   { slug: 'lwe', name: 'LWE 小创世神', version: '0.1.0+build.15', summary: '轻量选区施工、材料消耗、LIEMC 自动补料、配置与故障排查。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lweDocs },
   { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev199-paper26', summary: '真实附魔、YML/API 扩展、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
   { slug: 'lititle', name: 'LiTitle', version: '0.1.93', summary: '称号、商店、仓库、聊天、昵称、存储与跨服部署文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lititleDocs },
-  { slug: 'lipet', name: 'LiPet', version: '0.25.9-SNAPSHOT', summary: '宠物养成、捕捉、商城、背包、骑乘、战斗、存储与扩展设计文档。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
+  { slug: 'lipet', name: 'LiPet', version: '0.26.10-SNAPSHOT', summary: '宠物养成、捕捉、商城、背包、骑乘、战斗、数据库热切换、CE 喂食与扩展设计文档。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
   { slug: 'liskin', name: 'LiSkin', version: '1.9.7', summary: 'CraftEngine 外观皮肤、顶部分类换装、沉浸旁观视角、常驻 NPC、商店、权限与跨服文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liSkinDocs },
   { slug: 'jisseechessgames', name: 'JisseeChessGames', version: '2.1.0', summary: '棋盘生成、五子棋、中国象棋、军棋、房间、持久化与验证文档。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: jisseeChessDocs },
   { slug: 'liseasons', name: 'LISeasons', version: '1.0.61', summary: '四季、节气、体温、世界规则、季节事件与运维开发文档。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },
