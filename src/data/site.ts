@@ -2,16 +2,18 @@ export const siteMeta = {
   name: '牢李插件系列',
   shortName: '牢李插件',
   englishName: 'LaoLi Plugins',
-  description: '为 Minecraft 服务器制作可靠、清楚、能长期维护的玩法插件。',
+  description: '为 Minecraft 服务器制作可靠、清楚、能长期维护的玩法插件与中文教程。',
   repository: 'https://github.com/StarKMlisf/liplugins',
 };
 
 export type WorkStatus = '持续维护' | '开发中' | '归档';
 export type WorkAvailability = '免费' | '付费' | '暂不发售';
+export type WorkKind = '插件' | '教程';
 
 export interface WorkEntry {
   slug: string;
   name: string;
+  kind?: WorkKind;
   catalogLabel: string;
   kicker: string;
   summary: string;
@@ -33,6 +35,34 @@ export interface WorkEntry {
 }
 
 export const works: WorkEntry[] = [
+  {
+    slug: 'craftengine',
+    name: 'CraftEngine 中文教程',
+    kind: '教程',
+    catalogLabel: 'CE 教程',
+    kicker: '从安装到插件 API 的中文实用指南',
+    summary: '面向服主、资源作者和插件开发者的 CraftEngine 26.8 非官方中文教程，覆盖物品、模型、方块、家具、配方、命令、联动与排错。',
+    description:
+      '这套教程根据 CraftEngine 官方 Wiki、发布页和稳定 API 整理，使用一个 tutorial 命名空间贯穿安装、资源目录、自定义物品、模型贴图、方块家具、配方事件及插件联动。内容会明确区分配置重载、配方重载和资源包重建，并持续链接官方资料供交叉核对。',
+    version: '26.8 教程',
+    status: '持续维护',
+    platform: 'Paper / Folia',
+    minecraft: '1.20+（以官方兼容表为准）',
+    java: 'Java 21+',
+    availability: '免费',
+    dependencies: ['CraftEngine Community 或 Premium', '可用的资源包托管方式'],
+    features: [
+      '安装、更新与资源包托管',
+      '资源目录、命名空间与重载边界',
+      '自定义物品、名称、Lore 与精确 ID',
+      '贴图、模型与 BlockBench 文件路径',
+      '可放置方块、家具、碰撞箱与掉落',
+      '配方、事件、函数与条件入门',
+      '常用命令、资源搜索与调试',
+      '稳定 API、软依赖与内容重载事件',
+      '紫黑贴图、配置报错和联动排查',
+    ],
+  },
   {
     slug: 'blockcraft',
     name: 'BlockCraft',
@@ -398,9 +428,9 @@ export const catalogSections: CatalogSection[] = [
   {
     id: 'free',
     number: 2,
-    title: '免费插件',
-    description: '可免费获取的玩法与运维插件，同样提供完整使用和管理文档。',
-    works: selectWorks(['liseasons', 'enderdragon', 'lwe', 'lianimalscale', 'lichqian']),
+    title: '免费插件与教程',
+    description: '可免费获取的玩法、运维插件和中文教程，同样提供完整使用与管理文档。',
+    works: selectWorks(['craftengine', 'liseasons', 'enderdragon', 'lwe', 'lianimalscale', 'lichqian']),
   },
   {
     id: 'developing',

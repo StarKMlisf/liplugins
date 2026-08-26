@@ -30,6 +30,19 @@ type DocDefinition = Omit<DocEntry, 'project'>;
 const defineDocs = (project: string, definitions: DocDefinition[]): DocEntry[] =>
   definitions.map((definition) => ({ project, ...definition }));
 
+const craftEngineDocs = defineDocs('craftengine', [
+  { file: 'Home.md', slug: 'home', title: 'CraftEngine 中文教程', summary: '从安装、资源目录和自定义内容，到命令、API 联动与排错的非官方中文学习入口。', group: '文档总览', order: 1 },
+  { file: '安装与资源包托管.md', slug: 'installation-hosting', title: '安装、更新与资源包托管', summary: '运行要求、首次安装、资源包分发、版本更新和上线前检查。', group: '管理员文档', order: 10 },
+  { file: '资源目录与命名空间.md', slug: 'project-structure', title: '资源目录、命名空间与热重载', summary: '创建资源包、理解 configuration/resourcepack、规范 ID 并选择正确重载范围。', group: '管理员文档', order: 11 },
+  { file: '自定义物品.md', slug: 'custom-items', title: '第一个自定义物品', summary: '从三行 YAML 开始，加入中文名称、Lore、贴图、精确 ID 与发放验证。', group: '管理员文档', order: 12 },
+  { file: '模型与贴图.md', slug: 'models-textures', title: '模型、贴图与 BlockBench', summary: '资源路径、texture 简写、自动生成、外部模型和紫黑贴图检查。', group: '管理员文档', order: 13 },
+  { file: '方块与家具.md', slug: 'blocks-furniture', title: '自定义方块与家具', summary: '放置物品、视觉方块状态、硬度掉落、家具变体、碰撞箱和座位。', group: '管理员文档', order: 14 },
+  { file: '配方事件与条件.md', slug: 'recipes-events', title: '配方、事件、函数与条件', summary: '有序和无序配方、标签、交互事件、执行函数与条件边界。', group: '管理员文档', order: 15 },
+  { file: '命令与热重载.md', slug: 'commands-reload', title: '常用命令、热重载与调试', summary: '物品、资源、上传、搜索、重载命令及必须完整重启的场景。', group: '管理员文档', order: 16 },
+  { file: '故障排查.md', slug: 'troubleshooting', title: '故障排查与上线检查', summary: '定位启动失败、YAML 错误、紫黑贴图、资源包下载、ID 和插件联动问题。', group: '管理员文档', order: 17 },
+  { file: '插件联动与API.md', slug: 'plugin-api', title: '插件联动与稳定 API', summary: '软依赖、Maven/Gradle、物品精确 ID、CraftEngineReloadEvent 和线程边界。', group: '开发者文档', order: 30 },
+]);
+
 const liseasonsDocs = defineDocs('liseasons', [
   { file: 'Home.md', slug: 'home', title: 'LISeasons', summary: 'LISeasons 的使用、配置、维护和扩展指南。', group: '文档总览', order: 1 },
   { file: '玩家文档.md', slug: 'player', title: '玩家文档 · 总览', summary: '从查询季节、打开手账到应对冷暖与流星雨，快速开始 LISeasons 生存。', group: '玩家文档', order: 10 },
@@ -275,6 +288,7 @@ const lirealEnchantDocs = fs.readdirSync(enchantDirectory)
   });
 
 export const docSets: DocSet[] = [
+  { slug: 'craftengine', name: 'CraftEngine 中文教程', version: '26.8', summary: '物品、模型、方块、家具、配方、资源包、命令、API 联动与故障排查。', icon: 'amethyst', groups: ['文档总览', '管理员文档', '开发者文档'], docs: craftEngineDocs },
   { slug: 'liemc', name: 'LIEMC', version: '0.1.0+build.98', summary: 'EMC 经济、物品回收、解锁兑换、收藏检索、自定义 GUI、跨服同步与配置文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liemcDocs },
   { slug: 'lwe', name: 'LWE 小创世神', version: '0.1.0+build.15', summary: '轻量选区施工、材料消耗、LIEMC 自动补料、配置与故障排查。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lweDocs },
   { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev199-paper26', summary: '真实附魔、YML/API 扩展、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
