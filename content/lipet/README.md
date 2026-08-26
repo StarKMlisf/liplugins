@@ -107,6 +107,7 @@ Paper 26.2 使用 PlaceholderAPI 时建议安装 [`2.12.3+`](https://github.com/
 
 完整功能实施顺序见 [docs/FEATURE_ROADMAP.md](docs/FEATURE_ROADMAP.md)。
 服主与玩家使用 Wiki 见 [docs/WIKI.md](docs/WIKI.md)。
+`0.26.8` 至 `0.26.10` 的当日改动、配置示例与升级检查见 [2026-08-26 更新日志](docs/更新日志.md)。
 
 ## 架构目标
 

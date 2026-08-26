@@ -180,8 +180,9 @@ const liAnimalScaleDocs = defineDocs('lianimalscale', [
 ]);
 
 const liPetDocs = defineDocs('lipet', [
-  { file: 'docs/WIKI.md', slug: 'home', title: 'LiPet 完整 Wiki', summary: '0.26.10 安装、数据库热切换、命令权限、成长、CE 喂食、模型、奖励与排错。', group: '文档总览', order: 1 },
+  { file: 'docs/WIKI.md', slug: 'home', title: 'LiPet 完整 Wiki', summary: '0.26.10 安装、今日更新、数据库热切换、命令权限、成长、CE 喂食、模型、奖励与排错。', group: '文档总览', order: 1 },
   { file: 'docs/PET_FEATURE_MATRIX.md', slug: 'feature-matrix', title: '功能矩阵', summary: '逐项核对宠物能力的实现范围、入口和当前状态。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志.md', slug: 'changelog', title: '2026-08-26 今日更新', summary: 'MEG 模型重叠修复、CraftEngine 物品喂食、取消 /lp 别名及升级检查。', group: '文档总览', order: 3 },
   { file: 'docs/玩家入门.md', slug: 'player', title: '玩家入门', summary: '创建、召唤、收回、改名、骑乘宠物并使用完整 /lipet 指令。', group: '玩家文档', order: 10 },
   { file: 'docs/成长与喂养.md', slug: 'growth-feeding', title: '成长、属性与喂养', summary: '中文属性、衍生战斗数值、原版及 CraftEngine 食物和技能书。', group: '玩家文档', order: 11 },
   { file: 'docs/捕捉与商城.md', slug: 'capture-shop', title: '捕捉、宠物商城与道具商城', summary: '捕捉仪式、唯一拥有、宠物币获取、每日奖励与商城。', group: '玩家文档', order: 12 },
