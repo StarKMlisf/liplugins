@@ -1,6 +1,6 @@
 # LiPet Wiki
 
-适用版本：`0.26.10-SNAPSHOT`
+适用版本：`0.26.11-SNAPSHOT`
 
 适用服务端：
 
@@ -10,7 +10,15 @@
 
 运行建议：Java 25。插件成品 Jar 使用 Java 21 字节码构建，便于跨版本运行。
 
-## 今日更新 · 2026-08-26
+## 今日更新 · 2026-08-27
+
+- `0.26.11`：新增 `/lipet manage <玩家> <宠物名称>`，管理员可进入指定在线玩家的指定宠物管理界面。
+- `0.26.11`：`shop.yml` 新增 `enabled` 商城总开关；关闭后两个商城的指令、GUI 导航和购买入口全部禁用，`/lipet reload` 后立即生效。
+- 跨玩家操作会同时绑定操作者、真实主人和宠物 UUID；管理员权限被撤销后，旧管理界面也不能继续操作。
+
+完整配置、升级方式与验证记录见 [2026-08-27 更新日志](更新日志-2026-08-27.md)。
+
+## 上一轮更新 · 2026-08-26
 
 - `0.26.8`：修复 ModelEngine / MEG 模型与原版宠物载体重叠，增加载体隐藏、碰撞箱控制、幂等恢复和热重载刷新。
 - `0.26.9`：支持使用 CraftEngine 自定义物品喂食，按完整命名空间 ID 精确识别，同时保留原版 Material 食物。
@@ -39,7 +47,7 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 
 ## 2. 安装
 
-1. 将 `LiPet-0.26.10-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
+1. 将 `LiPet-0.26.11-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
 2. 启动服务器一次，让插件生成默认配置。
 3. 停服，编辑 `plugins/LiPet/` 下的配置文件。
 4. 再次启动服务器。
@@ -53,7 +61,7 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 | --- | --- |
 | `config.yml` | 存储、服务器 ID、群组、依赖下载、内置货币 |
 | `pet-types.yml` | 宠物类型、实体、模型、属性、行为、背包、成长、食物 |
-| `shop.yml` | 宠物商城和宠物道具商城 |
+| `shop.yml` | 商城总开关、宠物商城和宠物道具商城 |
 | `gui.yml` | GUI 标题、尺寸、槽位、留白/边框、图标、点击动作与音效 |
 | `capture.yml` | 捕捉球、捕捉概率、捕捉仪式、音效、粒子、实体映射 |
 | `skills.yml` | 技能书、技能等级、技能效果 |
@@ -166,6 +174,17 @@ server:
 | `/lipet signalstick [数量] [玩家]` | 发放宠物信号棒 |
 | `/lipet status` | 查看插件状态 |
 | `/lipet reload` | 重载配置并热切换 SQLite / MySQL |
+| `/lipet manage <玩家> <宠物名称>` | 打开指定在线玩家的指定宠物管理界面 |
+
+### 管理指定玩家的宠物
+
+```text
+/lipet manage Steve 小狼
+```
+
+目标玩家当前必须在线，宠物可以处于已召唤或已收回状态。管理员可以查看属性、分配属性点、打开独立背包、聊天框改名、切换坐下、收回或放生该宠物。坐下与收回会再次核对当前活动宠物 UUID：如果选择的是已收回宠物，或玩家当前召唤的是另一只宠物，只会提示“宠物未召唤”，不会误操作另一只宠物。
+
+该功能默认仅 OP 可用。管理界面的每次点击都会重新检查 `lipet.admin.manage`；权限被撤销后，已经打开的旧界面也会立即失效。
 
 ## 7. 权限
 
@@ -178,6 +197,7 @@ server:
 | `lipet.command.warehouse` | true | 打开宠物仓库 |
 | `lipet.command.balance` | true | 查看宠物币余额 |
 | `lipet.command.daily` | true | 领取每日宠物币 |
+| `lipet.admin.manage` | op | 管理指定在线玩家的指定宠物 |
 | `lipet.command.call` | true | 召唤宠物 |
 | `lipet.command.store` | true | 收回宠物 |
 | `lipet.command.sit` | true | 坐下 / 跟随 |
@@ -398,6 +418,22 @@ ritual:
 - 同一种宠物默认只能拥有一只。
 
 ## 12. 宠物商城
+
+### 商城总开关
+
+```yaml
+# 商城总开关。true=开放宠物商城和宠物道具商店；false=全部关闭。
+enabled: false
+```
+
+修改后执行 `/lipet reload` 即可热生效。关闭时：
+
+- `/lipet shop` 与 `/lipet itemshop` 只提示商城未开放，不会打开 GUI。
+- 主菜单和仓库中的商城导航不能进入商城。
+- 玩家已经打开的宠物商城或道具商城也不能继续购买。
+- 帮助菜单会隐藏两个商城指令，但原有商品配置不会被删除或覆盖。
+
+旧版 `shop.yml` 缺少 `enabled` 时，升级后会自动补入默认值 `true` 和中文注释，不改变管理员已有商品与 Lore。
 
 宠物商城配置在 `shop.yml` 的 `entries`。
 
@@ -684,6 +720,8 @@ LiPet 当前使用 Java 21 字节码构建，运行端推荐 Java 25。调度逻
 
 活动宠物实体由加载索引维护。SQLite / MySQL 完成回调只读取线程安全状态，再把生命读取、属性刷新、召回和移除交给实体调度器；不会再从数据库线程调用区块实体查询。
 
+`0.26.11-SNAPSHOT` 的 80 项自动测试已在默认兼容构建与 Paper 26.2 Profile 全部通过。同一 Java 21 成品 Jar 已在 Paper 26.1.2 Build 70 与 Paper 26.2 Build 111 使用 Java 25 完成真实启动、`/lipet status`、配置补全和安全关闭；26.1.2 还验证了 `shop.yml` 从 `enabled: false` 热重载为 `true` 后，帮助页商城入口立即恢复。
+
 `0.26.10-SNAPSHOT` 移除了 `/lp` 别名；73 项自动测试全部通过，资源描述符回归测试会确保插件只注册 `lipet` 一个主指令且不存在别名节点。Paper 26.2 Build 111 实际启动验证了 `/lipet status` 与 `/lipet:lipet status` 正常，`/lp` 与 `/lipet:lp` 均返回未知指令，并完成安全关闭。
 
 `0.26.9-SNAPSHOT` 同一通用 Jar 已在 Paper 26.1.2 Build 70 与 Paper 26.2 Build 111 搭配 CraftEngine 26.8-SNAPSHOT 完成真实运行探针：CE 物品 `default:topaz_pickaxe` 被识别为完整自定义 ID，同底材原版物品独立识别为 `minecraft:golden_pickaxe`，并成功命中 `pet-types.yml` 食物规则；72 项自动测试全部通过。
@@ -808,5 +846,5 @@ mvn -Ppaper-26.2 clean package
 输出：
 
 ```text
-target/LiPet-0.26.10-SNAPSHOT.jar
+target/LiPet-0.26.11-SNAPSHOT.jar
 ```

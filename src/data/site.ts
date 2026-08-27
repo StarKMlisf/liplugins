@@ -279,8 +279,8 @@ export const works: WorkEntry[] = [
     kicker: '宠物养成、捕捉、骑乘与战斗',
     summary: '覆盖宠物获取、成长、原版与 CraftEngine 物品喂养、跟随、骑乘、捕捉仪式、奖励、背包与跨服数据的一体化宠物系统。',
     description:
-      'LiPet 是面向群组服的 Bukkit 宠物框架，包含 SQLite/MySQL 热切换、属性成长、捕捉仪式、宠物币奖励、可配置 GUI、跟随坐下、骑乘、战斗导航、外部模型、CraftEngine 食物和扩展 API。',
-    version: '0.26.10-SNAPSHOT',
+      'LiPet 是面向群组服的 Bukkit 宠物框架，包含 SQLite/MySQL 热切换、属性成长、捕捉仪式、宠物币奖励、可配置 GUI、指定玩家单宠管理、可热切换商城、跟随坐下、骑乘、战斗导航、外部模型、CraftEngine 食物和扩展 API。',
+    version: '0.26.11-SNAPSHOT',
     status: '持续维护',
     platform: 'Paper / Folia',
     minecraft: '1.21.11 · 26.1.2 · 26.2',
@@ -296,6 +296,7 @@ export const works: WorkEntry[] = [
       '战斗 AI、死亡冷却与安全回传',
       '54 格背包与百分百自定义 GUI',
       '数据库热切换与跨服租约',
+      '指定玩家单宠管理与商城总开关',
       'ModelEngine 载体隐藏与 CraftEngine 食物',
     ],
   },

@@ -2,7 +2,7 @@
 
 LiPet 是一个面向群组服的 Bukkit 宠物插件框架，兼容 Paper/Folia 1.21.11、Paper/Folia 26.1.2 与 Paper 26.2。
 
-`0.26.10-SNAPSHOT` 移除会与 LuckPerms 等权限插件冲突的 `/lp` 短指令别名，只注册 `/lipet` 主指令；Bukkit 不再生成 `/lipet:lp` 命名空间指令。73 项自动测试全部通过，Paper 26.2 实际启动验证了 `/lipet` 与 `/lipet:lipet` 正常、`/lp` 与 `/lipet:lp` 均为未知指令。此前加入的 CraftEngine 自定义物品喂食、完整 ID 精确匹配和旧版 Bukkit Material 食物兼容能力保持不变。
+`0.26.11-SNAPSHOT` 新增 `/lipet manage <玩家> <宠物名称>` 管理指令，可安全打开指定在线玩家的指定宠物管理界面；新增 `shop.yml` 全局商城开关，关闭后宠物商城、道具商城、GUI 导航及已打开商城的购买操作都会被拦截，并支持 `/lipet reload` 热生效。80 项自动测试已在默认构建与 Paper 26.2 Profile 全部通过，同一成品 Jar 已在 Paper 26.1.2 Build 70 和 Paper 26.2 Build 111 正常启动并安全关闭。
 
 当前版本包含配置、持久化、宠物创建与召唤、属性成长、衍生战斗属性、喂养升级、骑乘、捕捉仪式、信息 GUI、跟随、坐下控制、放生、协助战斗、死亡冷却和扩展点。
 
@@ -43,6 +43,7 @@ LiPet 是一个面向群组服的 Bukkit 宠物插件框架，兼容 Paper/Folia
 `0.26.8-SNAPSHOT` 修复 ModelEngine/MEG 模型与原版载体重叠，加入幂等模型恢复、热重载刷新及可配置的载体隐藏与碰撞箱覆盖。
 `0.26.9-SNAPSHOT` 新增 CraftEngine 物品喂食支持，按完整命名空间 ID 精确识别与扣除，并保留全部旧版 Bukkit Material 食物配置。
 `0.26.10-SNAPSHOT` 取消 `/lp` 指令别名，仅保留 `/lipet`，避免与 LuckPerms 等权限插件的常用主指令冲突。
+`0.26.11-SNAPSHOT` 新增跨玩家单宠管理界面与 `lipet.admin.manage` 权限；管理员的属性、背包、改名、坐下、收回和放生操作始终绑定宠物真实主人及指定宠物 ID。商城增加 `enabled` 总开关并覆盖指令、GUI 和购买入口。
 `0.25.4-SNAPSHOT` 增加 Paper 26.2 兼容声明与 Maven 兼容编译 profile：`-Ppaper-26.2`。
 
 `0.25.3-SNAPSHOT` 修复捕捉仪式音效兼容问题：无效 Bukkit Sound/Particle 会自动回退并写回安全默认值，不再导致插件启动失败。
@@ -56,6 +57,7 @@ LiPet 是一个面向群组服的 Bukkit 宠物插件框架，兼容 Paper/Folia
 - 在管理界面点击“修改宠物名字”后，直接在聊天框输入新名字；输入“取消”可退出。
 - 手持 `pet-types.yml` 中配置的原版或 CraftEngine 食物右键自己的宠物：回血并获得经验。
 - 仓库左键宠物：召唤；右键宠物：查看等级、经验、属性和食物。
+- 管理员使用 `/lipet manage <在线玩家> <宠物名称>`：管理该玩家的指定宠物。
 
 PlaceholderAPI 变量：
 
@@ -107,7 +109,7 @@ Paper 26.2 使用 PlaceholderAPI 时建议安装 [`2.12.3+`](https://github.com/
 
 完整功能实施顺序见 [docs/FEATURE_ROADMAP.md](docs/FEATURE_ROADMAP.md)。
 服主与玩家使用 Wiki 见 [docs/WIKI.md](docs/WIKI.md)。
-`0.26.8` 至 `0.26.10` 的当日改动、配置示例与升级检查见 [2026-08-26 更新日志](docs/更新日志.md)。
+`0.26.11` 的管理指令、商城开关和升级检查见 [2026-08-27 更新日志](docs/更新日志-2026-08-27.md)。此前模型、CraftEngine 喂食和指令冲突改动见 [2026-08-26 更新日志](docs/更新日志.md)。
 
 ## 架构目标
 
@@ -134,6 +136,7 @@ Paper 26.2 使用 PlaceholderAPI 时建议安装 [`2.12.3+`](https://github.com/
 /lipet release [宠物名称]
 /lipet rename [宠物名称]
 /lipet shop
+/lipet itemshop
 /lipet warehouse
 /lipet balance
 /lipet daily
@@ -143,6 +146,7 @@ Paper 26.2 使用 PlaceholderAPI 时建议安装 [`2.12.3+`](https://github.com/
 /lipet help [页码]
 /lipet status
 /lipet reload
+/lipet manage <玩家> <宠物名称>
 ```
 
 详细设计见 [docs/LIPET_DESIGN.md](docs/LIPET_DESIGN.md)。
@@ -156,6 +160,6 @@ Paper 26.2 使用 PlaceholderAPI 时建议安装 [`2.12.3+`](https://github.com/
 mvn clean package
 ```
 
-输出：`target/LiPet-0.26.10-SNAPSHOT.jar`
+输出：`target/LiPet-0.26.11-SNAPSHOT.jar`
 
 每次迭代必须同步更新 `pom.xml` 版本。`plugin.yml` 会从 Maven 版本自动生成。
