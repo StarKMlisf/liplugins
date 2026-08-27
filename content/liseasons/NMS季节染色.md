@@ -1,44 +1,56 @@
-# NMS 季节染色
+# PacketEvents 客户端季节染色
 
 ## 当前方案
 
-1.0.61 只使用 NMS 群系调色板方案：
+LISeasons 1.0.65 的季节群系颜色是纯客户端视图：
 
-1. 找出在线玩家附近的已加载区块；
-2. 在正确的服务器线程上分批修改区块内部群系调色板，并把区块标记为待保存；
-3. 构造 NMS 群系数据包；
-4. 通过 ProtocolLib 向对应玩家统一发送；
-5. 客户端重新计算草地、树叶、水面和天空颜色。
+1. 服务端照常向玩家发送真实区块；
+2. LISeasons 监听玩家收到的区块数据；
+3. 原始区块包发送完成后，通过 PacketEvents 追加 `CHUNK_BIOMES`；
+4. 客户端使用季节目标群系重新计算草地、树叶、水面和天空颜色；
+5. 换季时，已有视距内的区块再按共享预算分批刷新。
 
-不再使用旧版大量连续 `setBiome + refreshChunk` 的染色路径，也没有 Bukkit 染色回退。
+插件不调用 Bukkit `setBiome`、`refreshChunk`，也不写 NMS 群系容器或 `markUnsaved`。
 
-## 这不是纯客户端伪装
+## 不会修改服务端群系
 
-虽然配置节点仍叫 `biome-spoof`，1.0.61 实际会替换服务端 NMS 区块中的群系调色板并调用 `markUnsaved`。因此：
+这条数据边界与 RealisticSeasons 官方描述的客户端数据包方案一致：看起来变了，服务端群系没有变化。
 
-- 修改后的群系数据可能保存进世界区块；
-- 服务端其他插件和原版逻辑查询群系时，可能看到季节目标群系；
-- 它不只影响颜色，也可能间接影响依赖群系查询的温度、生物、天气或其他插件逻辑；
-- 当前没有保存原始群系备份；关闭模块或移除插件不会自动还原已改写区块；
-- 下一季会把玩家附近区块继续改写为下一季目标群系。
+- 世界存档中的群系保持原样；
+- `/locate biome` 和服务端群系查询仍使用真实群系；
+- Bukkit API 和其他插件读取到的仍是真实群系；
+- 关闭 LISeasons 后不需要还原群系存档；
+- 不会因为季节颜色把平原永久保存成雪原。
 
-首次在正式世界启用前务必备份世界。若必须保留原始群系数据，只能关闭 `biome-spoof.nms.enable`，不要在未备份的生产地图上试运行。
+玩家客户端的 F3 群系显示可能变成当前伪装目标，这是客户端视图，不代表存档已经改变。
 
-## 为什么 ProtocolLib 是强制前置
+参考：[RealisticSeasons 官方 FAQ](https://wiki.realisticseasons.com/faq)明确说明其群系外观通过客户端数据包实现，不改变服务端群系。
 
-ProtocolLib 负责将 NMS 构造的数据包发送给客户端。`plugin.yml` 使用 `depend: [ProtocolLib]`，因此缺失时 LISeasons 不会加载。
+## PacketEvents 是强制前置
 
-它不是 PacketEvents；当前成品不需要 PacketEvents，也不会把 ProtocolLib 或 NMS 类打进 LISeasons Jar。
+PacketEvents 负责：
+
+- 按玩家客户端协议解析目标群系；
+- 构造并合并 `CHUNK_BIOMES`；
+- 在玩家新收到区块时自动追加季节群系包；
+- 静默发送 LISeasons 自己生成的数据包，避免重复进入监听链。
+
+`plugin.yml` 使用 `depend: [packetevents]`。缺失 PacketEvents 时，LISeasons 不会加载；低于 2.13.0 时，颜色模块拒绝初始化。ProtocolLib 不再需要。
 
 ## 支持版本
 
-1.0.61 内置版本签名适配：
+当前编译基线和配置支持：
 
+- Paper/Leaves/Lophine 1.21.1-1.21.8；
+- 1.21.9（Paper 官方只有 Alpha 构建）；
+- 1.21.10；
 - 1.21.11；
 - 26.1.x，包括 26.1.2；
 - 26.2。
 
-Paper、Leaves、Lophine 在这些版本上共用匹配的 CraftBukkit/NMS 结构。若服务端后续更新导致内部签名改变，即使 Minecraft 大版本号相同，也可能需要新版本 LISeasons。
+Folia 使用独立区域调度路径，真实加载验证从官方稳定构建 1.21.8 开始。PaperMC 官方没有 Folia 1.21.1 构建，因此不声明不存在的 Folia 1.21.1 运行验证。
+
+染色模块已经不依赖 CraftBukkit/NMS 类和字段；兼容重点变为 Paper API、PacketEvents 版本和对应客户端协议。
 
 ## 默认配置
 
@@ -54,9 +66,7 @@ interval-ticks: 40
 biome-spoof:
   radius-chunks: 8
   budget-chunks-per-tick: 8
-  step-xz: 4
-  step-y: 4
-  nms:
+  packet:
     enable: true
     max-chunks-per-packet: 64
   seasons:
@@ -66,67 +76,56 @@ biome-spoof:
     winter: "snowy_plains"
 ```
 
-## 配置语义
-
 | 键 | 说明 |
 | --- | --- |
-| `season-switch.<season>` | 单独控制某季是否执行群系染色 |
-| `interval-ticks` | 色调服务轮询间隔 |
+| `season-switch.<season>` | 单独控制某个季节是否发送颜色伪装 |
+| `interval-ticks` | 已有区块的分批检查间隔 |
 | `radius-chunks` | 玩家周围候选区块半径，取值 1～32 |
 | `budget-chunks-per-tick` | 所有玩家共享的每轮检查预算，取值 1～64 |
-| `step-xz` | 区块内水平采样步长 |
-| `step-y` | 区块内垂直采样步长 |
-| `nms.enable` | NMS 色调总开关 |
-| `nms.max-chunks-per-packet` | 普通 Paper 单包最多合并区块数，取值 1～128 |
-| `seasons.<season>` | 该季节使用的目标群系键 |
+| `packet.enable` | PacketEvents 客户端季节颜色总开关 |
+| `packet.max-chunks-per-packet` | 单个 `CHUNK_BIOMES` 最多合并的区块数，取值 1～128 |
+| `seasons.<season>` | 当前季节在客户端伪装成的原版群系键 |
 
-候选区块即使未加载、已经处理或无需修改，也会消耗本轮检查预算。这保证单轮工作量有硬上限。
+升级 1.0.63 时，旧 `biome-spoof.nms.enable` 和 `max-chunks-per-packet` 会迁移到 `biome-spoof.packet`，已有开关和数值保持不变。迁移完成后旧 `nms` 节点会从配置中移除。
 
-## Paper 与 Folia 的差异
+## 与 RealisticSeasons 的差异
 
-- Paper/Leaves/Lophine：一轮内已修改的多个区块可以合并到批量数据包，再发送给玩家。
-- Folia：区块数据必须在所属区域线程访问，因此修改后在对应区域内即时发送，不跨区域收集再批量处理。
+二者现在都遵循“不修改服务端群系，只改变客户端视图”的原则，但 LISeasons 当前实现更简单：
 
-`max-chunks-per-packet` 主要影响普通 Paper 路径，不能把 Folia 的区域线程规则改成全服合包。
+- LISeasons 把一个季节映射到一个现有的原版目标群系；
+- RealisticSeasons 文档提供按真实群系分别设置草、叶、水、天空、雾的十六进制颜色；
+- LISeasons 尚未注入自定义 RGB 群系，也没有四阶段颜色混合；
+- 因此当前 LISeasons 的颜色可配置粒度不等同于 RealisticSeasons。
 
-## 颜色不是贴图替换
+桦树叶和云杉叶的颜色由客户端材质规则固定，单纯更换群系可能不明显。`visual-effects.autumn-leaf-color` 是另一个模块，会真实替换部分叶块；必须保留原树种的服务器应单独关闭它。
 
-季节目标群系决定客户端使用哪套原版群系颜色：
+## 性能与缓存
 
-- 春季 `flower_forest`：鲜绿；
-- 夏季 `plains`：稳定绿色；
-- 秋季 `windswept_savanna`：偏黄；
-- 冬季 `snowy_plains`：冷白/灰绿。
+- 新区块：监听原始区块包并自动追加一次群系包；
+- 换季：按共享预算刷新已在视距内的区块；
+- 移动：缓存只保留玩家当前世界和配置半径内的区块；
+- 重进或换世界：清理玩家缓存和旧世界目标；
+- 普通 Paper 与 Folia 都不读取其他区域的区块数据，只发送玩家数据包。
 
-这会影响有群系色调的草、叶、水和天空，但不会把树叶材质模型换成新贴图。由于它会改写服务端群系数据，也不能把它视为只有玩家可见的资源包效果。秋季真实叶块替换由 `visual-effects.autumn-leaf-color` 负责，是另一个模块。
+高在线时优先降低 `radius-chunks`，其次降低 `budget-chunks-per-tick`。`max-chunks-per-packet` 建议保持 32～64。
 
-## 故障降级
+## 不变色检查表
 
-如果 NMS 类、方法、字段或包签名无法匹配，插件会停用季节染色模块，并记录日志；日历、季节、体温、事件、节日等其他模块继续运行。
+1. 确认 LISeasons 为 1.0.65；
+2. 确认 PacketEvents 2.13.0 或更高兼容版本已启用；
+3. 确认 `biome-spoof.packet.enable: true`；
+4. 确认当前季节的 `season-switch` 为 `true`；
+5. 确认当前世界已启用季节；
+6. 重新进入世界，或等待预算刷新视距；
+7. 搜索日志中的 `PacketEvents`、`CHUNK_BIOMES`、`客户端群系伪装`错误；
+8. 确认替换 Jar 后执行了完整重启。
 
-不会自动退回旧版逐点染色，因为那会重新引入连续 `setBiome`、`refreshChunk` 和大量数据包压力。
+如果日志出现：
 
-## 性能建议
+```text
+bitsPerEntry must be between 1 and 32, inclusive
+```
 
-优先按以下顺序调整：
-
-1. 高在线时先降低 `radius-chunks`；
-2. 再降低 `budget-chunks-per-tick`；
-3. 保持 `step-xz: 4`、`step-y: 4`，除非确认需要更细采样；
-4. 普通 Paper 可在 32～64 范围调整 `max-chunks-per-packet`；
-5. 不要同时大幅提高半径、每轮预算和刷新频率。
-
-预算较低时颜色会“逐步展开”，这是预期行为，不代表失效。
-
-## 26.2 不变色检查表
-
-1. 确认 LISeasons 为 1.0.61。
-2. 确认 ProtocolLib 成功启用，版本支持当前服务端。
-3. 确认 `biome-spoof.nms.enable: true`。
-4. 确认当前季节的 `season-switch` 为 `true`。
-5. 确认当前世界已启用。
-6. 等待半径内区块进入分批预算，或重新进入世界。
-7. 搜索日志中的 `NMS`、`ProtocolLib`、`biome`、`signature` 初始化错误。
-8. 确认没有只替换 Jar 却未完整重启。
+说明仍在使用 1.0.64 的单群系包构造路径。1.0.65 已改用协议原生的单值调色板，不会再创建非法的 0-bit 存储；更新 LISeasons Jar 后完整重启即可。
 
 [返回首页](Home.md)

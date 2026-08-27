@@ -5,7 +5,7 @@ import VoxelBlock from '@/components/VoxelBlock.astro';
 import { works } from '@/data/site';
 import { withBase } from '@/lib/paths';
 
-const work = works[0];
+const work = works.find((entry) => entry.slug === 'liseasons')!;
 ---
 
 <BaseLayout title="LISeasons" description={work.summary}>
@@ -38,7 +38,7 @@ const work = works[0];
       <div class="inventory-slot"><VoxelBlock type="grass" size="medium" /><span>四季节气</span><kbd>1</kbd></div>
       <div class="inventory-slot"><VoxelBlock type="leaf" size="medium" /><span>群系染色</span><kbd>2</kbd></div>
       <div class="inventory-slot"><VoxelBlock type="ice" size="medium" /><span>冬冻春融</span><kbd>3</kbd></div>
-      <div class="inventory-slot"><VoxelBlock type="redstone" size="medium" /><span>体感温度</span><kbd>4</kbd></div>
+      <div class="inventory-slot"><VoxelBlock type="redstone" size="medium" /><span>温度与增益条</span><kbd>4</kbd></div>
       <div class="inventory-slot"><VoxelBlock type="meteor" size="medium" /><span>流星事件</span><kbd>5</kbd></div>
       <div class="inventory-slot"><VoxelBlock type="book" size="medium" /><span>日历文档</span><kbd>6</kbd></div>
     </div>
@@ -69,16 +69,16 @@ const work = works[0];
     <div class="feature-chapter">
       <div><span class="feature-chapter__number">02 / WORLD</span><h2>让世界真的换季</h2></div>
       <div class="feature-chapter__body">
-        <p>季节调色使用 NMS 批量改写区块群系数据，并统一发送区块数据包，替代连续 setBiome 与 refreshChunk。配合冬季结冰、春季融化、作物和天气规则，让不同季节在生存世界里呈现可辨认的状态。</p>
+        <p>季节调色通过 PacketEvents 为每位玩家发送独立的客户端群系视图，不调用 setBiome、refreshChunk 或 NMS，也不会把季节目标群系保存进世界。配合冬季结冰、春季融化、作物和天气规则，让不同季节在生存世界里呈现可辨认的状态。</p>
         <div class="feature-list">
           <div><strong>季节群系染色</strong><span>春绿、夏盛、秋暖、冬冷的整体自然色调。</span></div>
           <div><strong>冬冻春融</strong><span>按预算渐进处理玩家附近水面和季节冰。</span></div>
           <div><strong>作物与天气</strong><span>按季节控制生长倍率、降水与世界反馈。</span></div>
-          <div><strong>体感温度</strong><span>季节、时段、天气、高度、潮湿和环境共同参与。</span></div>
+          <div><strong>体感温度与增益条</strong><span>环境共同参与温度，BossBar 直接呈现当前季节 Buff。</span></div>
         </div>
-        <div class="notice notice--danger" style="margin-top: 1.5rem;">
-          <strong>启用 NMS 染色前必须备份世界</strong>
-          <p>当前方案会修改并保存区块群系数据，不是仅客户端显示的临时滤镜。恢复旧世界或切换方案前，请先阅读染色文档中的持久化与回滚说明。</p>
+        <div class="notice" style="margin-top: 1.5rem;">
+          <strong>群系颜色只存在于客户端视图</strong>
+          <p>服务器、原版机制与其他插件读取的仍是真实群系；冬冻春融和秋季真实叶块替换属于独立的世界方块规则，应按需要单独配置和备份。</p>
         </div>
       </div>
     </div>
@@ -90,7 +90,7 @@ const work = works[0];
         <div class="feature-list">
           <div><strong>16 种季节事件</strong><span>按季节与日期组织，效果强度可配置。</span></div>
           <div><strong>真实感流星雨</strong><span>高空生成、连续尾焰、随机方位和暗飞行。</span></div>
-          <div><strong>可配置陨石奖励</strong><span>掉落物、概率与落点反馈均可调整。</span></div>
+          <div><strong>可配置陨石奖励</strong><span>掉落物、概率、同方块散落和落点反馈均可调整。</span></div>
           <div><strong>现实日期节日</strong><span>默认节日、自定义消息和服务器庆祝内容。</span></div>
         </div>
       </div>
@@ -101,11 +101,11 @@ const work = works[0];
     <div class="shell">
       <div class="section-heading">
         <span class="eyebrow">Environment / 运行环境</span>
-        <div><h2>先确认版本，<br />再进入正式世界。</h2><p>LISeasons 包含服务端版本相关的 NMS 模块；安装前应按文档核对核心版本和 ProtocolLib。</p></div>
+        <div><h2>先确认版本，<br />再进入正式世界。</h2><p>LISeasons 的染色协议由 PacketEvents 处理；安装前应按文档核对服务端核心与 PacketEvents 版本。</p></div>
       </div>
       <div class="directory-grid">
-        <div class="directory-card"><span class="directory-card__group">必须前置</span><h2>ProtocolLib</h2><p>缺失时插件不会进入正常运行状态；应安装与服务端匹配的构建。</p></div>
-        <div class="directory-card"><span class="directory-card__group">支持核心</span><h2>Paper / Folia</h2><p>面向 1.21.11、26.1.2 与 26.2 的版本配置；NMS 支持以文档矩阵为准。</p></div>
+        <div class="directory-card"><span class="directory-card__group">必须前置</span><h2>PacketEvents 2.13.0+</h2><p>缺失或版本过低时群系染色无法初始化；ProtocolLib 不再需要。</p></div>
+        <div class="directory-card"><span class="directory-card__group">支持核心</span><h2>Paper / Folia</h2><p>Paper 系从 1.21.1 起，Folia stable 从 1.21.8 起，并覆盖 26.1.2 与 26.2；季节染色不使用 NMS 或反射。</p></div>
         <div class="directory-card"><span class="directory-card__group">Java</span><h2>Java 21</h2><p>插件字节码和构建配置使用 Java 21。</p></div>
         <div class="directory-card"><span class="directory-card__group">可选联动</span><h2>PAPI · Crops · Dominion</h2><p>显示占位符、自定义作物与领地环境规则按需启用。</p></div>
       </div>

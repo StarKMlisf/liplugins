@@ -81,9 +81,9 @@ API 在生成快照时会读取世界日期上下文。普通 Paper 应在主线
 <dependency>
   <groupId>com.liseasons</groupId>
   <artifactId>LISeasons</artifactId>
-  <version>1.0.61</version>
+  <version>1.0.65</version>
   <scope>system</scope>
-  <systemPath>${project.basedir}/lib/LISeasons-1.0.61.jar</systemPath>
+  <systemPath>${project.basedir}/lib/LISeasons-1.0.65.jar</systemPath>
 </dependency>
 ```
 
@@ -93,12 +93,12 @@ API 在生成快照时会读取世界日期上下文。普通 Paper 应在主线
 
 ```kotlin
 dependencies {
-    compileOnly(files("lib/LISeasons-1.0.61.jar"))
+    compileOnly(files("lib/LISeasons-1.0.65.jar"))
 }
 ```
 
 ## API 稳定性
 
-1.0.61 的公开面刻意保持很小：只提供日历快照读取，没有季节写入、事件强制触发或内部管理器暴露。附属插件不要反射 `com.liseasons.internal` 或 NMS 实现类。
+1.0.65 的公开面刻意保持很小：只提供日历快照读取，没有季节写入、事件强制触发或内部管理器暴露。附属插件不要反射 `com.liseasons.internal` 或 PacketEvents 染色实现类。
 
 [返回首页](Home.md)
