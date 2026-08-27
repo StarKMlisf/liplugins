@@ -4,7 +4,7 @@
 
 - MySQL 群组存储与 SQLite 单服存储。
 - 99% 配置化 GUI。
-- 原生实体、ModelEngine、CraftEngine 模型提供器。
+- 原生实体与 ModelEngine 活体模型提供器；CraftEngine 完整物品提供器。
 - MiniMessage 与 RGB 宠物名称。
 - 被动药水、攻击、防御、跳跃、飞行、火球、定时命令等能力。
 - 宠物商城、仓库、升级、物品、箱子抽取和玩家交易。
@@ -20,7 +20,8 @@ catalog     宠物商品定义和上架规则
 warehouse   玩家拥有的宠物和仓库容量
 currency    内置/Vault/PlayerCurrency 统一交易接口
 ability     触发器、冷却、概率和能力执行器
-model       Native/ModelEngine/CraftEngine 模型适配
+model       Native/ModelEngine 活体模型适配
+item        Bukkit/CraftEngine 物品识别、生成、索引与重载适配
 gui         配置化页面、元素和动作
 crate       宠物箱和权重随机
 trade       玩家交易会话与双向确认
@@ -38,7 +39,7 @@ model:
 ```
 
 `NATIVE` 不需要模型 ID。ModelEngine 通过反射适配，API 不打入 LiPet。
-CraftEngine 使用独立 Provider，待根据目标服务端安装版本完成实服适配。
+CraftEngine 26.8.1 的稳定 API 当前提供物品、方块与家具能力，没有 LiPet 活体宠物模型控制接口，因此不再把它列为宠物模型提供器。CE 使用独立物品 Provider，已完成识别、生成、索引、重载事件及全部 LiPet 物品入口的实服适配；活体外观继续使用 `NATIVE` 或 `MODEL_ENGINE`。
 
 ## 能力设计
 
@@ -72,4 +73,4 @@ actions      药水、伤害、位移、火球、飞行、命令等动作
 7. 升级、宠物物品和权限宠物。
 8. 宠物箱与玩家交易。
 9. 自动备份和恢复验证。
-10. CraftEngine 目标版本适配。
+10. CraftEngine 26.8.1 完整物品挂钩与 Paper 26.1.2 / 26.2 实服验证（已完成）。

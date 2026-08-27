@@ -2,7 +2,11 @@
 
 LiPet 是一个面向群组服的 Bukkit 宠物插件框架，兼容 Paper/Folia 1.21.11、Paper/Folia 26.1.2 与 Paper 26.2。
 
-`0.26.11-SNAPSHOT` 新增 `/lipet manage <玩家> <宠物名称>` 管理指令，可安全打开指定在线玩家的指定宠物管理界面；新增 `shop.yml` 全局商城开关，关闭后宠物商城、道具商城、GUI 导航及已打开商城的购买操作都会被拦截，并支持 `/lipet reload` 热生效。80 项自动测试已在默认构建与 Paper 26.2 Profile 全部通过，同一成品 Jar 已在 Paper 26.1.2 Build 70 和 Paper 26.2 Build 111 正常启动并安全关闭。
+`0.26.14-SNAPSHOT` 完成 CraftEngine 物品全链路挂钩：喂食、捕捉球、技能书、信号棒、宠物商城图标、道具商城商品与图标、全部 GUI 按钮及填充物都可直接填写 CE 完整物品 ID。插件会使用 CE 官方稳定 API 生成并反向识别物品，保留模型与组件数据；CE 重载后自动刷新物品索引，生成失败时显示中文提示或自动退款，不会伪装成同底材原版物品。默认构建与 Paper 26.2 Profile 各 102 项自动测试均通过，并已搭配 CraftEngine 26.8.1 在 Paper 26.1.2 Build 70 与 Paper 26.2 Build 111 加载 109 个 CE 物品，完成全链路和热重载实测。
+
+`0.26.13-SNAPSHOT` 将点击反馈覆盖到主菜单、商城、仓库、属性、管理、放生确认及宠物背包；`gui.yml` 的全部内置按钮、自定义按钮、属性按钮、导航按钮和信息卡片新增 `slots` 多槽位配置，非空时覆盖旧版 `slot`，空列表则继续使用原位置，升级不会覆盖服主布局。默认构建与 Paper 26.2 Profile 各 99 项自动测试均通过，同一成品已在 Paper 26.1.2 Build 70 与 Paper 26.2 Build 111 完成配置迁移、热重载和安全关闭验证。
+
+`0.26.12-SNAPSHOT` 新增 `/lipet give <玩家|-all> <宠物类型> [名称]` 与 `/lipet take <玩家|-all> <宠物名称|UUID|类型|-all>`，支持向服务器已知的在线/离线玩家或全服玩家发放、收走宠物，并提供完整 Tab 补全与顺序数据库批处理；召唤实体会在生成事件前写入 LiPet 专属标记，并以高优先级仅放行自己的宠物，使 Residence 等领地保护开启生物生成限制时仍可召唤，同时阻止生成失败后留下孤立名牌。默认构建与 Paper 26.2 Profile 各 91 项自动测试均通过，同一成品已在 Paper 26.1.2 Build 70 与 Paper 26.2 Build 111 完成启动、指令和安全关闭验证。
 
 当前版本包含配置、持久化、宠物创建与召唤、属性成长、衍生战斗属性、喂养升级、骑乘、捕捉仪式、信息 GUI、跟随、坐下控制、放生、协助战斗、死亡冷却和扩展点。
 
@@ -44,6 +48,9 @@ LiPet 是一个面向群组服的 Bukkit 宠物插件框架，兼容 Paper/Folia
 `0.26.9-SNAPSHOT` 新增 CraftEngine 物品喂食支持，按完整命名空间 ID 精确识别与扣除，并保留全部旧版 Bukkit Material 食物配置。
 `0.26.10-SNAPSHOT` 取消 `/lp` 指令别名，仅保留 `/lipet`，避免与 LuckPerms 等权限插件的常用主指令冲突。
 `0.26.11-SNAPSHOT` 新增跨玩家单宠管理界面与 `lipet.admin.manage` 权限；管理员的属性、背包、改名、坐下、收回和放生操作始终绑定宠物真实主人及指定宠物 ID。商城增加 `enabled` 总开关并覆盖指令、GUI 和购买入口。
+`0.26.12-SNAPSHOT` 新增管理员宠物 `give` / `take` 指令、离线玩家与双层 `-all` 支持；仅对带 LiPet 标记的宠物撤销领地插件生成拦截，并在实体确实生成成功后才创建名牌。
+`0.26.13-SNAPSHOT` 为全部 LiPet UI 与宠物背包补齐点击反馈；所有可配置按钮支持 `slots` 多槽位复制和旧版 `slot` 安全回退。
+`0.26.14-SNAPSHOT` 将 CraftEngine 扩展为完整物品提供器：统一负责自定义物品识别、生成、索引、Tab 补全和 CE 重载同步，并覆盖喂食、捕捉球、技能书、信号棒、商城及 GUI。
 `0.25.4-SNAPSHOT` 增加 Paper 26.2 兼容声明与 Maven 兼容编译 profile：`-Ppaper-26.2`。
 
 `0.25.3-SNAPSHOT` 修复捕捉仪式音效兼容问题：无效 Bukkit Sound/Particle 会自动回退并写回安全默认值，不再导致插件启动失败。
@@ -58,6 +65,8 @@ LiPet 是一个面向群组服的 Bukkit 宠物插件框架，兼容 Paper/Folia
 - 手持 `pet-types.yml` 中配置的原版或 CraftEngine 食物右键自己的宠物：回血并获得经验。
 - 仓库左键宠物：召唤；右键宠物：查看等级、经验、属性和食物。
 - 管理员使用 `/lipet manage <在线玩家> <宠物名称>`：管理该玩家的指定宠物。
+- 管理员使用 `/lipet give <玩家|-all> <宠物类型> [名称]`：向单个在线/离线玩家或全服玩家发放宠物。
+- 管理员使用 `/lipet take <玩家|-all> <宠物名称|UUID|类型|-all>`：按选择器收走宠物，第二个 `-all` 表示目标名下全部宠物。
 
 PlaceholderAPI 变量：
 
@@ -109,7 +118,7 @@ Paper 26.2 使用 PlaceholderAPI 时建议安装 [`2.12.3+`](https://github.com/
 
 完整功能实施顺序见 [docs/FEATURE_ROADMAP.md](docs/FEATURE_ROADMAP.md)。
 服主与玩家使用 Wiki 见 [docs/WIKI.md](docs/WIKI.md)。
-`0.26.11` 的管理指令、商城开关和升级检查见 [2026-08-27 更新日志](docs/更新日志-2026-08-27.md)。此前模型、CraftEngine 喂食和指令冲突改动见 [2026-08-26 更新日志](docs/更新日志.md)。
+`0.26.14` 的 CraftEngine 完整物品挂钩见 [2026-08-28 CE 更新日志](docs/更新日志-2026-08-28-CE.md)。`0.26.13` 的全 UI 点击音效与多槽位按钮见 [2026-08-28 UI 更新日志](docs/更新日志-2026-08-28-UI.md)。`0.26.12` 的宠物发放/收走、离线全服批处理和领地召唤兼容见 [2026-08-28 更新日志](docs/更新日志-2026-08-28.md)。`0.26.11` 的管理指令与商城开关见 [2026-08-27 更新日志](docs/更新日志-2026-08-27.md)；此前模型、CraftEngine 喂食和指令冲突改动见 [2026-08-26 更新日志](docs/更新日志.md)。
 
 ## 架构目标
 
@@ -140,6 +149,8 @@ Paper 26.2 使用 PlaceholderAPI 时建议安装 [`2.12.3+`](https://github.com/
 /lipet warehouse
 /lipet balance
 /lipet daily
+/lipet give <玩家|-all> <宠物类型> [宠物名称]
+/lipet take <玩家|-all> <宠物名称|UUID|宠物类型|-all>
 /lipet captureball <类型> [数量] [玩家]
 /lipet skillbook <技能> [数量] [玩家]
 /lipet signalstick [数量] [玩家]
@@ -160,6 +171,6 @@ Paper 26.2 使用 PlaceholderAPI 时建议安装 [`2.12.3+`](https://github.com/
 mvn clean package
 ```
 
-输出：`target/LiPet-0.26.11-SNAPSHOT.jar`
+输出：`target/LiPet-0.26.14-SNAPSHOT.jar`
 
 每次迭代必须同步更新 `pom.xml` 版本。`plugin.yml` 会从 Maven 版本自动生成。
