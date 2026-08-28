@@ -1,6 +1,6 @@
 # LiPet Wiki
 
-适用版本：`0.26.14-SNAPSHOT`
+适用版本：`0.26.16-SNAPSHOT`
 
 适用服务端：
 
@@ -12,6 +12,11 @@
 
 ## 今日更新 · 2026-08-28
 
+- `0.26.16`：新增实体挂载/离开监听，骑上宠物后立即隐藏双行名牌；凋零、末影龙等 Boss 宠物还可自动隐藏血条，下坐骑后恢复原可见状态。
+- 末影龙身体部件现在会解析回龙本体，空手右键骑乘、潜行右键管理和信号棒右键不再因点中翅膀或身体部件而失效。
+- 管理员玩家参数的 Tab 补全只显示在线玩家与 `-all`；离线名称和 UUID 仍可手工执行，不改变离线发放/收走能力。
+- 新增 `/lipet delete [宠物名称]` 与 `lipet.command.delete`；不填写名称时删除当前已召唤宠物，操作会永久删除宠物数据且无法恢复。
+- “已有宠物时再次召唤”提示会同时显示当前宠物和想召唤的目标宠物；旧默认错误文本会安全迁移，自定义语言保持不变。
 - `0.26.14`：CraftEngine 从“仅识别喂食物品”升级为完整物品提供器；CE 完整 ID 可用于喂食、捕捉球、技能书、信号棒、商城商品、商城图标、GUI 按钮和填充物。
 - LiPet 通过 CraftEngine 官方稳定 API 生成物品并反向校验 ID，保留 CE 模型和组件数据；不存在的 ID 不会退化成同底材原版物品。
 - CraftEngine 重载完成后，LiPet 自动刷新物品索引；`/lipet status [CE物品ID]` 可查看中文状态、索引数量并执行生成 → 识别全链路自检，ID 参数支持 Tab 补全。
@@ -21,7 +26,7 @@
 - `slots` 非空时优先，空列表时回退旧版 `slot`；升级只补缺失节点和中文说明，不覆盖服主已有槽位、列表或注释。
 - `0.26.12`：新增 `/lipet give <玩家|-all> <宠物类型> [宠物名称]`，可向服务器已知在线、离线玩家或全服玩家发放指定宠物。
 - 新增 `/lipet take <玩家|-all> <宠物名称|UUID|宠物类型|-all>`；第一个 `-all` 表示全服玩家，第二个 `-all` 表示收走目标玩家名下全部宠物。
-- 玩家参数支持名称与 UUID；Tab 补全包含已知玩家、`-all`、宠物类型和已缓存宠物名称。全服任务在数据库队列中顺序执行，避免瞬间压满 SQLite / MySQL。
+- 玩家参数支持名称与 UUID；离线目标仍可手工执行，当前 Tab 补全只显示在线玩家、`-all`、宠物类型和已缓存宠物名称。全服任务在数据库队列中顺序执行，避免瞬间压满 SQLite / MySQL。
 - LiPet 宠物会在生成事件触发前写入专属标记，再由 `HIGHEST` 优先级监听器仅放行自己的宠物，因此 Residence 等领地禁止普通生物生成时仍可召唤宠物。
 - 若其他插件在更晚阶段继续阻止实体生成，LiPet 会回滚召唤，不创建 TextDisplay 名牌，避免出现“只有宠物名字、没有宠物实体”。
 
@@ -65,7 +70,7 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 
 ## 2. 安装
 
-1. 将 `LiPet-0.26.14-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
+1. 将 `LiPet-0.26.16-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
 2. 启动服务器一次，让插件生成默认配置。
 3. 停服，编辑 `plugins/LiPet/` 下的配置文件。
 4. 再次启动服务器。
@@ -179,6 +184,7 @@ server:
 | `/lipet inventory [宠物名称]` | 打开当前或指定宠物背包 |
 | `/lipet rename [宠物名称]` | 进入聊天框改名模式 |
 | `/lipet release [宠物名称]` | 永久放生宠物 |
+| `/lipet delete [宠物名称]` | 永久删除宠物 |
 | `/lipet info <宠物名称>` | 查看宠物属性 |
 | `/lipet help [页码]` | 查看帮助 |
 
@@ -224,7 +230,7 @@ server:
 - `take` 的选择器支持宠物名称、宠物 UUID、宠物类型 ID，以及 `-all`。使用类型 ID 时会处理该类型宠物；使用第二个 `-all` 时会收走该玩家的全部宠物。
 - 全服任务会逐个玩家、逐只宠物提交数据库操作，避免一次性产生大量并发写入；单个玩家失败不会中断后续目标。
 - 收走已召唤宠物时会同时删除数据库记录、活动会话、原版实体、外部模型与双行名牌；离线玩家的已收回宠物可以直接处理。
-- 两个指令均可由控制台执行。Tab 补全会联想 `-all`、已知玩家名、宠物类型和当前已缓存的宠物名称。
+- 两个指令均可由控制台执行。Tab 补全只联想 `-all`、当前在线玩家、宠物类型和当前已缓存的宠物名称；离线玩家名或 UUID 仍可手工输入执行。
 
 ## 7. 权限
 
@@ -247,6 +253,7 @@ server:
 | `lipet.command.inventory` | true | 打开宠物背包 |
 | `lipet.command.rename` | true | 修改宠物名称 |
 | `lipet.command.release` | true | 放生宠物 |
+| `lipet.command.delete` | true | 永久删除宠物 |
 | `lipet.command.info` | true | 查看宠物信息 |
 | `lipet.command.help` | true | 查看帮助 |
 | `lipet.capture` | true | 使用捕捉球 |
@@ -328,10 +335,16 @@ nameplate:
   see-through: false
   default-background: false
   background-color: "#00000000"
+  hide-while-ridden: true
+
+riding:
+  hide-boss-bar-while-ridden: true
 ```
 
 - `owner-line` 支持 MiniMessage、RGB、渐变和 `<owner_name>` 占位符。
 - `enabled: false` 会删除双行显示实体并恢复原版单行宠物名称。
+- `hide-while-ridden: true` 会在玩家骑乘时临时删除双行名牌，下坐骑后自动重建。
+- `riding.hide-boss-bar-while-ridden: true` 会同步隐藏凋零、末影龙等 Boss 血条，并在下坐骑时恢复骑乘前状态。
 - 修改后执行 `/lipet reload`，已召唤宠物会在下一轮行为刷新时自动应用新样式。
 - 名牌使用独立 PDC 关联宠物实体；区块重新载入时会校验并恢复，传送导致挂载脱离时会自动重建，死亡、收回和放生时会同步删除，不写入宠物数据库。
 
@@ -750,6 +763,8 @@ behavior:
   jump-velocity: 0.5
 ```
 
+末影龙的翅膀、头部和身体属于独立交互部件；`0.26.16+` 会把这些部件统一解析回龙本体，因此普通右键骑乘和潜行右键管理都可正常使用。骑乘显示监听覆盖右键、`/lipet mount`、信号棒及其他插件触发的标准实体挂载事件。
+
 ## 19. PlaceholderAPI
 
 可用变量：
@@ -832,6 +847,8 @@ Residence 当前会在较低优先级检查 `animals`、`canimals`、`monsters`�
 LiPet 当前使用 Java 21 字节码构建，运行端推荐 Java 25。调度逻辑封装在 `PlatformScheduler`，业务层不直接散落调度调用。
 
 活动宠物实体由加载索引维护。SQLite / MySQL 完成回调只读取线程安全状态，再把生命读取、属性刷新、召回和移除交给实体调度器；不会再从数据库线程调用区块实体查询。
+
+`0.26.16-SNAPSHOT` 共 103 项自动测试通过；同一 Java 21 成品 Jar 已在 Paper 26.2 Build 111 + Java 25 完成真实启动、SQLite 依赖加载、`/lipet status`、描述符版本检查和安全关闭。实体挂载监听、末影龙身体部件解析、Boss 血条与客户端第一人称显示仍需由在线玩家在目标服务器实际骑乘确认。
 
 `0.26.14-SNAPSHOT` 的默认兼容构建与 Paper 26.2 Profile 各有 102 项自动测试通过。测试覆盖原版/CE/AIR 物品 ID、CE 反射 API、生成失败分类、全部配置入口和旧配置安全补全；同一成品已搭配 CraftEngine 26.8.1 在 Paper 26.1.2 Build 70 与 Paper 26.2 Build 111 加载 109 个 CE 物品，完成 `default:topaz_pickaxe` 生成 → 识别自检、CE 配置重载、LiPet 热重载和安全关闭。完整记录见 [2026-08-28 CE 更新日志](更新日志-2026-08-28-CE.md)。
 
@@ -974,5 +991,5 @@ mvn -Ppaper-26.2 clean package
 输出：
 
 ```text
-target/LiPet-0.26.14-SNAPSHOT.jar
+target/LiPet-0.26.16-SNAPSHOT.jar
 ```
