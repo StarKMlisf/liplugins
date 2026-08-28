@@ -162,7 +162,7 @@ unlock:
 
 ### 7. 跨服同步系统
 
-LIEMC 支持多服连接同一个 MySQL，实现玩家数据和管理员上架物品同步。
+LIEMC 支持多服连接同一个 MySQL，实现玩家数据和管理员上架物品同步。build.106 已修复 MySQL 8.0 初始化商品 Lore 字段时的 `TEXT` 默认值兼容问题。
 
 可同步内容：
 
@@ -330,24 +330,38 @@ build.98 起，获取、搜索、收藏和转换菜单统一由独立的 `plugin
 
 ---
 
+## 全局商品 Lore
+
+build.106 中，未填写非空商品 `lore` 的条目统一继承 `config.yml` 的 `item-display.default-lore`。修改这一处并执行 `/emc reload`，即可让全部继承项一起更新。
+
+```yml
+item-display:
+  default-lore:
+    - ""
+    - "&7价格：&e{emc} 点 EMC"
+    - "&7状态：&f{favorite}"
+    - ""
+    - '&a左键获取：&f{left_amount} 个\n&6右键获取：&f{right_amount} 个'
+    - "&dShift+点击：&f{favorite_action}"
+```
+
+空字符串或只含空格的列表项会显示为空白分隔行；同一项内的 `\n` 会拆成多行。单个商品可用 `description-lore` 在全局模板前增加专属说明，也可以用非空 `lore` 完整覆盖模板。详细规则见[配置说明](./配置说明.md)。
+
+---
+
 ## 物品配置示例
 
 ```yml
 - id: "grass_block"
   material: "GRASS_BLOCK"
   name: "&f草方块"
-  lore:
-    - "&7EMC: &e{emc}"
-    - "&7左键获取: &e{left_amount}"
-    - "&7右键获取: &e{right_amount}"
-    - "&8&m----------------"
-    - "&e★ 收藏: &f{favorite}"
-    - "&7Shift+点击: &e{favorite_action}"
   emc: 2
   withdraw-amount: 64
   unlock-cost: 0.0
   category: "01_建筑方块/01_自然基础"
 ```
+
+此条目未配置 `lore`，因此会继承上方全局模板。需要保留物品自己的原始说明时，使用 `description-lore`；只有确实需要独立排版时才填写非空 `lore`。
 
 ---
 
@@ -371,8 +385,10 @@ build.98 起，获取、搜索、收藏和转换菜单统一由独立的 `plugin
 当前构建：
 
 ```text
-LIEMC-0.1.0+build.98.jar
+LIEMC-0.1.0+build.106.jar
 ```
+
+从 build.105 升级时请保留数据库和现有配置，由 build.106 自动完成可恢复的字段迁移；不要手动删除 `liemc_shop_items`。详见[安装与更新](./安装与更新.md)和[build.106 更新说明](./更新日志-build106.md)。
 
 ---
 

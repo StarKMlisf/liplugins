@@ -92,13 +92,14 @@ const lirealMainDocs = defineDocs('lirealenchant', [
 
 const liemcDocs = defineDocs('liemc', [
   { file: 'Home.md', slug: 'home', title: 'LIEMC 完整 Wiki', summary: 'EMC 兑换、回收、解锁、收藏、跨服、命令、权限、配置与常见问题。', group: '文档总览', order: 1 },
+  { file: '更新日志-build106.md', slug: 'changelog-build106', title: 'build.106 更新说明', summary: 'MySQL 8.0 数据库迁移兼容修复，以及全局商品 Lore 的空白分隔行与单项拆行。', group: '文档总览', order: 2 },
   { file: '玩家指南.md', slug: 'player', title: '玩家快速指南', summary: '从基础指令、解锁机制到经济来源与常见问题的玩家说明。', group: '玩家文档', order: 10 },
   { file: '功能清单.md', slug: 'features', title: '功能清单', summary: '集中查看兑换、回收、解锁、搜索、收藏、自动补充和跨服能力。', group: '玩家文档', order: 11 },
   { file: '兑换与回收.md', slug: 'conversion-economy', title: '兑换、回收与 EMC 经济', summary: '理解物品价值、转换菜单、一键出售、余额与玩家转账流程。', group: '玩家文档', order: 12 },
   { file: '解锁搜索与自动补充.md', slug: 'unlock-search-refill', title: '解锁、搜索、收藏与自动补充', summary: '先获得再解锁的成长规则，以及搜索、收藏和建筑补货功能。', group: '玩家文档', order: 13 },
   { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: '运行环境、首次安装、依赖选择、升级备份与验证步骤。', group: '管理员文档', order: 20 },
   { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '玩家和管理员命令、权限节点与常用操作示例。', group: '管理员文档', order: 21 },
-  { file: '配置说明.md', slug: 'configuration', title: '配置说明', summary: '存储、经济来源、解锁规则、商店物品和变量配置参考。', group: '管理员文档', order: 22 },
+  { file: '配置说明.md', slug: 'configuration', title: '配置说明', summary: '存储、经济来源、解锁规则、全局商品 Lore、商店物品和变量配置参考。', group: '管理员文档', order: 22 },
   { file: '自定义GUI教程.md', slug: 'custom-gui', title: '自定义 GUI 完整教程', summary: '配置四套菜单、槽位、渐变、动态变量、自定义按钮、模型、迁移与排错。', group: '管理员文档', order: 23 },
   { file: '存储与跨服.md', slug: 'storage-network', title: '存储与跨服', summary: 'SQLite、MySQL、共享数据、跨服上架与配置一致性。', group: '管理员文档', order: 24 },
   { file: '测试与故障排查.md', slug: 'testing-troubleshooting', title: '测试与故障排查', summary: '上线前检查、兑换测试、数据库判断与常见故障定位。', group: '管理员文档', order: 25 },
@@ -281,7 +282,7 @@ const lirealEnchantDocs = fs.readdirSync(enchantDirectory)
   });
 
 export const docSets: DocSet[] = [
-  { slug: 'liemc', name: 'LIEMC', version: '0.1.0+build.98', summary: 'EMC 经济、物品回收、解锁兑换、收藏检索、自定义 GUI、跨服同步与配置文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liemcDocs },
+  { slug: 'liemc', name: 'LIEMC', version: '0.1.0+build.106', summary: 'EMC 经济、物品回收、解锁兑换、收藏检索、自定义 GUI、全局商品 Lore、CraftEngine 与跨服同步文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liemcDocs },
   { slug: 'lwe', name: 'LWE 小创世神', version: '0.1.0+build.15', summary: '轻量选区施工、材料消耗、LIEMC 自动补料、配置与故障排查。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lweDocs },
   { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev199-paper26', summary: '真实附魔、YML/API 扩展、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
   { slug: 'lititle', name: 'LiTitle', version: '0.1.93', summary: '称号、商店、仓库、聊天、昵称、存储与跨服部署文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lititleDocs },
