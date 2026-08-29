@@ -1,6 +1,6 @@
 # LiPet Wiki
 
-适用版本：`0.26.23-SNAPSHOT`
+适用版本：`0.26.24-SNAPSHOT`
 
 适用服务端：
 
@@ -10,7 +10,18 @@
 
 运行建议：Java 25。插件成品 Jar 使用 Java 21 字节码构建，便于跨版本运行。
 
-## 今日更新 · 2026-08-29 · 0.26.23
+## 今日更新 · 2026-08-29 · 0.26.24
+
+- 宠物仓库 Lore 改为四条独立提示：左键召唤、右键查看与管理、潜行左键收回、潜行右键放生。
+- 潜行左键由旧默认召唤动作改为真正的 `store` 收回动作；仅迁移官方旧值，服主自定义动作保持不变。
+- 宠物类型默认存放在可中文命名的 `宠物类型/` 目录，支持多个 `.yml` / `.yaml` 和递归中文子目录。
+- 新服生成 `狼.yml`、`猫.yml`；旧服在目标目录不存在时自动把旧 `types` 拆成独立文件并保留中文注释。
+- 目录已存在时不自动搬迁或覆盖，旧 `pet-types.yml` 单文件格式继续兼容。
+- Paper 26.2 Profile 共 131 项自动测试通过，覆盖四键迁移、中文多文件读取、路径安全、旧格式拆分及官方注释安全迁移。
+
+完整记录见 [2026-08-29 仓库四键与宠物类型目录更新日志](更新日志-2026-08-29-仓库四键与宠物类型目录.md)。
+
+## 上一轮更新 · 2026-08-29 · 0.26.23
 
 - 主菜单原“宠物仓库”入口改名为“我的宠物”。
 - 按钮最后一行改为“➥ 点击打开宠物列表”，更准确地说明点击后的页面内容。
@@ -140,7 +151,7 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 
 ## 2. 安装
 
-1. 将 `LiPet-0.26.23-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
+1. 将 `LiPet-0.26.24-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
 2. 启动服务器一次，让插件生成默认配置。
 3. 停服，编辑 `plugins/LiPet/` 下的配置文件。
 4. 再次启动服务器。
@@ -153,7 +164,8 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 | 文件 | 用途 |
 | --- | --- |
 | `config.yml` | 存储、服务器 ID、群组、依赖下载、内置货币、排行榜分页 |
-| `pet-types.yml` | 宠物类型、实体、模型、属性、行为、背包、成长、食物 |
+| `pet-types.yml` | 宠物类型目录、原版自动注册、名牌、骑乘和背包全局设置；兼容旧 `types` 节点 |
+| `宠物类型/*.yml` | 各宠物类型的实体、模型、属性、行为、成长和食物；目录和文件名可用中文 |
 | `shop.yml` | 商城总开关、宠物商城和宠物道具商城 |
 | `gui.yml` | GUI 标题、尺寸、槽位、留白/边框、图标、点击动作与音效 |
 | `capture.yml` | 捕捉球、捕捉概率、捕捉仪式、音效、粒子、实体映射 |
@@ -303,7 +315,7 @@ server:
 
 - 单人目标支持不区分大小写的玩家名或完整 UUID。按名称操作时玩家必须已有 Bukkit 档案；完整 UUID 可直接定位数据库中的玩家，即使本地 `playerdata` 已被清理也可使用。
 - `-all` 会合并服务器已知离线玩家与当前在线玩家，并按 UUID 去重；从未进入服务器且没有 Bukkit 档案的名字不会被凭空创建，未出现在本服档案中的目标需填写 UUID。
-- `give` 的第二个参数必须是 `pet-types.yml` 中已启用的类型 ID；不写名称时使用该类型的默认显示名。玩家已经拥有同类型宠物或同名宠物时会安全跳过，不重复创建。
+- `give` 的第二个参数必须是“宠物类型”目录或旧 `pet-types.yml` 中已启用的类型 ID；不写名称时使用该类型的默认显示名。玩家已经拥有同类型宠物或同名宠物时会安全跳过，不重复创建。
 - `take` 的选择器支持宠物名称、宠物 UUID、宠物类型 ID，以及 `-all`。使用类型 ID 时会处理该类型宠物；使用第二个 `-all` 时会收走该玩家的全部宠物。
 - 全服任务会逐个玩家、逐只宠物提交数据库操作，避免一次性产生大量并发写入；单个玩家失败不会中断后续目标。
 - 收走已召唤宠物时会同时删除数据库记录、活动会话、原版实体、外部模型与双行名牌；离线玩家的已收回宠物可以直接处理。
@@ -374,9 +386,20 @@ server:
 
 ## 8. 宠物类型
 
-宠物类型在 `pet-types.yml` 中配置。
+宠物类型默认拆分在 `plugins/LiPet/宠物类型/` 目录。目录名称由 `pet-types.yml` 控制，支持中文和多级相对目录：
 
-示例：
+```yaml
+type-files:
+  enabled: true
+  directory: "宠物类型"
+  include-subdirectories: true
+```
+
+目录中可放多个 `.yml` 或 `.yaml`，默认递归读取子目录。文件名和子目录名可以使用中文；稳定的宠物类型 ID 仍写在 `types` 下，并只使用英文小写、数字、下划线或短横线。
+
+新服首次启动会生成 `宠物类型/狼.yml` 与 `宠物类型/猫.yml`。旧服升级时，如果目标目录尚不存在，插件会把原 `pet-types.yml` 中每个类型拆成独立文件并保留值与注释；如果目录已经存在，则不自动搬迁或覆盖，旧 `types` 节点继续兼容读取。
+
+`宠物类型/狼.yml` 示例：
 
 ```yaml
 types:
@@ -400,6 +423,9 @@ types:
 说明：
 
 - `entity-type` 必须是当前 Paper 版本存在的 Bukkit 实体类型。
+- 一个文件可定义一个或多个类型；不同文件不能出现重复类型 ID。
+- `type-files.include-subdirectories: false` 时只读取目录第一层文件。
+- `type-files.directory` 只能是 LiPet 数据目录内的相对目录，禁止绝对路径和 `../` 越界。
 - `owner-limit` 当前固定用于“一种宠物只能拥有一只”的限制。
 - `model.provider` 支持 `NATIVE`、`MODEL_ENGINE`、`CRAFT_ENGINE`。
 - `model.hide-base-entity` 仅在外部模型提供器中生效；ModelEngine/MEG 建议保持 `true`，它只隐藏原版载体外观，不会关闭宠物 AI。
@@ -509,7 +535,7 @@ labels:
 
 ## 10. 喂食
 
-食物配置在 `pet-types.yml`：
+食物配置在对应的宠物类型 YML 中；旧 `pet-types.yml` 写法继续支持：
 
 ```yaml
 foods:
@@ -551,7 +577,7 @@ foods:
 
 可配置入口：
 
-- `pet-types.yml`：`foods.*.item-id` 或食物节点名。
+- `宠物类型/*.yml` 或旧 `pet-types.yml`：`foods.*.item-id` 或食物节点名。
 - `capture.yml`：`balls.*.material` 捕捉球。
 - `skills.yml`：`skills.*.book.material` 技能书。
 - `items.yml`：`signal-stick.material` 宠物信号棒。
@@ -813,10 +839,10 @@ action: "close"                         # 关闭菜单
 
 仓库默认点击动作：
 
-- `warehouse.pet-item.actions.LEFT`：召回伙伴。
-- `warehouse.pet-item.actions.SHIFT_LEFT`：蹲下左键召回伙伴。
+- `warehouse.pet-item.actions.LEFT`：左键召唤所选宠物伙伴。
+- `warehouse.pet-item.actions.SHIFT_LEFT`：潜行左键收回当前已召唤宠物。
 - `warehouse.pet-item.actions.RIGHT`：查看属性与管理。
-- `warehouse.pet-item.actions.SHIFT_RIGHT`：打开永久放生二次确认。
+- `warehouse.pet-item.actions.SHIFT_RIGHT`：潜行右键打开永久放生二次确认。
 
 四项都可自由更换或写成空字符串禁用。`SHIFT_RIGHT` 只打开确认页，确认按钮才会真正删除宠物数据。
 
@@ -885,7 +911,7 @@ action: "close"                         # 关闭菜单
 - 使用 `/lipet mount`。
 - 使用信号棒骑乘模式。
 
-骑乘参数在 `pet-types.yml`：
+骑乘参数在对应的宠物类型 YML 中；旧 `pet-types.yml` 写法继续支持：
 
 ```yaml
 behavior:
@@ -979,6 +1005,8 @@ Residence 当前会在较低优先级检查 `animals`、`canimals`、`monsters`�
 LiPet 当前使用 Java 21 字节码构建，运行端推荐 Java 25。调度逻辑封装在 `PlatformScheduler`，业务层不直接散落调度调用。
 
 活动宠物实体由加载索引维护。SQLite / MySQL 完成回调只读取线程安全状态，再把生命读取、属性刷新、召回和移除交给实体调度器；不会再从数据库线程调用区块实体查询。
+
+`0.26.24-SNAPSHOT` 共 131 项自动测试通过，失败、错误和跳过均为 0。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上完成两轮真实验证：旧服的 `pet-types.yml` 狼、猫配置被拆到 `宠物类型/wolf.yml`、`cat.yml`，全局旧节点清空，仓库 Lore、动作和官方注释迁移正确；全新安装则生成中文目录及 `狼.yml`、`猫.yml` 两个文件。两轮 `/lipet reload` 均成功，`/lipet status` 显示 PlayerPoints `ONLINE`，随后安全关闭，LiPet 自身日志无报错。当前没有在线客户端，仓库最终视觉和四种实际点击仍需目标测试服确认。成品大小为 `726809` 字节，SHA-256 为 `F57634F05DD8E1C68AD0A405289153DA706F17F93CB94810915B9E386B7169DD`。
 
 `0.26.23-SNAPSHOT` 的 Paper 26.2 Profile 共 121 项自动测试通过。测试覆盖官方旧“宠物仓库”按钮名称与完整旧 Lore 的精确迁移，以及服主自定义名称和 Lore 保护；最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上将 0.26.22 真实旧 `gui.yml` 迁移为“我的宠物”和“➥ 点击打开宠物列表”，`/lipet status` 显示 PlayerPoints `ONLINE`，随后安全关闭。LiPet 自身日志无报错；当前没有在线客户端，菜单最终视觉仍需目标测试服确认。成品大小为 `711076` 字节，SHA-256 为 `F220C0EE7900372D4EEC25E14A66F5D0E042D90A8A42D783A88357565A850686`。
 
@@ -1135,5 +1163,5 @@ mvn -Ppaper-26.2 clean package
 输出：
 
 ```text
-target/LiPet-0.26.23-SNAPSHOT.jar
+target/LiPet-0.26.24-SNAPSHOT.jar
 ```
