@@ -1,6 +1,6 @@
 # LiPet Wiki
 
-适用版本：`0.26.17-SNAPSHOT`
+适用版本：`0.26.18-SNAPSHOT`
 
 适用服务端：
 
@@ -10,7 +10,18 @@
 
 运行建议：Java 25。插件成品 Jar 使用 Java 21 字节码构建，便于跨版本运行。
 
-## 今日更新 · 2026-08-29
+## 今日更新 · 2026-08-29 · 0.26.18
+
+- 宠物仓库新增四种独立点击：左键和蹲下左键召回，右键查看属性与管理，蹲下右键进入放生二次确认。
+- 仓库宠物图标新增红色永久放生说明；旧版默认 Lore 会自动迁移，缺失的 `SHIFT_LEFT`、`SHIFT_RIGHT` 节点会补齐，服主自定义 Lore 与动作不会覆盖。
+- 已收回宠物现在也会绑定真实主人和宠物 UUID，蹲下右键可以正常打开确认页，不会误删其他宠物，也不会绕过二次确认。
+- 修复仓库召回语言：已有活动宠物、找不到宠物、死亡冷却、跨服租约占用和真实失败分别使用对应 `messages.yml` 节点。
+- 保留 `/lipet coin give|take|look`，并新增 `/lipet givecoin`、`/lipet takecoin`、`/lipet lookcoin` 等价快捷指令；权限仍为 `lipet.admin.coin`。
+- 默认构建与 Paper 26.2 Profile 各 111 项测试通过；Paper 26.2 Build 111 已完成旧 GUI 配置迁移、分组宠物币命令与快捷命令实测。
+
+完整记录见 [2026-08-29 仓库快捷操作、语言与宠物币更新日志](更新日志-2026-08-29-仓库快捷操作.md)。
+
+## 上一轮更新 · 2026-08-29 · 0.26.17
 
 - 新增 `/lipet coin give|take|look <玩家> [数量]` 与 `lipet.admin.coin`，管理员可查询、发放和安全扣除目标玩家的内置宠物币。
 - 宠物币目标支持已知玩家名和完整 UUID；离线目标可手工输入，Tab 仍只显示在线玩家。余额不足时 `take` 会拒绝扣款，不产生负数。
@@ -212,6 +223,9 @@ server:
 | `/lipet coin look <玩家>` | 查询指定玩家的内置宠物币余额 |
 | `/lipet coin give <玩家> <数量>` | 向指定玩家发放内置宠物币 |
 | `/lipet coin take <玩家> <数量>` | 从指定玩家安全扣除内置宠物币 |
+| `/lipet lookcoin <玩家>` | 快捷查询指定玩家的内置宠物币余额 |
+| `/lipet givecoin <玩家> <数量>` | 快捷发放指定玩家的内置宠物币 |
+| `/lipet takecoin <玩家> <数量>` | 快捷安全扣除指定玩家的内置宠物币 |
 | `/lipet status` | 查看插件状态 |
 | `/lipet reload` | 重载配置并热切换 SQLite / MySQL |
 | `/lipet manage <玩家> <宠物名称>` | 打开指定在线玩家的指定宠物管理界面 |
@@ -718,7 +732,14 @@ action: "close"                         # 关闭菜单
 - 宠物界面：`<owner_name>`、`<owner_id>`、`<pet_id>`、`<entity_id>`、`<pet_name>`、`<pet_type>`、`<pet_type_id>`、`<pet_state>`、`<pet_state_key>`、等级、经验、四维属性和全部衍生属性变量。
 - 属性按钮：额外提供 `<attribute>`、`<attribute_name>`、`<attribute_key>`、`<value>`、`<attribute_value>`、`<points>`。显示文本中的 `<attribute>` 为中文；旧版动作中的 `<attribute>` 仍按英文键替换，推荐新动作明确使用 `<attribute_key>`。
 
-`warehouse.pet-item.actions.LEFT/RIGHT` 默认分别为召唤和查看属性，可自由互换或留空禁用。
+仓库默认点击动作：
+
+- `warehouse.pet-item.actions.LEFT`：召回伙伴。
+- `warehouse.pet-item.actions.SHIFT_LEFT`：蹲下左键召回伙伴。
+- `warehouse.pet-item.actions.RIGHT`：查看属性与管理。
+- `warehouse.pet-item.actions.SHIFT_RIGHT`：打开永久放生二次确认。
+
+四项都可自由更换或写成空字符串禁用。`SHIFT_RIGHT` 只打开确认页，确认按钮才会真正删除宠物数据。
 
 旧版紧凑默认布局会在升级时迁移到 5 行宽松布局；只要管理员改动过旧版行数或按钮槽位，就视为自定义布局并保留原值。其他新增节点只补缺项，不覆盖已有配置和值或注释。
 
@@ -879,6 +900,8 @@ Residence 当前会在较低优先级检查 `animals`、`canimals`、`monsters`�
 LiPet 当前使用 Java 21 字节码构建，运行端推荐 Java 25。调度逻辑封装在 `PlatformScheduler`，业务层不直接散落调度调用。
 
 活动宠物实体由加载索引维护。SQLite / MySQL 完成回调只读取线程安全状态，再把生命读取、属性刷新、召回和移除交给实体调度器；不会再从数据库线程调用区块实体查询。
+
+`0.26.18-SNAPSHOT` 的默认兼容构建与 Paper 26.2 Profile 各有 111 项自动测试通过。最终成品在 Paper 26.2 Build 111 + Java 25 完成启动、旧 `gui.yml` 四键操作与中文注释迁移、`lookcoin` / `takecoin` 和分组 `coin give` 的真实 SQLite 增减回环，并安全关闭。当前没有在线客户端，仓库实际点击与视觉反馈仍需目标服务器最终确认。成品 SHA-256 为 `C88640A9866234E6EF6449D7D39848580AAF8DAC12BD7D8B5E6E4F4929EDA34F`。
 
 `0.26.17-SNAPSHOT` 的默认兼容构建与 Paper 26.2 Profile 各有 106 项自动测试通过。Paper 26.2 Build 111 + Java 25 真实启动后，控制台 UUID 账户依次完成 `look 1000`、`give 250`、`look 1250`、`take 400`、`look 850`；再扣除 `900` 被余额不足保护拒绝且余额保持 `850`，随后安全关闭。末影龙 HOVER 阶段有自动测试覆盖；名牌第一人称显示和末影龙实际骑乘仍需在线玩家最终确认。
 
