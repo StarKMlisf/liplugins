@@ -1,6 +1,6 @@
 # LiPet Wiki
 
-适用版本：`0.27.0-SNAPSHOT`
+适用版本：`0.27.1-SNAPSHOT`
 
 适用服务端：
 
@@ -10,7 +10,17 @@
 
 运行建议：Java 25。插件成品 Jar 使用 Java 21 字节码构建，便于跨版本运行。
 
-## 今日更新 · 2026-08-29 · 0.27.0
+## 今日更新 · 2026-08-29 · 0.27.1
+
+- MM 技能冷却现在先于概率抽取判断，冷却期间不再产生无效随机数；`PASSIVE` 和 `INTERVAL` 每轮合并为一次扫描。
+- MM 返回 `false` 时保留配置冷却；零冷却失败技能至少退避 1 秒，错误日志按技能名分别每 30 秒最多输出一次。
+- 反射层兼容实例或静态 `getAPIHelper()`，并兼容 `float` / `double power` 七参数 API。
+- `/lipet status` 显示含启用规则的宠物类型数和技能规则总数；旧官方状态文本自动迁移，自定义文本不覆盖。
+- 默认构建与 Paper 26.2 Profile 各 148 项测试通过；Paper 26.2 Build 111 已验证旧配置迁移、规则计数、热重载、MM 缺失降级和安全关闭。
+
+完整记录见 [2026-08-29 MythicMobs 技能优化日志](更新日志-2026-08-29-MythicMobs技能优化.md)。
+
+## 上一版 · 2026-08-29 · 0.27.0
 
 - 每个 `宠物类型/*.yml` 可单独配置 MythicMobs 技能，并通过 `unlock-level` 指定宠物达到多少级后解锁。
 - 支持主人攻击/受击、宠物攻击/受击、主人交互及定时触发，并可配置概率、独立冷却、基础 `power` 与每级成长。
@@ -179,7 +189,7 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 
 ## 2. 安装
 
-1. 将 `LiPet-0.27.0-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
+1. 将 `LiPet-0.27.1-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
 2. 启动服务器一次，让插件生成默认配置。
 3. 停服，编辑 `plugins/LiPet/` 下的配置文件。
 4. 再次启动服务器。
@@ -488,7 +498,10 @@ mythic-skills:
 - `trigger` 支持 `PET_ATTACK`、`PET_DEFEND`、`OWNER_ATTACK`、`OWNER_DEFEND`、`INTERACT`、`PASSIVE`、`INTERVAL`。
 - `PASSIVE` 与 `INTERVAL` 在宠物行为循环中按冷却触发，至少需要 `0.5` 秒冷却；有战斗目标时传递战斗目标，否则使用主人。
 - MM 技能会在施放前预占冷却，防止技能伤害再次进入同一触发链造成递归。
-- MythicMobs 未安装或技能名不存在时不会影响 LiPet 其他功能；执行 `/lipet status` 可检查挂钩状态。
+- MythicMobs 未安装或技能名不存在时不会影响 LiPet 其他功能；执行 `/lipet status` 可检查挂钩状态、含启用规则的宠物类型数和规则总数。
+- 冷却中的技能不会重复抽取概率；`PASSIVE` 与 `INTERVAL` 每轮只扫描一次技能表。
+- MM 返回 `false` 时会保留配置冷却；零冷却失败技能至少退避 1 秒，错误日志按技能名独立限频，避免错误技能刷屏。
+- MM 5.x 的实例/静态 APIHelper 与 `float`/`double power` 变体均有反射兼容测试。
 
 旧文件升级时只会增加带中文注释且 `enabled: false` 的 `level-skill-example`，不会自动施放占位技能，也不会覆盖已有配置。修改后执行 `/lipet reload` 即可重新载入。
 
@@ -1063,6 +1076,8 @@ LiPet 当前使用 Java 21 字节码构建，运行端推荐 Java 25。调度逻
 
 活动宠物实体由加载索引维护。SQLite / MySQL 完成回调只读取线程安全状态，再把生命读取、属性刷新、召回和移除交给实体调度器；不会再从数据库线程调用区块实体查询。
 
+`0.27.1-SNAPSHOT` 默认构建与 Paper 26.2 Profile 各 148 项自动测试通过，失败、错误和跳过均为 0。新增测试覆盖失败施放退避、冷却期间跳过随机抽取、两种定时触发合并扫描、静态 APIHelper、`double power` 和历史官方状态语言迁移。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上使用真实旧配置启动，并在隔离配置中启用一条 MM 规则；旧 `status-mythicmobs` 自动补入统计变量，`/lipet status` 显示 PlayerPoints `ONLINE`、MythicMobs `OFFLINE`、技能类型 `1`、规则 `1`，热重载后保持一致并安全关闭，LiPet 无报错。当前环境没有真实 MythicMobs Jar，因此 MM 技能在实际战斗中的最终施放仍需在安装 MM 的目标测试服确认。成品大小为 `750989` 字节，SHA-256 为 `B4630BFD0F23FD9CA0003B057269DED973ADD6E5C2743F6785523C45BA671B27`。
+
 `0.27.0-SNAPSHOT` 默认构建与 Paper 26.2 Profile 各 144 项自动测试通过，失败、错误和跳过均为 0。测试覆盖等级锁、解锁后施放、概率、冷却、`power` 等级成长、MythicMobs 5.x 详细调用参数、旧宠物类型配置补全和非法值拒绝。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上使用真实 0.26.26 多 YML 配置启动，狼、猫文件均自动补入完整中文注释和默认关闭示例；`/lipet reload` 成功，`/lipet status` 显示 PlayerPoints `ONLINE`、MythicMobs `OFFLINE`，未安装 MM 时 LiPet 无报错并安全关闭。当前环境没有真实 MythicMobs Jar，因此 MM 技能在实际战斗中的最终施放仍需在安装 MM 的目标测试服确认。成品大小为 `748702` 字节，SHA-256 为 `D2090041BA7C187A86C8C627F2DF9D499723795ACFF2FC53EF4DD664D89D09E2`。
 
 `0.26.26-SNAPSHOT` 默认构建与 Paper 26.2 Profile 各 137 项自动测试通过，失败、错误和跳过均为 0。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上使用真实 0.26.25 `gui.yml` 启动，缺失的 `info.navigation.manage` 按钮、完整中文注释及 `manage-return:<entity_id>` 动作成功自动补全，原仓库返回按钮保持不变；`/lipet reload` 成功，`/lipet status` 显示 PlayerPoints `ONLINE`，随后安全关闭，LiPet 自身日志无报错。当前没有在线客户端，管理页到属性/成长面板的实际点击和最终视觉仍需目标测试服确认。成品大小为 `729546` 字节，SHA-256 为 `C4C3EAF41D974E2296B5FF829393C4C7BFA4EB578C5541A82532306C8B1F5650`。
@@ -1226,5 +1241,5 @@ mvn -Ppaper-26.2 clean package
 输出：
 
 ```text
-target/LiPet-0.27.0-SNAPSHOT.jar
+target/LiPet-0.27.1-SNAPSHOT.jar
 ```
