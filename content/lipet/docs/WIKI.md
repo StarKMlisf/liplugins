@@ -1,6 +1,6 @@
 # LiPet Wiki
 
-适用版本：`0.26.26-SNAPSHOT`
+适用版本：`0.27.0-SNAPSHOT`
 
 适用服务端：
 
@@ -10,7 +10,17 @@
 
 运行建议：Java 25。插件成品 Jar 使用 Java 21 字节码构建，便于跨版本运行。
 
-## 今日更新 · 2026-08-29 · 0.26.26
+## 今日更新 · 2026-08-29 · 0.27.0
+
+- 每个 `宠物类型/*.yml` 可单独配置 MythicMobs 技能，并通过 `unlock-level` 指定宠物达到多少级后解锁。
+- 支持主人攻击/受击、宠物攻击/受击、主人交互及定时触发，并可配置概率、独立冷却、基础 `power` 与每级成长。
+- 低于要求等级不会施放；达到等级后自动生效。技能施放前预占冷却，避免 MM 伤害递归触发。
+- MythicMobs 为可选软依赖；没有安装时 LiPet 仍正常运行，`/lipet status` 会显示 MM 状态。
+- 旧宠物类型文件只补带完整中文注释且默认关闭的示例，不覆盖服主已有值和注释。
+
+完整记录见 [2026-08-29 MythicMobs 等级技能更新日志](更新日志-2026-08-29-MythicMobs等级技能.md)。
+
+## 上一轮更新 · 2026-08-29 · 0.26.26
 
 - 修复从同一只宠物的管理界面进入“完整属性”或“成长与加点”后，返回按钮错误跳到宠物仓库的问题。
 - 属性面板会保存打开来源；从管理界面进入时返回原宠物管理页，从仓库或指令进入时仍返回宠物仓库。
@@ -169,7 +179,7 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 
 ## 2. 安装
 
-1. 将 `LiPet-0.26.26-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
+1. 将 `LiPet-0.27.0-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
 2. 启动服务器一次，让插件生成默认配置。
 3. 停服，编辑 `plugins/LiPet/` 下的配置文件。
 4. 再次启动服务器。
@@ -183,7 +193,7 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 | --- | --- |
 | `config.yml` | 存储、服务器 ID、群组、依赖下载、内置货币、排行榜分页 |
 | `pet-types.yml` | 宠物类型目录、原版自动注册、名牌、骑乘和背包全局设置；兼容旧 `types` 节点 |
-| `宠物类型/*.yml` | 各宠物类型的实体、模型、属性、行为、成长和食物；目录和文件名可用中文 |
+| `宠物类型/*.yml` | 各宠物类型的实体、模型、属性、行为、成长、食物和 MythicMobs 等级技能；目录和文件名可用中文 |
 | `shop.yml` | 商城总开关、宠物商城和宠物道具商城 |
 | `gui.yml` | GUI 标题、尺寸、槽位、留白/边框、图标、点击动作与音效 |
 | `capture.yml` | 捕捉球、捕捉概率、捕捉仪式、音效、粒子、实体映射 |
@@ -452,6 +462,35 @@ types:
 - `follow-distance` 是开始追赶距离，`stop-distance` 是停止追赶距离；后者必须更小，避免宠物在临界点反复启停。
 - 超过 `teleport-distance` 时只会在主人落地且未飞行、未滑翔时安全回传；回传带有短冷却，避免异步传送失败时连续刷传送。
 - 原生寻路连续拒绝路径时，宠物会在主人安全落地后回传，不会停在原地，也不会使用速度强拖穿过障碍。
+
+### MythicMobs 等级技能
+
+每个宠物类型都可维护独立的 MM 技能列表。下面示例应放在对应类型节点内，例如 `宠物类型/狼.yml` 的 `types.wolf`：
+
+```yaml
+mythic-skills:
+  level-10-bite:
+    enabled: true
+    skill: "LiPetWolfBite"
+    trigger: "PET_ATTACK"
+    unlock-level: 10
+    chance: 0.35
+    cooldown-seconds: 8.0
+    power: 1.0
+    power-per-level: 0.05
+```
+
+- `skill` 是 MythicMobs 配置中的内部技能名，区分大小写。
+- `unlock-level` 是解锁等级，必须在 `1` 到该宠物的 `growth.maximum-level` 之间。
+- `chance` 范围为 `0.0-1.0`；`1.0` 表示每次符合触发条件都会尝试施放。
+- `cooldown-seconds` 是同一只宠物、同一项技能的独立冷却。
+- 最终 `power = power + max(0, 宠物等级 - unlock-level) × power-per-level`。例如本例 14 级时传入 MM 的 `power` 为 `1.2`。
+- `trigger` 支持 `PET_ATTACK`、`PET_DEFEND`、`OWNER_ATTACK`、`OWNER_DEFEND`、`INTERACT`、`PASSIVE`、`INTERVAL`。
+- `PASSIVE` 与 `INTERVAL` 在宠物行为循环中按冷却触发，至少需要 `0.5` 秒冷却；有战斗目标时传递战斗目标，否则使用主人。
+- MM 技能会在施放前预占冷却，防止技能伤害再次进入同一触发链造成递归。
+- MythicMobs 未安装或技能名不存在时不会影响 LiPet 其他功能；执行 `/lipet status` 可检查挂钩状态。
+
+旧文件升级时只会增加带中文注释且 `enabled: false` 的 `level-skill-example`，不会自动施放占位技能，也不会覆盖已有配置。修改后执行 `/lipet reload` 即可重新载入。
 
 ### ModelEngine / MEG 模型
 
@@ -1024,6 +1063,8 @@ LiPet 当前使用 Java 21 字节码构建，运行端推荐 Java 25。调度逻
 
 活动宠物实体由加载索引维护。SQLite / MySQL 完成回调只读取线程安全状态，再把生命读取、属性刷新、召回和移除交给实体调度器；不会再从数据库线程调用区块实体查询。
 
+`0.27.0-SNAPSHOT` 默认构建与 Paper 26.2 Profile 各 144 项自动测试通过，失败、错误和跳过均为 0。测试覆盖等级锁、解锁后施放、概率、冷却、`power` 等级成长、MythicMobs 5.x 详细调用参数、旧宠物类型配置补全和非法值拒绝。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上使用真实 0.26.26 多 YML 配置启动，狼、猫文件均自动补入完整中文注释和默认关闭示例；`/lipet reload` 成功，`/lipet status` 显示 PlayerPoints `ONLINE`、MythicMobs `OFFLINE`，未安装 MM 时 LiPet 无报错并安全关闭。当前环境没有真实 MythicMobs Jar，因此 MM 技能在实际战斗中的最终施放仍需在安装 MM 的目标测试服确认。成品大小为 `748702` 字节，SHA-256 为 `D2090041BA7C187A86C8C627F2DF9D499723795ACFF2FC53EF4DD664D89D09E2`。
+
 `0.26.26-SNAPSHOT` 默认构建与 Paper 26.2 Profile 各 137 项自动测试通过，失败、错误和跳过均为 0。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上使用真实 0.26.25 `gui.yml` 启动，缺失的 `info.navigation.manage` 按钮、完整中文注释及 `manage-return:<entity_id>` 动作成功自动补全，原仓库返回按钮保持不变；`/lipet reload` 成功，`/lipet status` 显示 PlayerPoints `ONLINE`，随后安全关闭，LiPet 自身日志无报错。当前没有在线客户端，管理页到属性/成长面板的实际点击和最终视觉仍需目标测试服确认。成品大小为 `729546` 字节，SHA-256 为 `C4C3EAF41D974E2296B5FF829393C4C7BFA4EB578C5541A82532306C8B1F5650`。
 
 `0.26.25-SNAPSHOT` 默认构建与 Paper 26.2 Profile 各 132 项自动测试通过，失败、错误和跳过均为 0。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上使用真实 0.26.24 默认 `gui.yml` 启动，仓库 Lore 自动迁移为绿色潜行操作、警告前空行和红色永久删除提示；`/lipet reload` 成功，`/lipet status` 显示 PlayerPoints `ONLINE`，随后安全关闭，LiPet 自身日志无报错。当前没有在线客户端，仓库最终视觉和四种实际点击仍需目标测试服确认。成品大小为 `726864` 字节，SHA-256 为 `41F82C483C8375CDFD7B71A1A8AC1E2F0F92ED15D1664DD8068B8D9900661769`。
@@ -1185,5 +1226,5 @@ mvn -Ppaper-26.2 clean package
 输出：
 
 ```text
-target/LiPet-0.26.26-SNAPSHOT.jar
+target/LiPet-0.27.0-SNAPSHOT.jar
 ```
