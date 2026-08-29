@@ -279,10 +279,10 @@ export const works: WorkEntry[] = [
     name: 'LiPet',
     catalogLabel: '宠物',
     kicker: '宠物养成、捕捉、骑乘与战斗',
-    summary: '覆盖每宠独立 MythicMobs 等级技能、失败退避与状态统计、中文多文件宠物类型配置、仓库四键、宠物获取、成长、双排行榜、PlayerPoints 商城、骑乘、捕捉、背包与跨服数据的一体化宠物系统。',
+    summary: '覆盖旧宠物类型兼容、一宠物一 YML、MythicMobs 等级技能、失败退避与状态统计、宠物获取、成长、双排行榜、PlayerPoints 商城、骑乘、捕捉、背包与跨服数据的一体化宠物系统。',
     description:
-      'LiPet 是面向群组服的 Bukkit 宠物框架，包含每种宠物独立配置且按等级解锁的 MythicMobs 技能、七种触发器、概率/冷却、失败退避、API 变体兼容、规则状态统计与 power 等级成长，另含管理页原路返回、“我的宠物”列表、仓库四键、中文多 YML 类型配置、SQLite/MySQL 热切换、双排行榜、PlayerPoints/Vault 商城、属性成长、捕捉仪式、完全自定义 GUI、离线及全服宠物管理、骑乘、战斗导航、外部模型、CraftEngine 完整物品挂钩和扩展 API。',
-    version: '0.27.1-SNAPSHOT',
+      'LiPet 是面向群组服的 Bukkit 宠物框架，包含旧原版类型 ID 自动兼容、商城 10 种宠物独立 YML、每种宠物独立配置且按等级解锁的 MythicMobs 技能、失败退避、API 变体兼容、规则状态统计与 power 等级成长，另含管理页原路返回、“我的宠物”列表、仓库四键、SQLite/MySQL 热切换、双排行榜、PlayerPoints/Vault 商城、属性成长、捕捉仪式、完全自定义 GUI、离线及全服宠物管理、骑乘、战斗导航、外部模型、CraftEngine 完整物品挂钩和扩展 API。',
+    version: '0.27.2-SNAPSHOT',
     status: '持续维护',
     platform: 'Paper / Folia',
     minecraft: '1.21.11 · 26.1.2 · 26.2',
@@ -292,6 +292,8 @@ export const works: WorkEntry[] = [
     dependencies: ['Vault / PlayerPoints（商城货币可选）', 'PlaceholderAPI（可选）', 'MythicMobs（等级技能可选）', 'ModelEngine / CraftEngine（按配置可选）', 'MySQL / Redis（跨服功能按需）'],
     features: [
       '宠物创建、召唤与持久化',
+      '老版本原版宠物类型 ID 自动兼容',
+      '商城 10 种宠物缺失时安全补齐独立 YML',
       '主菜单“我的宠物”与宠物列表入口',
       '召唤上限专用中文提示与旧语言迁移',
       '中文属性成长、喂养与升级',
