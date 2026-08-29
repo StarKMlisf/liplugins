@@ -1,6 +1,6 @@
 # LiPet Wiki
 
-适用版本：`0.27.3-SNAPSHOT`
+适用版本：`0.27.4-SNAPSHOT`
 
 适用服务端：
 
@@ -10,7 +10,17 @@
 
 运行建议：Java 25。插件成品 Jar 使用 Java 21 字节码构建，便于跨版本运行。
 
-## 今日更新 · 2026-08-29 · 0.27.3
+## 今日更新 · 2026-08-29 · 0.27.4
+
+- `capture.yml` 新增默认关闭的 `balls.craftengine_example`，包含 CE 完整物品 ID、名称、Lore 与概率案例。
+- `pet-types.yml -> defaults.growth.foods` 新增默认关闭的 `craftengine_example`，所有继承公共默认值的宠物均可使用。
+- 捕捉球和食物都新增 `enabled` 开关；关闭节点在物品 ID 校验前跳过，不要求未安装 CE 的服务器解析占位 ID。
+- 旧服只补齐缺失的开关与案例，不覆盖现有 Material、CE ID、数值或管理员注释。
+- 默认构建与 Paper 26.2 Profile 各 165 项测试通过，并在 CraftEngine 26.8 的 109 个物品环境验证 CE 食物与捕捉球双入口。
+
+完整记录见 [2026-08-29 CraftEngine 捕捉球与食物案例更新日志](更新日志-2026-08-29-CE捕捉球与食物案例.md)。
+
+## 上一版 · 2026-08-29 · 0.27.3
 
 - `pet-types.yml -> defaults` 统一保存所有宠物相同的属性、行为、成长、食物和技能；单宠 YML 只写身份与差异项。
 - 默认捕捉规则允许的所有原版生物都会在 `宠物/原版宠物/` 下生成一个中文文件名的独立 YML，已有配置不覆盖。
@@ -20,7 +30,7 @@
 
 完整记录见 [2026-08-29 全量宠物配置与 MCPets 兼容更新日志](更新日志-2026-08-29-全量宠物配置与MCPets兼容.md)。
 
-## 上一版 · 2026-08-29 · 0.27.2
+## 上两版 · 2026-08-29 · 0.27.2
 
 - 老宠物数据中的 `bat`、`fox`、`minecraft:bat` 等 ID 会自动兼容到当前 `vanilla_<实体名>` 类型，不需要改库或重新捕捉。
 - 召唤、同类型持有上限与管理员按类型操作共用兼容规则，避免旧 ID 和新 ID 被当成两只不同种类。
@@ -209,7 +219,7 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 
 ## 2. 安装
 
-1. 将 `LiPet-0.27.2-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
+1. 将 `LiPet-0.27.4-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
 2. 启动服务器一次，让插件生成默认配置。
 3. 停服，编辑 `plugins/LiPet/` 下的配置文件。
 4. 再次启动服务器。
@@ -689,6 +699,7 @@ labels:
 foods:
   # 旧版 Bukkit Material 写法继续支持。
   COOKED_BEEF:
+    enabled: true
     display-name: "熟牛肉"
     experience: 20
     healing: 6.0
@@ -698,9 +709,10 @@ foods:
 
   # CraftEngine 物品必须填写完整 namespace:item_id。
   # 节点名只是管理员自定别名；使用 item-id 后也完整支持含点号的合法 ID。
-  pet-biscuit:
-    item-id: 'my.pack:pet.food'
-    display-name: "灵宠饼干"
+  craftengine_example:
+    enabled: false
+    item-id: "yourpack:pet_food"
+    display-name: "灵契宠物粮"
     experience: 35
     healing: 8.0
     attribute-points: 0
@@ -711,6 +723,7 @@ foods:
 规则：
 
 - 玩家手持配置的原版或 CraftEngine 食物右键自己的宠物即可喂食。
+- 把案例中的 `item-id` 换成真实 CE ID，再将 `enabled` 改为 `true`；关闭案例不会参与识别、扣除或信息界面展示。
 - CraftEngine 物品按完整自定义 ID 精确识别；即使多个物品都以 `PAPER` 为底材，也只会匹配配置的那一个。
 - 简单 CE ID 可直接作为节点名，例如 `'default:pet_biscuit':`；ID 含 `.` 时请使用普通节点别名并填写 `item-id`。
 - `CraftEngine` 是可选软依赖。未安装时原版食物仍可使用，CE 食物配置会保留但不会匹配。
@@ -803,6 +816,21 @@ ritual:
     success: "ENTITY_PLAYER_LEVELUP"
     failure: "ENTITY_ITEM_BREAK"
 ```
+
+默认文件还提供一个关闭状态的 CraftEngine 捕捉球案例：
+
+```yaml
+balls:
+  craftengine_example:
+    enabled: false
+    material: "yourpack:pet_capture_ball"
+    name: "<gradient:#69F0AE:#40C4FF><bold>灵契捕捉球</bold></gradient>"
+    base-chance: 0.25
+    low-health-bonus: 0.50
+    maximum-chance: 0.75
+```
+
+把 `material` 换成真实 CE 完整 ID，再将 `enabled` 改为 `true`。关闭的球不会出现在 `/lipet captureball` 补全、识别和发放流程中；至少要保留一个已启用捕捉球。
 
 兼容处理：
 
@@ -1154,6 +1182,8 @@ LiPet 当前使用 Java 21 字节码构建，运行端推荐 Java 25。调度逻
 
 活动宠物实体由加载索引维护。SQLite / MySQL 完成回调只读取线程安全状态，再把生命读取、属性刷新、召回和移除交给实体调度器；不会再从数据库线程调用区块实体查询。
 
+`0.27.4-SNAPSHOT` 默认构建与 Paper 26.2 Profile 各 165 项自动测试通过，失败、错误和跳过均为 0。最终成品在 Paper 26.2 Build 111 + Java 25 + CraftEngine 26.8 + PlayerPoints 3.3.5 上使用真实 0.27.3 配置启动；升级保留原捕捉球材料和熟牛肉成长数值，只补入缺失的启用开关与默认关闭案例。将两个案例启用并统一改为 `default:topaz_pickaxe` 后，CraftEngine 索引 109 个物品，运行探针确认 CE 身份没有退化为原版金镐底材，并同时命中宠物食物和捕捉球配置，随后安全关闭。成品大小为 `790853` 字节，SHA-256 为 `3E080ACF098093C5AC09A1B2EE0390E692FFDA36F32EE4208B87A7C4C844DF03`；当前没有在线客户端，实际喂食与右键捕捉画面仍需目标测试服确认。
+
 `0.27.3-SNAPSHOT` 默认构建与 Paper 26.2 Profile 各 160 项自动测试通过，失败、错误和跳过均为 0。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上使用真实 0.27.2 多 YML 配置启动：旧 `宠物类型/` 成功迁移为 `宠物/`，首次只生成 77 个缺失文件，最终为 87 种默认可捕捉原版生物各保留一份独立 YML，并直接载入原始 MCPets 龙骑文件。复制前后龙骑文件 SHA-256 同为 `3171CEC007C3B88C6234B5529F02F07B4F7B31347FF78B2EE55A5E8DF9A3EBD9`，证明加载未改写；热重载成功，第二次启动未重复生成，旧 ID 探针继续全部通过并安全关闭。MythicMobs 生成反射同时覆盖 MCPets 当前使用的 APIHelper 路径和旧 MobManager 后备路径。当前环境没有真实 MythicMobs Jar 和在线客户端，因此龙骑 Mob 的实际生成、模型与骑乘画面仍需目标测试服确认。成品大小为 `787007` 字节，SHA-256 为 `C2D0C846440CC81906A3FB719551E69EDE02DCA913045B5B99542ACCB83C71DF`。
 
 `0.27.2-SNAPSHOT` 默认构建与 Paper 26.2 Profile 各 151 项自动测试通过，失败、错误和跳过均为 0。新增测试覆盖旧原版 ID、命名空间 ID、自定义 `legacy-ids`、当前 ID 优先级和模板 YAML 解析。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上从旧版配置启动，安全补齐 8 个缺失文件并形成商城 10 种宠物各自独立 YML；原狼、猫文件哈希保持不变，第二次启动不重复生成。兼容探针验证 `bat`、`minecraft:bat`、`fox` 均能匹配当前类型，`/lipet reload` 成功并安全关闭。当前没有在线客户端，旧宠物在游戏中的最终召唤点击仍需目标测试服确认。成品大小为 `761171` 字节，SHA-256 为 `B4F035367B1242193775A5F43BCFF8A21909F09C4F41C39A553B56976288F859`。
@@ -1323,5 +1353,5 @@ mvn -Ppaper-26.2 clean package
 输出：
 
 ```text
-target/LiPet-0.27.3-SNAPSHOT.jar
+target/LiPet-0.27.4-SNAPSHOT.jar
 ```
