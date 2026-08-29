@@ -18,7 +18,7 @@
 ```text
 catalog     宠物商品定义和上架规则
 warehouse   玩家拥有的宠物和仓库容量
-currency    内置/Vault/PlayerCurrency 统一交易接口
+currency    内置/Vault/PlayerPoints 统一交易接口
 ability     触发器、冷却、概率和能力执行器
 model       Native/ModelEngine 活体模型适配
 item        Bukkit/CraftEngine 物品识别、生成、索引与重载适配

@@ -1,6 +1,6 @@
 # LiPet Wiki
 
-适用版本：`0.26.18-SNAPSHOT`
+适用版本：`0.26.19-SNAPSHOT`
 
 适用服务端：
 
@@ -10,7 +10,17 @@
 
 运行建议：Java 25。插件成品 Jar 使用 Java 21 字节码构建，便于跨版本运行。
 
-## 今日更新 · 2026-08-29 · 0.26.18
+## 今日更新 · 2026-08-29 · 0.26.19
+
+- 新增默认自动授予的 `lipet.player` 普通玩家权限组；`lipet.admin` 显式继承玩家组，解决权限插件中普通功能没有自动 `true` 的问题。
+- 新增 `/lipet top coin [页码]` 宠物币排行榜和 `/lipet top level [页码]` 宠物等级排行榜；每页数量可配置，SQLite/MySQL 异步分页查询。
+- 宠物商城与宠物道具商城支持 `currency: "PLAYERPOINTS"`；PlayerPoints 是可选软依赖，价格必须填写整数。
+- `/lipet status` 新增独立 PlayerPoints 状态行；旧版自定义总状态文本不会覆盖。
+- 116 项自动测试通过；Paper 26.2 Build 111 + PlayerPoints 3.3.5 已完成真实挂钩、两种排行榜与安全关闭验证。
+
+完整记录见 [2026-08-29 权限组、排行榜与 PlayerPoints 更新日志](更新日志-2026-08-29-权限排行榜与PlayerPoints.md)。
+
+## 上一轮更新 · 2026-08-29 · 0.26.18
 
 - 宠物仓库新增四种独立点击：左键和蹲下左键召回，右键查看属性与管理，蹲下右键进入放生二次确认。
 - 仓库宠物图标新增红色永久放生说明；旧版默认 Lore 会自动迁移，缺失的 `SHIFT_LEFT`、`SHIFT_RIGHT` 节点会补齐，服主自定义 Lore 与动作不会覆盖。
@@ -87,11 +97,11 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 - 宠物信号棒
 - SQLite / MySQL 持久化
 - Redis 群组同步预留
-- Vault / PlaceholderAPI / ModelEngine / CraftEngine 软兼容
+- Vault / PlayerPoints / PlaceholderAPI / ModelEngine / CraftEngine 软兼容
 
 ## 2. 安装
 
-1. 将 `LiPet-0.26.18-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
+1. 将 `LiPet-0.26.19-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
 2. 启动服务器一次，让插件生成默认配置。
 3. 停服，编辑 `plugins/LiPet/` 下的配置文件。
 4. 再次启动服务器。
@@ -103,7 +113,7 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 
 | 文件 | 用途 |
 | --- | --- |
-| `config.yml` | 存储、服务器 ID、群组、依赖下载、内置货币 |
+| `config.yml` | 存储、服务器 ID、群组、依赖下载、内置货币、排行榜分页 |
 | `pet-types.yml` | 宠物类型、实体、模型、属性、行为、背包、成长、食物 |
 | `shop.yml` | 商城总开关、宠物商城和宠物道具商城 |
 | `gui.yml` | GUI 标题、尺寸、槽位、留白/边框、图标、点击动作与音效 |
@@ -197,6 +207,7 @@ server:
 | `/lipet itemshop` | 打开宠物道具商城 |
 | `/lipet warehouse` | 打开宠物仓库 |
 | `/lipet balance` | 查看宠物币余额 |
+| `/lipet top <coin\|level> [页码]` | 查看宠物币或宠物等级排行榜 |
 | `/lipet daily` | 领取每日宠物币 |
 | `/lipet call <宠物名称>` | 召唤仓库中的宠物 |
 | `/lipet store` | 收回当前已召唤宠物 |
@@ -270,8 +281,20 @@ server:
 - `look` 不需要数量；`give` 与 `take` 的数量必须大于 `0` 且不超过一万亿。
 - 目标支持不区分大小写的已知玩家名和完整 UUID；离线玩家仍可手工输入，Tab 只显示在线玩家。
 - `take` 使用数据库原子条件更新，余额不足时不会扣除任何金额，也不会产生负数。
-- 指令只管理 LiPet `INTERNAL` 宠物币，不修改 Vault 或 PlayerCurrency 余额。
+- 指令只管理 LiPet `INTERNAL` 宠物币，不修改 Vault、PlayerPoints 或 PlayerCurrency 余额。
 - 控制台可执行，权限为 `lipet.admin.coin`，全部反馈文本可在 `messages.yml` 自定义。
+
+### 查看排行榜
+
+```text
+/lipet top coin [页码]
+/lipet top level [页码]
+```
+
+- `coin` 统计已经建立 LiPet 内置宠物币账户的玩家，按余额从高到低显示。
+- `level` 按宠物等级、经验排序；同一主人拥有多只宠物时，每只宠物都是独立名次。
+- `config.yml` 的 `leaderboard.page-size` 控制每页 `1-20` 条。
+- 排行榜查询在 SQLite/MySQL 仓库线程中完成，玩家和控制台均可执行；权限为 `lipet.command.top`。
 
 ## 7. 权限
 
@@ -283,6 +306,7 @@ server:
 | `lipet.command.itemshop` | true | 打开宠物道具商城 |
 | `lipet.command.warehouse` | true | 打开宠物仓库 |
 | `lipet.command.balance` | true | 查看宠物币余额 |
+| `lipet.command.top` | true | 查看宠物币和宠物等级排行榜 |
 | `lipet.command.daily` | true | 领取每日宠物币 |
 | `lipet.admin.manage` | op | 管理指定在线玩家的指定宠物 |
 | `lipet.admin.pet.give` | op | 向在线、离线或全服玩家发放宠物 |
@@ -306,6 +330,7 @@ server:
 | `lipet.command.signalstick` | op | 发放信号棒 |
 | `lipet.command.status` | op | 查看运行状态 |
 | `lipet.command.reload` | op | 重载配置 |
+| `lipet.player` | true | 普通玩家总权限；自动包含全部玩家功能 |
 | `lipet.admin` | op | 管理员总权限 |
 
 ## 8. 宠物类型
@@ -609,6 +634,9 @@ entries:
 
 - `INTERNAL`：LiPet 内置宠物币
 - `VAULT`：Vault 经济
+- `PLAYERPOINTS`：PlayerPoints 点券；商品价格必须是整数
+
+PlayerPoints 没有安装或未正常启用时，LiPet 仍会启动，使用 `PLAYERPOINTS` 的商品会显示货币不可用。安装后执行 `/lipet status`，独立状态行应显示 `PlayerPoints: ONLINE`。
 
 如果玩家已经拥有该类型宠物，购买会被拒绝。
 
@@ -665,6 +693,8 @@ item-entries:
 ```
 
 适合出售宠物食物、技能书材料或服务器自定义道具。
+
+道具商城同样支持 `INTERNAL`、`VAULT` 与 `PLAYERPOINTS`；使用 PlayerPoints 时价格必须是整数。
 
 ## 14. 宠物背包
 
@@ -901,6 +931,8 @@ LiPet 当前使用 Java 21 字节码构建，运行端推荐 Java 25。调度逻
 
 活动宠物实体由加载索引维护。SQLite / MySQL 完成回调只读取线程安全状态，再把生命读取、属性刷新、召回和移除交给实体调度器；不会再从数据库线程调用区块实体查询。
 
+`0.26.19-SNAPSHOT` 的 Paper 26.2 Profile 共 116 项自动测试通过。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 完成真实启动，LiPet 日志确认 PlayerPoints API 挂钩成功，`/lipet status` 显示 `ONLINE`；宠物币榜完成真实 SQLite 余额排序，宠物等级榜显示离线 UUID 主人的宠物名、等级和经验，随后两插件安全关闭。当前没有在线客户端，商城实际点击扣除 PlayerPoints 仍需目标测试服最终确认。成品 SHA-256 为 `210DEC705F16F3FD2F5E9B4B0C65A3BD68A35C8C79F521466026A8DA8908BF15`。
+
 `0.26.18-SNAPSHOT` 的默认兼容构建与 Paper 26.2 Profile 各有 111 项自动测试通过。最终成品在 Paper 26.2 Build 111 + Java 25 完成启动、旧 `gui.yml` 四键操作与中文注释迁移、`lookcoin` / `takecoin` 和分组 `coin give` 的真实 SQLite 增减回环，并安全关闭。当前没有在线客户端，仓库实际点击与视觉反馈仍需目标服务器最终确认。成品 SHA-256 为 `C88640A9866234E6EF6449D7D39848580AAF8DAC12BD7D8B5E6E4F4929EDA34F`。
 
 `0.26.17-SNAPSHOT` 的默认兼容构建与 Paper 26.2 Profile 各有 106 项自动测试通过。Paper 26.2 Build 111 + Java 25 真实启动后，控制台 UUID 账户依次完成 `look 1000`、`give 250`、`look 1250`、`take 400`、`look 850`；再扣除 `900` 被余额不足保护拒绝且余额保持 `850`，随后安全关闭。末影龙 HOVER 阶段有自动测试覆盖；名牌第一人称显示和末影龙实际骑乘仍需在线玩家最终确认。
@@ -1048,5 +1080,5 @@ mvn -Ppaper-26.2 clean package
 输出：
 
 ```text
-target/LiPet-0.26.18-SNAPSHOT.jar
+target/LiPet-0.26.19-SNAPSHOT.jar
 ```
