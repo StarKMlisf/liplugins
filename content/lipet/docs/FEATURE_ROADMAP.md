@@ -8,7 +8,7 @@
 - MiniMessage 与 RGB 宠物名称。
 - 被动药水、攻击、防御、跳跃、飞行、火球、定时命令等能力。
 - 宠物商城、仓库、升级、物品、箱子抽取和玩家交易。
-- 内置货币、Vault 和 PlayerCurrency 多货币。
+- 内置货币、Vault 和 PlayerPoints 多货币，商城展示名称与配置 ID 分离。
 - 权限自动发放与权限失效回收。
 - PlaceholderAPI 变量。
 - 全量数据自动备份。

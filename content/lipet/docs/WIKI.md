@@ -1,6 +1,6 @@
 # LiPet Wiki
 
-适用版本：`0.26.19-SNAPSHOT`
+适用版本：`0.26.20-SNAPSHOT`
 
 适用服务端：
 
@@ -10,7 +10,16 @@
 
 运行建议：Java 25。插件成品 Jar 使用 Java 21 字节码构建，便于跨版本运行。
 
-## 今日更新 · 2026-08-29 · 0.26.19
+## 今日更新 · 2026-08-29 · 0.26.20
+
+- 修复宠物商城和宠物道具商城的 `<currency>` 把 `INTERNAL` 直接显示给玩家的问题。
+- `INTERNAL` 现在读取 `config.yml` 的 `currency.internal.display-name`，默认显示“宠物币”。
+- Vault 显示为 `Vault`，PlayerPoints 显示为 `PlayerPoints`；未知或未挂钩的提供器保留原始 ID，方便排查。
+- 新增统一货币展示名称测试，确保两个商城共用同一解析规则。
+
+完整记录见 [2026-08-29 商城货币显示更新日志](更新日志-2026-08-29-商城货币显示.md)。
+
+## 上一轮更新 · 2026-08-29 · 0.26.19
 
 - 新增默认自动授予的 `lipet.player` 普通玩家权限组；`lipet.admin` 显式继承玩家组，解决权限插件中普通功能没有自动 `true` 的问题。
 - 新增 `/lipet top coin [页码]` 宠物币排行榜和 `/lipet top level [页码]` 宠物等级排行榜；每页数量可配置，SQLite/MySQL 异步分页查询。
@@ -20,7 +29,7 @@
 
 完整记录见 [2026-08-29 权限组、排行榜与 PlayerPoints 更新日志](更新日志-2026-08-29-权限排行榜与PlayerPoints.md)。
 
-## 上一轮更新 · 2026-08-29 · 0.26.18
+## 更早更新 · 2026-08-29 · 0.26.18
 
 - 宠物仓库新增四种独立点击：左键和蹲下左键召回，右键查看属性与管理，蹲下右键进入放生二次确认。
 - 仓库宠物图标新增红色永久放生说明；旧版默认 Lore 会自动迁移，缺失的 `SHIFT_LEFT`、`SHIFT_RIGHT` 节点会补齐，服主自定义 Lore 与动作不会覆盖。
@@ -101,7 +110,7 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 
 ## 2. 安装
 
-1. 将 `LiPet-0.26.19-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
+1. 将 `LiPet-0.26.20-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
 2. 启动服务器一次，让插件生成默认配置。
 3. 停服，编辑 `plugins/LiPet/` 下的配置文件。
 4. 再次启动服务器。
@@ -636,6 +645,16 @@ entries:
 - `VAULT`：Vault 经济
 - `PLAYERPOINTS`：PlayerPoints 点券；商品价格必须是整数
 
+`currency` 填写的是提供器 ID，不是玩家看到的文字。两个商城的 Lore 使用 `<currency>` 时，`INTERNAL` 会读取下面的显示名称：
+
+```yaml
+currency:
+  internal:
+    display-name: "宠物币"
+```
+
+因此 `price: 30.0`、`currency: "INTERNAL"` 默认会显示为 `30.00 宠物币`，不会再显示 `30.00 INTERNAL`。修改显示名称后需要重启服务器生效。
+
 PlayerPoints 没有安装或未正常启用时，LiPet 仍会启动，使用 `PLAYERPOINTS` 的商品会显示货币不可用。安装后执行 `/lipet status`，独立状态行应显示 `PlayerPoints: ONLINE`。
 
 如果玩家已经拥有该类型宠物，购买会被拒绝。
@@ -931,6 +950,8 @@ LiPet 当前使用 Java 21 字节码构建，运行端推荐 Java 25。调度逻
 
 活动宠物实体由加载索引维护。SQLite / MySQL 完成回调只读取线程安全状态，再把生命读取、属性刷新、召回和移除交给实体调度器；不会再从数据库线程调用区块实体查询。
 
+`0.26.20-SNAPSHOT` 的 Paper 26.2 Profile 共 117 项自动测试通过。`CurrencyRegistryTest` 验证商城配置 `INTERNAL` 会解析为 `currency.internal.display-name` 的“宠物币”，旧配置中同时保留 `currency: "INTERNAL"` 与自定义显示名。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 完成真实启动、挂钩、状态检查和安全关闭；当前没有在线客户端，商城 Lore 的最终客户端视觉仍需目标测试服确认。成品 SHA-256 为 `EC3A5D1A51D5FD9A7D436E1CCE0A11CA03C73F92EC0E4FF01A964B1375459077`。
+
 `0.26.19-SNAPSHOT` 的 Paper 26.2 Profile 共 116 项自动测试通过。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 完成真实启动，LiPet 日志确认 PlayerPoints API 挂钩成功，`/lipet status` 显示 `ONLINE`；宠物币榜完成真实 SQLite 余额排序，宠物等级榜显示离线 UUID 主人的宠物名、等级和经验，随后两插件安全关闭。当前没有在线客户端，商城实际点击扣除 PlayerPoints 仍需目标测试服最终确认。成品 SHA-256 为 `210DEC705F16F3FD2F5E9B4B0C65A3BD68A35C8C79F521466026A8DA8908BF15`。
 
 `0.26.18-SNAPSHOT` 的默认兼容构建与 Paper 26.2 Profile 各有 111 项自动测试通过。最终成品在 Paper 26.2 Build 111 + Java 25 完成启动、旧 `gui.yml` 四键操作与中文注释迁移、`lookcoin` / `takecoin` 和分组 `coin give` 的真实 SQLite 增减回环，并安全关闭。当前没有在线客户端，仓库实际点击与视觉反馈仍需目标服务器最终确认。成品 SHA-256 为 `C88640A9866234E6EF6449D7D39848580AAF8DAC12BD7D8B5E6E4F4929EDA34F`。
@@ -1080,5 +1101,5 @@ mvn -Ppaper-26.2 clean package
 输出：
 
 ```text
-target/LiPet-0.26.19-SNAPSHOT.jar
+target/LiPet-0.26.20-SNAPSHOT.jar
 ```
