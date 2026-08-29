@@ -1,6 +1,6 @@
 # LiPet Wiki
 
-适用版本：`0.26.21-SNAPSHOT`
+适用版本：`0.26.22-SNAPSHOT`
 
 适用服务端：
 
@@ -10,7 +10,17 @@
 
 运行建议：Java 25。插件成品 Jar 使用 Java 21 字节码构建，便于跨版本运行。
 
-## 今日更新 · 2026-08-29 · 0.26.21
+## 今日更新 · 2026-08-29 · 0.26.22
+
+- 玩家已有一只宠物正在跟随时，再召唤另一只会显示：`已达最大召唤数量，请将已召唤的休息后再召唤！`
+- `/lipet call` 与宠物仓库召唤共用 `messages.yml` 的 `pet-already-active`，不会误用通用的“宠物召唤失败”。
+- 升级时仅迁移历次官方默认文本，包括 Bukkit 保存后自动折行的旧值；服主自定义语言保持不变。
+- 召唤上限、官方旧值迁移和自定义文本保护均有自动测试覆盖。
+- Paper 26.2 Build 111 + PlayerPoints 3.3.5 已完成真实旧配置迁移、状态检查和安全关闭验证。
+
+完整记录见 [2026-08-29 召唤上限提示更新日志](更新日志-2026-08-29-召唤上限提示.md)。
+
+## 上一轮更新 · 2026-08-29 · 0.26.21
 
 - 修复鹦鹉等飞行宠物安全回传后，宠物已经移动但双行名牌仍停留在旧位置的问题。
 - 安全回传前主动移除 TextDisplay 乘客名牌，传送完成后立即在宠物当前位置恢复。
@@ -120,7 +130,7 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 
 ## 2. 安装
 
-1. 将 `LiPet-0.26.21-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
+1. 将 `LiPet-0.26.22-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
 2. 启动服务器一次，让插件生成默认配置。
 3. 停服，编辑 `plugins/LiPet/` 下的配置文件。
 4. 再次启动服务器。
@@ -960,6 +970,8 @@ LiPet 当前使用 Java 21 字节码构建，运行端推荐 Java 25。调度逻
 
 活动宠物实体由加载索引维护。SQLite / MySQL 完成回调只读取线程安全状态，再把生命读取、属性刷新、召回和移除交给实体调度器；不会再从数据库线程调用区块实体查询。
 
+`0.26.22-SNAPSHOT` 的 Paper 26.2 Profile 共 119 项自动测试通过。测试覆盖已有活动宠物的专用 `pet-already-active` 映射、历次官方默认文本、Bukkit 自动折行后的旧值和自定义语言保护；最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上将 0.26.21 真实旧配置迁移为“已达最大召唤数量，请将已召唤的休息后再召唤！”，并完成状态检查与安全关闭。当前没有在线客户端，聊天框最终显示需目标测试服确认。成品 SHA-256 为 `7AA16300F065436B0532A9AFBC9646F41E147D8D4DDC180ABBE6664A8542FD91`。
+
 `0.26.20-SNAPSHOT` 的 Paper 26.2 Profile 共 117 项自动测试通过。`CurrencyRegistryTest` 验证商城配置 `INTERNAL` 会解析为 `currency.internal.display-name` 的“宠物币”，旧配置中同时保留 `currency: "INTERNAL"` 与自定义显示名。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 完成真实启动、挂钩、状态检查和安全关闭；当前没有在线客户端，商城 Lore 的最终客户端视觉仍需目标测试服确认。成品 SHA-256 为 `EC3A5D1A51D5FD9A7D436E1CCE0A11CA03C73F92EC0E4FF01A964B1375459077`。
 
 `0.26.19-SNAPSHOT` 的 Paper 26.2 Profile 共 116 项自动测试通过。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 完成真实启动，LiPet 日志确认 PlayerPoints API 挂钩成功，`/lipet status` 显示 `ONLINE`；宠物币榜完成真实 SQLite 余额排序，宠物等级榜显示离线 UUID 主人的宠物名、等级和经验，随后两插件安全关闭。当前没有在线客户端，商城实际点击扣除 PlayerPoints 仍需目标测试服最终确认。成品 SHA-256 为 `210DEC705F16F3FD2F5E9B4B0C65A3BD68A35C8C79F521466026A8DA8908BF15`。
@@ -1111,5 +1123,5 @@ mvn -Ppaper-26.2 clean package
 输出：
 
 ```text
-target/LiPet-0.26.21-SNAPSHOT.jar
+target/LiPet-0.26.22-SNAPSHOT.jar
 ```
