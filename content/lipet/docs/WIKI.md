@@ -1,6 +1,6 @@
 # LiPet Wiki
 
-适用版本：`0.27.2-SNAPSHOT`
+适用版本：`0.27.3-SNAPSHOT`
 
 适用服务端：
 
@@ -10,7 +10,17 @@
 
 运行建议：Java 25。插件成品 Jar 使用 Java 21 字节码构建，便于跨版本运行。
 
-## 今日更新 · 2026-08-29 · 0.27.2
+## 今日更新 · 2026-08-29 · 0.27.3
+
+- `pet-types.yml -> defaults` 统一保存所有宠物相同的属性、行为、成长、食物和技能；单宠 YML 只写身份与差异项。
+- 默认捕捉规则允许的所有原版生物都会在 `宠物/原版宠物/` 下生成一个中文文件名的独立 YML，已有配置不覆盖。
+- 旧默认目录 `宠物类型/` 会在安全时迁移为 `宠物/`；目录、子目录和文件名均支持中文。
+- MCPets 单宠物配置可原样放进中文目录；`MythicMob` 由 MythicMobs 生成，`Mountable` 和 `MountType: flying` 会参与实际骑乘。
+- 自动生成 `宠物/自定义宠物/正义工作室/龙骑/龙骑-普通.yml` 作为龙骑配置参考。
+
+完整记录见 [2026-08-29 全量宠物配置与 MCPets 兼容更新日志](更新日志-2026-08-29-全量宠物配置与MCPets兼容.md)。
+
+## 上一版 · 2026-08-29 · 0.27.2
 
 - 老宠物数据中的 `bat`、`fox`、`minecraft:bat` 等 ID 会自动兼容到当前 `vanilla_<实体名>` 类型，不需要改库或重新捕捉。
 - 召唤、同类型持有上限与管理员按类型操作共用兼容规则，避免旧 ID 和新 ID 被当成两只不同种类。
@@ -18,7 +28,7 @@
 - 每个新文件包含完整中文注释、原版属性、成长、食物、模型和 MythicMobs 等级技能示例。
 - 默认构建与 Paper 26.2 Profile 各 151 项测试通过；Paper 26.2 Build 111 已验证旧配置补全、旧 ID 解析、热重载与安全关闭。
 
-完整记录见 [2026-08-29 老宠物类型兼容与独立 YML](更新日志-2026-08-29-老宠物类型兼容.md)。
+完整记录见 [2026-08-29 老宠物类型兼容更新日志](更新日志-2026-08-29-老宠物类型兼容.md)。
 
 ## 上一轮更新 · 2026-08-29 · 0.27.1
 
@@ -434,43 +444,65 @@ server:
 
 ## 8. 宠物类型
 
-宠物类型默认拆分在 `plugins/LiPet/宠物类型/` 目录。目录名称由 `pet-types.yml` 控制，支持中文和多级相对目录：
+宠物类型默认拆分在 `plugins/LiPet/宠物/` 目录。目录名称由 `pet-types.yml` 控制，支持中文和多级相对目录：
 
 ```yaml
 type-files:
   enabled: true
-  directory: "宠物类型"
+  directory: "宠物"
   include-subdirectories: true
 ```
 
-目录中可放多个 `.yml` 或 `.yaml`，默认递归读取子目录。文件名和子目录名可以使用中文；稳定的宠物类型 ID 仍写在 `types` 下，并只使用英文小写、数字、下划线或短横线。
+目录中可放多个 `.yml` 或 `.yaml`，默认递归读取子目录。文件名和子目录名可以使用中文；稳定的宠物类型 ID 仍只使用英文小写、数字、下划线或短横线。
 
-新服首次启动会生成 `宠物类型/狼.yml` 与 `宠物类型/猫.yml`。旧服升级时，如果目标目录尚不存在，插件会把原 `pet-types.yml` 中每个类型拆成独立文件并保留值与注释；如果目录已经存在，则不自动搬迁或覆盖，旧 `types` 节点继续兼容读取。
+新服首次启动会为默认捕捉规则允许的全部原版生物生成 `原版宠物/<中文名>.yml`，并生成 `自定义宠物/正义工作室/龙骑/龙骑-普通.yml` 示例。旧服升级只创建尚未配置的类型；同名文件、已有类型、数值和注释均不会被覆盖。若只存在旧官方 `宠物类型/` 目录，插件会整目录安全改名为 `宠物/`；新旧目录同时存在时不会自动合并。
 
-`宠物类型/狼.yml` 示例：
+所有宠物相同的值统一写在 `pet-types.yml`：
+
+```yaml
+defaults:
+  attributes:
+    base-health: 20.0
+    base-damage: 3.0
+    movement-speed: 0.25
+  behavior:
+    follow-distance: 10.0
+    stop-distance: 3.0
+    teleport-distance: 30.0
+    mountable: true
+    mount-type: "AUTO"
+  inventory:
+    size: 54
+```
+
+`宠物/原版宠物/狼.yml` 只写不同部分：
 
 ```yaml
 types:
   wolf:
+    inherit-defaults: true
     entity-type: "WOLF"
     display-name: "狼"
-    enabled: true
-    owner-limit: 1
-    model:
-      provider: "NATIVE"
-      id: ""
-      hide-base-entity: true
-      override-hitbox: true
-    behavior:
-      follow-enabled: true
-      follow-distance: 10.0
-      stop-distance: 3.0
-      teleport-distance: 30.0
+    legacy-ids:
+      - "wolf"
+      - "minecraft:wolf"
+      - "vanilla_wolf"
+    # 只有狼需要不同数值时才增加：
+    attributes:
+      base-health: 30.0
 ```
 
-说明：
+继承规则：
+
+- 单宠节点会深层覆盖 `defaults`，例如只改 `base-health` 不会丢掉公共 `base-damage`。
+- `inherit-defaults: false` 表示该宠物完全不继承，必须在自己的文件中写完整配置。
+- `mythic-skills: {}` 等显式空节点用于清空对应公共段。
+- 继承只在内存中合并，不会把大段默认值写回每只宠物的文件。
+
+其他说明：
 
 - `entity-type` 必须是当前 Paper 版本存在的 Bukkit 实体类型。
+- `legacy-ids` 可填写旧数据库使用的类型 ID；官方会自动兼容原版 `实体名`、`minecraft:实体名` 到 `vanilla_<实体名>`。
 - 一个文件可定义一个或多个类型；不同文件不能出现重复类型 ID。
 - `type-files.include-subdirectories: false` 时只读取目录第一层文件。
 - `type-files.directory` 只能是 LiPet 数据目录内的相对目录，禁止绝对路径和 `../` 越界。
@@ -483,9 +515,44 @@ types:
 - 超过 `teleport-distance` 时只会在主人落地且未飞行、未滑翔时安全回传；回传带有短冷却，避免异步传送失败时连续刷传送。
 - 原生寻路连续拒绝路径时，宠物会在主人安全落地后回传，不会停在原地，也不会使用速度强拖穿过障碍。
 
+### MCPets 自定义宠物
+
+MCPets 的单宠物 YML 可原样复制到 `plugins/LiPet/宠物/` 下任意中文子目录。例如原路径：
+
+```text
+plugins/MCPets/Pets/justice_studios/dragon_mounts/dragon-mounts-normal.yml
+```
+
+可改放到：
+
+```text
+plugins/LiPet/宠物/自定义宠物/正义工作室/龙骑/龙骑-普通.yml
+```
+
+核心格式：
+
+```yaml
+Id: pet_dragon_mounts
+Enabled: true
+MythicMob: dragon-mounts-red
+EntityType: PHANTOM
+Mountable: true
+MountType: flying
+Distance: 6
+ComingBackRange: 15
+Icon:
+  Name: "龙骑"
+```
+
+- `MythicMob` 存在时使用 MythicMobs Mob ID 生成实体；未安装或未启用 MythicMobs 时会给出中文召唤失败原因。
+- 当前直接执行 `Id`、`MythicMob`、`EntityType`、`Icon.Name`、`Mountable`、`MountType`、`Distance`、`ComingBackRange` 和 `SpawnRange`。
+- `MountType: flying` 强制飞行骑乘；`walking` 映射为地面骑乘。
+- `Permission`、`Signals`、`Skins`、`DismountOnDamaged`、`DespawnOnDismount`、`AutoRide` 暂不执行，但无需从原 MCPets 文件删除。
+- MCPets 转换只发生在内存中，复制进来的原文件不会被改写。修改后执行 `/lipet reload`。
+
 ### MythicMobs 等级技能
 
-每个宠物类型都可维护独立的 MM 技能列表。下面示例应放在对应类型节点内，例如 `宠物类型/狼.yml` 的 `types.wolf`：
+每个宠物类型都可维护独立的 MM 技能列表。下面示例应放在对应类型节点内，例如 `宠物/原版宠物/狼.yml` 的 `types.wolf`：
 
 ```yaml
 mythic-skills:
@@ -1086,6 +1153,8 @@ LiPet 当前使用 Java 21 字节码构建，运行端推荐 Java 25。调度逻
 
 活动宠物实体由加载索引维护。SQLite / MySQL 完成回调只读取线程安全状态，再把生命读取、属性刷新、召回和移除交给实体调度器；不会再从数据库线程调用区块实体查询。
 
+`0.27.3-SNAPSHOT` 默认构建与 Paper 26.2 Profile 各 160 项自动测试通过，失败、错误和跳过均为 0。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上使用真实 0.27.2 多 YML 配置启动：旧 `宠物类型/` 成功迁移为 `宠物/`，首次只生成 77 个缺失文件，最终为 87 种默认可捕捉原版生物各保留一份独立 YML，并直接载入原始 MCPets 龙骑文件。复制前后龙骑文件 SHA-256 同为 `3171CEC007C3B88C6234B5529F02F07B4F7B31347FF78B2EE55A5E8DF9A3EBD9`，证明加载未改写；热重载成功，第二次启动未重复生成，旧 ID 探针继续全部通过并安全关闭。MythicMobs 生成反射同时覆盖 MCPets 当前使用的 APIHelper 路径和旧 MobManager 后备路径。当前环境没有真实 MythicMobs Jar 和在线客户端，因此龙骑 Mob 的实际生成、模型与骑乘画面仍需目标测试服确认。成品大小为 `787007` 字节，SHA-256 为 `C2D0C846440CC81906A3FB719551E69EDE02DCA913045B5B99542ACCB83C71DF`。
+
 `0.27.2-SNAPSHOT` 默认构建与 Paper 26.2 Profile 各 151 项自动测试通过，失败、错误和跳过均为 0。新增测试覆盖旧原版 ID、命名空间 ID、自定义 `legacy-ids`、当前 ID 优先级和模板 YAML 解析。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上从旧版配置启动，安全补齐 8 个缺失文件并形成商城 10 种宠物各自独立 YML；原狼、猫文件哈希保持不变，第二次启动不重复生成。兼容探针验证 `bat`、`minecraft:bat`、`fox` 均能匹配当前类型，`/lipet reload` 成功并安全关闭。当前没有在线客户端，旧宠物在游戏中的最终召唤点击仍需目标测试服确认。成品大小为 `761171` 字节，SHA-256 为 `B4F035367B1242193775A5F43BCFF8A21909F09C4F41C39A553B56976288F859`。
 
 `0.27.1-SNAPSHOT` 默认构建与 Paper 26.2 Profile 各 148 项自动测试通过，失败、错误和跳过均为 0。新增测试覆盖失败施放退避、冷却期间跳过随机抽取、两种定时触发合并扫描、静态 APIHelper、`double power` 和历史官方状态语言迁移。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上使用真实旧配置启动，并在隔离配置中启用一条 MM 规则；旧 `status-mythicmobs` 自动补入统计变量，`/lipet status` 显示 PlayerPoints `ONLINE`、MythicMobs `OFFLINE`、技能类型 `1`、规则 `1`，热重载后保持一致并安全关闭，LiPet 无报错。当前环境没有真实 MythicMobs Jar，因此 MM 技能在实际战斗中的最终施放仍需在安装 MM 的目标测试服确认。成品大小为 `750989` 字节，SHA-256 为 `B4630BFD0F23FD9CA0003B057269DED973ADD6E5C2743F6785523C45BA671B27`。
@@ -1253,5 +1322,5 @@ mvn -Ppaper-26.2 clean package
 输出：
 
 ```text
-target/LiPet-0.27.2-SNAPSHOT.jar
+target/LiPet-0.27.3-SNAPSHOT.jar
 ```
