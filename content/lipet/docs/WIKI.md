@@ -545,8 +545,9 @@ Icon:
 ```
 
 - `MythicMob` 存在时使用 MythicMobs Mob ID 生成实体；未安装或未启用 MythicMobs 时会给出中文召唤失败原因。
-- 当前直接执行 `Id`、`MythicMob`、`EntityType`、`Icon.Name`、`Mountable`、`MountType`、`Distance`、`ComingBackRange` 和 `SpawnRange`。
+- 当前直接执行 `Id`、`MythicMob`、`EntityType`、`Icon.Name`、`Mountable`、`MountType`、`Distance` 和 `ComingBackRange`。
 - `MountType: flying` 强制飞行骑乘；`walking` 映射为地面骑乘。
+- `SpawnRange` 会被读取保留，但本版仍在主人位置生成，不按该半径随机偏移。
 - `Permission`、`Signals`、`Skins`、`DismountOnDamaged`、`DespawnOnDismount`、`AutoRide` 暂不执行，但无需从原 MCPets 文件删除。
 - MCPets 转换只发生在内存中，复制进来的原文件不会被改写。修改后执行 `/lipet reload`。
 
