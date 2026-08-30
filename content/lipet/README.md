@@ -2,6 +2,8 @@
 
 LiPet 是一个面向群组服的 Bukkit 宠物插件框架，兼容 Paper/Folia 1.21.11、Paper/Folia 26.1.2 与 Paper 26.2。
 
+`0.27.5-SNAPSHOT` 新增 MEG 等级模型、原版捕捉随机属性和捕捉球商店。宠物可配置 1 级模型 `a`、2 级模型 `b`，升级后按等级门槛切换；原版捕捉成功时独立生成力量、体质、防御、敏捷并持久保存，默认各 0–5。道具商店使用 `item.capture-ball` 引用真实捕捉球，默认上架普通捕捉球案例。配置教程见 [等级模型、随机属性与捕捉球商店](docs/等级模型与捕捉球商店.md)。
+
 `0.27.4-SNAPSHOT` 为 CraftEngine 捕捉球与宠物食物加入可直接修改的默认案例。`capture.yml -> balls.craftengine_example` 和 `pet-types.yml -> defaults.growth.foods.craftengine_example` 均带完整中文注释、`namespace:item_id` 写法和 `enabled: false` 安全开关；修改成自己的 CE ID 并启用即可使用。关闭的案例不会进入捕捉球指令补全、物品识别、扣除或宠物食物列表；旧服只补缺失节点，不覆盖现有材料、食物数值与管理员注释。默认构建与 Paper 26.2 Profile 各 165 项测试通过，并在 Paper 26.2 Build 111 + CraftEngine 26.8 验证 109 个 CE 物品索引及同一 CE 物品同时作为食物和捕捉球的配置链路。
 
 `0.27.3-SNAPSHOT` 重构宠物配置为“公共默认值 + 单宠差异”：所有相同属性统一写在 `pet-types.yml` 的 `defaults`，每只宠物只在中文 `宠物/` 目录保存独立 YML 和不同项。首次启动会为默认捕捉规则允许的全部原版生物生成 `原版宠物/<中文名>.yml`，已有文件和自定义值不会覆盖；旧官方 `宠物类型/` 目录会在没有同名新目录时安全迁移。MCPets 单宠物文件可原样放入中文子目录，LiPet 会读取 `Id`、`MythicMob`、骑乘类型和距离等核心字段，并通过 MythicMobs 生成对应 Mob；同时提供 `自定义宠物/正义工作室/龙骑/龙骑-普通.yml` 中文示例。
@@ -229,6 +231,6 @@ Paper 26.2 使用 PlaceholderAPI 时建议安装 [`2.12.3+`](https://github.com/
 mvn clean package
 ```
 
-输出：`target/LiPet-0.27.4-SNAPSHOT.jar`
+输出：`target/LiPet-0.27.5-SNAPSHOT.jar`
 
 每次迭代必须同步更新 `pom.xml` 版本。`plugin.yml` 会从 Maven 版本自动生成。

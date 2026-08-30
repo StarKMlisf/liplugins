@@ -279,10 +279,10 @@ export const works: WorkEntry[] = [
     name: 'LiPet',
     catalogLabel: '宠物',
     kicker: '宠物养成、捕捉、骑乘与战斗',
-    summary: '覆盖全量原版宠物中文独立 YML、公共默认值与单宠差异、MCPets 文件兼容、CraftEngine 捕捉球与食物案例、MythicMobs 自定义实体及等级技能、宠物获取、成长、双排行榜、PlayerPoints 商城、骑乘、捕捉、背包与跨服数据的一体化宠物系统。',
+    summary: '支持 MEG 等级模型、原版捕捉随机属性、真实捕捉球商店、中文独立宠物配置、MCPets 与 MythicMobs 技能的完整宠物养成系统。',
     description:
-      'LiPet 是面向群组服的 Bukkit 宠物框架，采用 pet-types.yml 公共默认值与宠物目录单宠差异配置；默认捕捉规则允许的全部原版生物会生成中文独立 YML，MCPets 单宠文件可直接放入中文子目录并通过 MythicMobs 生成自定义实体。插件同时提供旧原版类型 ID 兼容、每宠 MythicMobs 等级技能、管理页原路返回、“我的宠物”列表、仓库四键、SQLite/MySQL 热切换、双排行榜、PlayerPoints/Vault 商城、属性成长、捕捉仪式、完全自定义 GUI、离线及全服宠物管理、骑乘、战斗导航、外部模型、CraftEngine 完整物品挂钩与可启停的 CE 捕捉球/食物案例，以及扩展 API。',
-    version: '0.27.4-SNAPSHOT',
+      'LiPet 是面向群组服的 Bukkit 宠物框架，采用 pet-types.yml 公共默认值与宠物目录单宠差异配置；默认捕捉规则允许的全部原版生物会生成中文独立 YML，MCPets 单宠文件可直接放入中文子目录并通过 MythicMobs 生成自定义实体。插件同时提供旧原版类型 ID 兼容、每宠 MythicMobs 等级技能、管理页原路返回、“我的宠物”列表、仓库四键、SQLite/MySQL 热切换、双排行榜、PlayerPoints/Vault 商城、属性成长、MEG 等级模型、原版捕捉随机属性、真实捕捉球商店、捕捉仪式、完全自定义 GUI、离线及全服宠物管理、骑乘、战斗导航、外部模型、CraftEngine 完整物品挂钩与可启停的 CE 捕捉球/食物案例，以及扩展 API。',
+    version: '0.27.5-SNAPSHOT',
     status: '持续维护',
     platform: 'Paper / Folia',
     minecraft: '1.21.11 · 26.1.2 · 26.2',
@@ -291,6 +291,9 @@ export const works: WorkEntry[] = [
     priceCny: 68,
     dependencies: ['Vault / PlayerPoints（商城货币可选）', 'PlaceholderAPI（可选）', 'MythicMobs（自定义实体与等级技能可选）', 'ModelEngine / CraftEngine（按配置可选）', 'MySQL / Redis（跨服功能按需）'],
     features: [
+      'MEG 模型按等级门槛切换与失败恢复',
+      '原版捕捉四属性随机并持久保存',
+      '普通与 CraftEngine 捕捉球商店完整案例',
       '宠物创建、召唤与持久化',
       '老版本原版宠物类型 ID 自动兼容',
       '默认可捕捉原版生物全量生成中文独立 YML',

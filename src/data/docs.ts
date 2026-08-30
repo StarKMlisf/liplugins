@@ -181,7 +181,9 @@ const liAnimalScaleDocs = defineDocs('lianimalscale', [
 ]);
 
 const liPetDocs = defineDocs('lipet', [
-  { file: 'docs/WIKI.md', slug: 'home', title: 'LiPet 完整 Wiki', summary: '0.27.4 为捕捉球和公共宠物食物加入默认关闭、可直接修改的 CraftEngine 完整案例。', group: '文档总览', order: 1 },
+  { file: 'docs/等级模型与捕捉球商店.md', slug: 'level-models-capture-shop', title: '等级模型、随机属性与捕捉球商店', summary: '1级a模型、2级b模型、四属性随机范围和普通/CE捕捉球商店案例。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-08-30-等级模型与随机捕捉.md', slug: 'changelog-2026-08-30', title: '0.27.5 等级模型与随机捕捉更新', summary: 'MEG等级切换、捕捉属性持久化、捕捉球商品与验证记录。', group: '文档总览', order: 2 },
+  { file: 'docs/WIKI.md', slug: 'home', title: 'LiPet 完整 Wiki', summary: '0.27.5 MEG 等级模型、随机捕捉属性、捕捉球商店与完整中文配置教程。', group: '文档总览', order: 1 },
   { file: 'docs/PET_FEATURE_MATRIX.md', slug: 'feature-matrix', title: '功能矩阵', summary: '逐项核对宠物能力的实现范围、入口和当前状态。', group: '文档总览', order: 2 },
   { file: 'docs/更新日志-2026-08-29-CE捕捉球与食物案例.md', slug: 'changelog-2026-08-29-ce-capture-food-examples', title: '2026-08-29 CraftEngine 捕捉球与食物案例', summary: '默认关闭的 CE 捕捉球与公共宠物食物案例、启用开关、旧配置安全补全和真实运行验证。', group: '文档总览', order: 3 },
   { file: 'docs/更新日志-2026-08-29-全量宠物配置与MCPets兼容.md', slug: 'changelog-2026-08-29-full-pet-config-mcpets', title: '2026-08-29 全量宠物配置与 MCPets 兼容', summary: '全量原版宠物中文独立 YML、公共默认值与单宠差异、中文目录迁移及 MCPets 直接读取。', group: '文档总览', order: 4 },
@@ -213,13 +215,14 @@ const liPetDocs = defineDocs('lipet', [
   { file: 'docs/命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '仅使用 /lipet 的玩家、商城、捕捉、奖励和管理员权限。', group: '管理员文档', order: 21 },
   { file: 'docs/配置说明.md', slug: 'configuration', title: '配置说明', summary: '公共默认值、全量原版宠物中文 YML、单宠差异、MCPets 文件、模型、食物、商城和等级技能。', group: '管理员文档', order: 22 },
   { file: 'docs/存储与跨服.md', slug: 'storage-network', title: '存储与跨服', summary: 'SQLite/MySQL 热切换、Redis、租约、切服和异常恢复。', group: '管理员文档', order: 23 },
-  { file: 'docs/测试与故障排查.md', slug: 'testing-troubleshooting', title: '测试与故障排查', summary: '165 项测试、CE 捕捉球与食物链路、87 种原版配置生成、中文目录迁移、MCPets 原文件加载、持久化、线程和依赖检查。', group: '管理员文档', order: 24 },
+  { file: 'docs/测试与故障排查.md', slug: 'testing-troubleshooting', title: '测试与故障排查', summary: '206 项测试、CE 捕捉球与食物链路、87 种原版配置生成、中文目录迁移、MCPets 原文件加载、持久化、线程和依赖检查。', group: '管理员文档', order: 24 },
   { file: 'docs/常见问题.md', slug: 'faq', title: '常见问题', summary: '解答宠物丢失、插件停用、线程报错、收回残留、背包与宠物币问题。', group: '管理员文档', order: 25 },
   { file: 'README.md', slug: 'project', title: '项目说明', summary: '项目目标、当前能力、指令、架构目标和构建要求。', group: '开发者文档', order: 40 },
   { file: 'docs/LIPET_DESIGN.md', slug: 'design', title: '设计与配置', summary: '宠物生命周期、数据结构、行为系统和扩展设计。', group: '开发者文档', order: 41 },
   { file: 'docs/ARCHITECTURE.md', slug: 'architecture', title: '架构与扩展', summary: '模块边界、服务职责、数据流和二次开发结构。', group: '开发者文档', order: 42 },
   { file: 'docs/FEATURE_ROADMAP.md', slug: 'roadmap', title: '功能路线图', summary: '功能实施顺序、阶段目标与尚未完成的边界。', group: '开发者文档', order: 43 },
 ]);
+
 
 const lichQianDocs = defineDocs('lichqian', [
   { file: 'Home.md', slug: 'home', title: 'LichQian 使用说明', summary: '安装、命令、权限、时间、文本、GUI、变量和配置升级。', group: '文档总览', order: 1 },
@@ -301,7 +304,7 @@ export const docSets: DocSet[] = [
   { slug: 'lwe', name: 'LWE 小创世神', version: '0.1.0+build.15', summary: '轻量选区施工、材料消耗、LIEMC 自动补料、配置与故障排查。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lweDocs },
   { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev199-paper26', summary: '真实附魔、YML/API 扩展、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
   { slug: 'lititle', name: 'LiTitle', version: '0.1.93', summary: '称号、商店、仓库、聊天、昵称、存储与跨服部署文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lititleDocs },
-  { slug: 'lipet', name: 'LiPet', version: '0.27.4-SNAPSHOT', summary: 'CE 捕捉球与食物默认案例、全量原版宠物中文独立 YML、公共默认值与单宠差异、MCPets 文件兼容、MythicMobs 等级技能、PlayerPoints、完全自定义 UI 与数据库文档。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
+  { slug: 'lipet', name: 'LiPet', version: '0.27.5-SNAPSHOT', summary: 'MEG 等级模型、原版捕捉随机属性、捕捉球商店、中文宠物配置、MythicMobs 技能与 CraftEngine 文档。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
   { slug: 'liskin', name: 'LiSkin', version: '1.9.7', summary: 'CraftEngine 外观皮肤、顶部分类换装、沉浸旁观视角、常驻 NPC、商店、权限与跨服文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liSkinDocs },
   { slug: 'jisseechessgames', name: 'JisseeChessGames', version: '2.1.0', summary: '棋盘生成、五子棋、中国象棋、军棋、房间、持久化与验证文档。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: jisseeChessDocs },
   { slug: 'liseasons', name: 'LISeasons', version: '1.0.68', summary: '四季、节气、体温、世界规则、季节事件与运维开发文档。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },
