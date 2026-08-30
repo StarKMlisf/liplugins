@@ -158,7 +158,7 @@ export const works: WorkEntry[] = [
     summary: '用 EMC 串联物品回收、价值解锁、资源兑换与收藏检索，为生存服建立稳定的资源循环。',
     description:
       'LIEMC 是面向 Paper / Luminol 26.1.2 的 EMC 资源经济插件，提供物品回收、解锁兑换、收藏检索、自定义 GUI、CraftEngine 完整物品挂钩、全局商品 Lore、自动补充与 MySQL 跨服同步能力。',
-    version: '0.1.0+build.106',
+    version: '0.1.0+build.107',
     status: '持续维护',
     platform: 'Paper / Luminol',
     minecraft: '26.1.2',
@@ -173,6 +173,7 @@ export const works: WorkEntry[] = [
       '完全自定义 GUI 与动态按钮',
       'CraftEngine 完整物品挂钩',
       '全局商品 Lore 模板与空白分隔行',
+      '按权限设置出售折扣与倍率',
       '资源自动补充',
       'MySQL 8.0 跨服数据同步',
       'Paper / Folia 调度适配',
