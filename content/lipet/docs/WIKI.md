@@ -1,6 +1,6 @@
 # LiPet Wiki
 
-适用版本：`0.27.5-SNAPSHOT`
+适用版本：`0.27.6-SNAPSHOT`
 
 适用服务端：
 
@@ -10,7 +10,18 @@
 
 运行建议：Java 25。插件成品 Jar 使用 Java 21 字节码构建，便于跨版本运行。
 
-## 今日更新 · 2026-08-30 · 0.27.5
+## 今日更新 · 2026-08-31 · 0.27.6
+
+- `config.yml` 新增 `currency.playerpoints.display-name` 和 `currency.vault.display-name`，默认分别为“点券”和“金币”；内置货币仍默认“宠物币”。
+- 三种名称均支持成功执行 `/lipet reload` 后生效；关闭再重新打开宠物商城、道具商城即可看到新名称，已经打开的菜单不自动重绘。
+- 重载成功且数据库结果为 `NO_CHANGE` 或 `SWITCHED` 时，统一发布新的名称快照；校验失败、数据库切换失败或并发重载请求不会发布该请求的候选名称。
+- `shop.yml` 的货币 ID 仍为 `INTERNAL`、`VAULT`、`PLAYERPOINTS`，余额、扣款方式和 `100.00` 价格格式均不因改名改变。
+- 旧配置只补缺失节点与中文注释；自定义名称、注释和价格保留。服务器 ID、群组和内置货币初始余额继续按启动时读取。
+- 默认构建与 Paper 26.2 Profile 各 216 项测试通过；同一 Jar 在 Paper 26.1.2 / 26.2 + PlayerPoints 3.3.5 完成服务端双商城 Lore、真实重载和实际扣款探针，未做真人客户端视觉测试。
+
+完整配置和升级步骤见 [2026-08-31 货币名称与重载更新日志](更新日志-2026-08-31-货币名称重载.md)。
+
+## 上一版 · 2026-08-30 · 0.27.5
 
 - ModelEngine 模型可按等级门槛变化，例如 1 级 `a`、2 级 `b`，没有新门槛时沿用上一档。
 - 原版宠物捕捉成功时生成四项初始随机属性，默认力量、体质、防御、敏捷各 0–5；保存后不因重召唤、重载或重启重新随机。
@@ -229,7 +240,7 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 
 ## 2. 安装
 
-1. 将 `LiPet-0.27.5-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
+1. 将 `LiPet-0.27.6-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
 2. 启动服务器一次，让插件生成默认配置。
 3. 停服，编辑 `plugins/LiPet/` 下的配置文件。
 4. 再次启动服务器。
@@ -241,7 +252,7 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 
 | 文件 | 用途 |
 | --- | --- |
-| `config.yml` | 存储、服务器 ID、群组、依赖下载、内置货币、排行榜分页 |
+| `config.yml` | 存储、服务器 ID、群组、依赖下载、三种货币显示名称、内置货币初始余额、排行榜分页 |
 | `pet-types.yml` | 宠物类型目录、原版自动注册、名牌、骑乘和背包全局设置；兼容旧 `types` 节点 |
 | `宠物类型/*.yml` | 每种宠物独立的实体、旧 ID、模型、属性、行为、成长、食物与 MM 技能；目录和文件名可用中文 |
 | `shop.yml` | 商城总开关、宠物商城和宠物道具商城 |
@@ -893,15 +904,32 @@ entries:
 - `VAULT`：Vault 经济
 - `PLAYERPOINTS`：PlayerPoints 点券；商品价格必须是整数
 
-`currency` 填写的是提供器 ID，不是玩家看到的文字。两个商城的 Lore 使用 `<currency>` 时，`INTERNAL` 会读取下面的显示名称：
+`shop.yml` 的 `currency` 填写提供器 ID，玩家看到的名称统一在 `plugins/LiPet/config.yml` 设置。两个商城的 Lore 使用 `<currency>` 读取名称：
 
 ```yaml
+# config.yml；将下列节点合并到已有 currency 节点，勿重复创建同名根节点。
 currency:
+  # LiPet 内置货币；商品支付 ID 仍为 INTERNAL。
   internal:
+    # 非空单行文本，支持 MiniMessage；默认“宠物币”，成功重载后生效。
     display-name: "宠物币"
+    # 首次建账余额，范围大于等于 0；只在启动时读取，改名重载不会修改余额。
+    initial-balance: 1000.0
+  # Vault 经济货币；需要已启用的 Vault 和经济插件，商品支付 ID 仍为 VAULT。
+  vault:
+    # 非空单行文本，支持 MiniMessage；默认“金币”，成功重载后生效。
+    display-name: "金币"
+  # PlayerPoints 点数；需要已启用的 PlayerPoints，商品支付 ID 仍为 PLAYERPOINTS。
+  playerpoints:
+    # 非空单行文本，支持 MiniMessage；默认“点券”，成功重载后生效。
+    display-name: "点券"
 ```
 
-因此 `price: 30.0`、`currency: "INTERNAL"` 默认会显示为 `30.00 宠物币`，不会再显示 `30.00 INTERNAL`。修改显示名称后需要重启服务器生效。
+例如商品 `currency: "PLAYERPOINTS"`、`price: 100.0` 默认显示为 `100.00 点券`。名称改为“积分”后显示 `100.00 积分`；`100.00` 数字格式、价格、余额与实际扣款规则不变。PlayerPoints 金额仍必须是整数，`100.0` 与 `100.00` 均表示整数 100，不能填写 `100.5`。
+
+从旧版首次升级需要停服替换为 `LiPet-0.27.6-SNAPSHOT.jar` 并重启一次。之后只改名称时，执行 `/lipet reload`，等待成功提示，再关闭并重新打开 `/lipet shop`、`/lipet itemshop`。已经打开的界面不会自动重绘；自定义 Lore 若写死 `PlayerPoints` 或其他名称，应改用 `<currency>`。
+
+只有本次重载成功（数据库无需切换 `NO_CHANGE` 或切换成功 `SWITCHED`）才发布三个新名称；校验失败、数据库切换失败或被拒绝的并发重载请求均保留已生效名称。旧配置仅补缺失节点/注释，不覆盖管理员已有名称或注释。该热重载范围不含 `server.id`、群组和 `currency.internal.initial-balance`，这些仍按启动时读取。
 
 PlayerPoints 没有安装或未正常启用时，LiPet 仍会启动，使用 `PLAYERPOINTS` 的商品会显示货币不可用。安装后执行 `/lipet status`，独立状态行应显示 `PlayerPoints: ONLINE`。
 
@@ -1354,6 +1382,8 @@ storage:
 
 LiPet 会补全新增配置节点，但不会覆盖已有自定义配置值。
 
+升级到 `0.27.6` 需要首次替换 Jar 并重启一次，不能用旧版 `/lipet reload` 加载新代码。此后修改三个 `currency.*.display-name` 时，只需重载成功后重新打开商城；原有价格、支付 ID、自定义名称和中文注释不会被覆盖。
+
 ## 23. 构建
 
 普通通用包：
@@ -1371,5 +1401,5 @@ mvn -Ppaper-26.2 clean package
 输出：
 
 ```text
-target/LiPet-0.27.5-SNAPSHOT.jar
+target/LiPet-0.27.6-SNAPSHOT.jar
 ```
