@@ -2,6 +2,8 @@
 
 LiPet 是一个面向群组服的 Bukkit 宠物插件框架，兼容 Paper/Folia 1.21.11、Paper/Folia 26.1.2 与 Paper 26.2。
 
+`0.27.7-SNAPSHOT` 修复骑乘时旁观者仍能看到宠物名牌，以及按住前进键后转动视角却不转向的问题。开启 `pet-types.yml -> nameplate.hide-while-ridden` 时，骑手和其他玩家都会隐藏双行名牌与载体原版名称，保留同一个 TextDisplay 并在下马后恢复；设为 `false` 可保持显示。骑乘上马即启动连续控制，每 tick 使用骑手当前视角与按键，原地和持续前进时都能跟随视角转向。完整说明见 [2026-09-01 骑乘名牌与视角转向更新](docs/更新日志-2026-09-01-骑乘名牌与视角转向.md)。
+
 `0.27.6-SNAPSHOT` 新增 Vault / PlayerPoints 货币名称配置，并修复改名后重载不生效的问题。三个名称统一在 `config.yml -> currency.<internal|vault|playerpoints>.display-name` 设置，默认依次为“宠物币 / 金币 / 点券”。首次换用新 Jar 后重启一次；以后修改名称并成功执行 `/lipet reload`，关闭再打开宠物商城或道具商城即可看到新名称。重载失败或并发请求不会发布本次候选名称，货币 ID、价格及扣款规则保持不变。完整示例见 [2026-08-31 货币名称与重载更新日志](docs/更新日志-2026-08-31-货币名称重载.md)。
 
 `0.27.5-SNAPSHOT` 新增 MEG 等级模型、原版捕捉随机属性和捕捉球商店。宠物可配置 1 级模型 `a`、2 级模型 `b`，升级后按等级门槛切换；原版捕捉成功时独立生成力量、体质、防御、敏捷并持久保存，默认各 0–5。道具商店使用 `item.capture-ball` 引用真实捕捉球，默认上架普通捕捉球案例。配置教程见 [等级模型、随机属性与捕捉球商店](docs/等级模型与捕捉球商店.md)。
@@ -233,6 +235,6 @@ Paper 26.2 使用 PlaceholderAPI 时建议安装 [`2.12.3+`](https://github.com/
 mvn clean package
 ```
 
-输出：`target/LiPet-0.27.6-SNAPSHOT.jar`
+输出：`target/LiPet-0.27.7-SNAPSHOT.jar`
 
 每次迭代必须同步更新 `pom.xml` 版本。`plugin.yml` 会从 Maven 版本自动生成。
