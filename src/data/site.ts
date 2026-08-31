@@ -34,6 +34,30 @@ export interface WorkEntry {
 
 export const works: WorkEntry[] = [
   {
+    slug: 'liskills',
+    name: 'LiSkills',
+    catalogLabel: '技能',
+    kicker: '15 职业成长与生命魔力 HUD',
+    summary: '把采集、战斗和日常生存积累为技能成长，提供 15 职业、70 被动、9 属性与无需资源包的生命魔力 HUD。',
+    description:
+      'LiSkills 是中文生存技能插件。1.13.0 提供完整 15 职业、70 被动、主动能力、装备要求、可选职业经济与排行榜；生命魔力 HUD 与采集、战斗均按 Folia 所属区域调度，并支持安全卸载属性恢复。',
+    version: '1.13.0',
+    status: '持续维护',
+    platform: 'Paper / Folia',
+    minecraft: 'Paper 26.1.2 · Folia 26.2',
+    java: 'Java 25',
+    availability: '免费',
+    dependencies: ['无强制前置插件', 'PlaceholderAPI（可选）', 'Vault 与经济插件（按经济功能）', 'LiRealEnchant2 / CustomCrops / CustomFishing（可选）'],
+    features: [
+      '15 职业技能、70 被动、9 属性与 19 项特性',
+      '成长主动、装备属性与技能使用要求',
+      '生命、魔力及近期技能经验原生 BossBar HUD',
+      '真实采集与交易结算、人工放置和重复奖励保护',
+      '职业选择、升级奖励、离线排行榜及可选 SQL 存储',
+      '中文配置安全补缺、旧档等级迁移与正常卸载属性恢复',
+    ],
+  },
+  {
     slug: 'blockcraft',
     name: 'BlockCraft',
     catalogLabel: '合成',
@@ -433,7 +457,7 @@ export const catalogSections: CatalogSection[] = [
     number: 2,
     title: '免费插件',
     description: '可免费获取的玩法与运维插件，同样提供完整使用和管理文档。',
-    works: selectWorks(['liseasons', 'enderdragon', 'lwe', 'lianimalscale', 'lichqian']),
+    works: selectWorks(['liskills', 'liseasons', 'enderdragon', 'lwe', 'lianimalscale', 'lichqian']),
   },
   {
     id: 'developing',

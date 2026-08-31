@@ -12,6 +12,7 @@ export interface WikiHeading {
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const sourceDirectories = new Map([
+  ['liskills', path.resolve(currentDirectory, '../../content/liskills')],
   ['liemc', path.resolve(currentDirectory, '../../content/liemc')],
   ['lwe', path.resolve(currentDirectory, '../../content/lwe')],
   ['liseasons', path.resolve(currentDirectory, '../../content/liseasons')],

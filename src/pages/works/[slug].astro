@@ -4,7 +4,7 @@ import { catalogSections, works, type WorkEntry } from '@/data/site';
 import { withBase } from '@/lib/paths';
 
 export function getStaticPaths() {
-  const bespokePages = new Set(['liseasons', 'lititle', 'lirealenchant']);
+  const bespokePages = new Set(['liseasons', 'lititle', 'lirealenchant', 'liskills']);
   return works
     .filter((work) => !bespokePages.has(work.slug))
     .map((work) => ({ params: { slug: work.slug }, props: { work } }));

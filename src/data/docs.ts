@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { liSkillsDocDefinitions } from './liskills-docs';
 
 export type DocGroup = '文档总览' | '玩家文档' | '管理员文档' | '开发者文档' | '附魔详情';
 
@@ -304,6 +305,7 @@ const lirealEnchantDocs = fs.readdirSync(enchantDirectory)
   });
 
 export const docSets: DocSet[] = [
+  { slug: 'liskills', name: 'LiSkills', version: '1.13.0', summary: '15 职业技能、70 被动、生命魔力 HUD、配置、防刷、迁移与安全卸载指南。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: defineDocs('liskills', liSkillsDocDefinitions) },
   { slug: 'liemc', name: 'LIEMC', version: '0.1.0+build.107', summary: 'EMC 经济、权限出售倍率、物品回收、解锁兑换、自定义 GUI、全局 Lore、CraftEngine 与跨服同步文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liemcDocs },
   { slug: 'lwe', name: 'LWE 小创世神', version: '0.1.0+build.15', summary: '轻量选区施工、材料消耗、LIEMC 自动补料、配置与故障排查。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lweDocs },
   { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev199-paper26', summary: '真实附魔、YML/API 扩展、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },

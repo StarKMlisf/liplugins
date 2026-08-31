@@ -1,0 +1,92 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { works } from '@/data/site';
+import { withBase } from '@/lib/paths';
+
+const work = works.find((entry) => entry.slug === 'liskills')!;
+const release = withBase(`/downloads/liskills/${work.version}/`);
+---
+
+<BaseLayout title="LiSkills" description={work.summary}>
+  <header class="work-hero">
+    <div class="shell">
+      <div class="work-hero__top">
+        <div>
+          <div class="work-hero__labels"><span class="eyebrow">Skills / 生存成长</span><span class="tag tag--free">免费下载 · GPL-3.0</span></div>
+          <h1>LiSkills</h1>
+          <p class="work-hero__lead">{work.summary}</p>
+          <div class="button-row" style="margin-top: 2rem;">
+            <a class="button button--primary" href={`${release}LiSkills-${work.version}.jar`} download>下载 {work.version} Jar</a>
+            <a class="button" href={withBase('/docs/liskills/home/')}>阅读中文 Wiki</a>
+            <a class="button" href={`${release}LiSkills-${work.version}.zip`} download>完整安装包与源码</a>
+          </div>
+        </div>
+        <div class="work-emblem work-emblem--catalog" aria-label="15 职业技能，70 项被动">
+          <span class="work-emblem__code">LAOLI PLUGINS</span><strong>LiSkills</strong><span class="work-emblem__price">15 职业 · 70 被动</span>
+        </div>
+      </div>
+      <div class="work-facts">
+        <div class="work-fact"><span>Version</span><strong>{work.version}</strong></div>
+        <div class="work-fact"><span>Status</span><strong>{work.status}</strong></div>
+        <div class="work-fact"><span>Platform</span><strong>{work.minecraft}</strong></div>
+        <div class="work-fact"><span>Runtime</span><strong>{work.java}</strong></div>
+        <div class="work-fact"><span>Resource pack</span><strong>无需资源包</strong></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section shell">
+    <div class="section-heading">
+      <span class="eyebrow">Overview / 技能系统</span>
+      <div><h2>让日常生存积累为成长。</h2><p>{work.description}</p></div>
+    </div>
+    <div class="feature-chapter">
+      <div><span class="feature-chapter__number">01 / PROGRESSION</span><h2>完整职业与可配置成长</h2></div>
+      <div class="feature-chapter__body">
+        <p>农耕、伐木、挖矿、钓鱼、挖掘、箭术、防御、战斗、敏捷、炼金、附魔，以及耐力、治疗、锻造、法术，分别保存等级和经验。前 14 项各有 5 个被动；法术没有默认主动或被动，通过自然幽匿方块和成功施法耗蓝成长。</p>
+        <div class="feature-list">{work.features.map((feature) => <div><strong>{feature}</strong></div>)}</div>
+        <p>来源按实际采集和交易结果结算；取消、人工方块和重复事件有独立防护。职业经济、奖励与装备示例按需启用，正式服上线前先审查数值与经济设置。</p>
+      </div>
+    </div>
+    <div class="feature-chapter">
+      <div><span class="feature-chapter__number">02 / HUD</span><h2>随时看清生命与魔力</h2></div>
+      <div class="feature-chapter__body">
+        <p>原生 BossBar 常驻显示生命与魔力，获得经验时短暂显示最近技能的进度，默认保留 5 秒。无需额外 HUD 插件或材质包，也不修改原版心条缩放、动作栏或记分板。</p>
+        <div class="feature-list">
+          <div><strong>/lsk hud</strong><span>切换个人显示，开关随玩家数据保存。</span></div>
+          <div><strong>/lsk hud on / off</strong><span>明确开启或关闭；status 查询个人状态。</span></div>
+          <div><strong>颜色、样式与中文标题</strong><span>在 config.yml 的 hud 节和 messages.yml 调整。</span></div>
+          <div><strong>正常卸载恢复属性</strong><span>只移除 LiSkills 自身加成，保留基础血量与其他插件属性。</span></div>
+        </div>
+        <div class="notice" style="margin-top: 1.5rem;">
+          <strong>先正常停服，再删除插件</strong>
+          <p>正常退出或 stop 停服会清理技能属性；崩溃后直接删除 Jar，未再次上线的历史玩家可能残留加成。请先备份，必要时装回插件让受影响玩家上线并正常退出。详细步骤见 <a href={withBase('/docs/liskills/hud-uninstall/')}>HUD 与安全卸载</a>。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--bordered">
+    <div class="shell">
+      <div class="section-heading"><span class="eyebrow">Install / 运行环境</span><div><h2>确认版本，保留已有配置。</h2><p>备份并停服后替换旧 Jar，保留 LiSkills 数据目录；安装包默认配置仅供参考，不要直接覆盖管理员已有设置。</p></div></div>
+      <div class="directory-grid">
+        <div class="directory-card"><span class="directory-card__group">运行基准</span><h2>Paper 26.1.2 · Folia 26.2</h2><p>Java 25，Bukkit 编译基准。Folia 使用所属实体和区域调度；Shiroha 同构建与基岩端尚未实测。</p></div>
+        <div class="directory-card"><span class="directory-card__group">插件依赖</span><h2>可独立运行</h2><p>PlaceholderAPI、Vault、LiRealEnchant2、CustomCrops 和 CustomFishing 按需联动。不能与重复加经验、加属性的旧技能系统同时启用。</p></div>
+        <div class="directory-card"><span class="directory-card__group">已有数据</span><h2>安全补全配置</h2><p>只补缺失节点与注释，保留管理员自定义。旧档迁移先预检，不覆盖已有 LiSkills 玩家档案。</p></div>
+        <div class="directory-card"><span class="directory-card__group">1.13.0 验证</span><h2>559 项单元测试通过</h2><p>另有 Folia 双区域及无插件重启 167 项检查，验证真实退出重连与血量恢复；未做真人 HUD 视觉、长期多人及所有插件组合验收。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="cta-band__inner shell">
+      <h2>安装一个 Jar，<br />从 /lsk 开始。</h2>
+      <div class="button-row">
+        <a class="button button--primary" href={`${release}LiSkills-${work.version}.jar`} download>下载插件</a>
+        <a class="button" href={withBase('/docs/liskills/install/')}>安装与升级指南</a>
+        <a class="button" href={`${release}LiSkills-${work.version}-source.zip`} download>完整源码</a>
+        <a class="button" href={`${release}SHA256SUMS.txt`}>文件校验值</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
