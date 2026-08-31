@@ -2,12 +2,15 @@
 
 这是牢李插件系列的独立网页与 Wiki 仓库，只包含文档站源码，不包含任何插件 Java 源码、Jar、构建产物或运行依赖。
 
+导航仅提供功能介绍与使用说明，不提供插件、安装包或源码下载入口。请勿把这类文件放入 `public/` 或随站点发布。
+
 ## 在线文档
 
 GitHub Pages：<https://starkmlisf.github.io/liplugins/>
 
 当前收录：
 
+- LiSkills：15 职业技能、HUD、Paper/Folia 兼容、配置与安全卸载说明。
 - LISeasons：四季、节气、体温、世界规则、流星雨与运维文档。
 - LiTitle：称号、商店、聊天、昵称、存储与跨服文档。
 - LiRealEnchant：真实附魔系统文档与 122 篇独立附魔详情。

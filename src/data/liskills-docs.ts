@@ -134,7 +134,7 @@ export const liSkillsDocDefinitions: Omit<DocEntry, 'project'>[] = [
     "file": "License.md",
     "slug": "license",
     "title": "许可与来源",
-    "summary": "GPL-3.0、原作者署名、对应源码和衍生修改范围。",
+    "summary": "GPL-3.0、原作者署名、许可义务和衍生修改范围。",
     "group": "开发者文档",
     "order": 41
   }

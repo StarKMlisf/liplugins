@@ -6,7 +6,7 @@
 
 ## 已有 LiSkills 更换存储
 
-提供 `tools/migrate-storage.ps1`，支持 YAML、SQLite、MySQL 任意两端复制。准备两个独立、互不包含的数据目录、两份完整 `storage.yml` 副本、当前 Jar、API 依赖和独立驱动目录。
+LiSkills 工程中的 `tools/migrate-storage.ps1` 支持 YAML、SQLite、MySQL 任意两端复制。以下命令以你已取得同版工具、Jar 和依赖为前提，本导航不托管这些文件。准备两个独立、互不包含的数据目录、两份完整 `storage.yml` 副本、当前 Jar、API 依赖和独立驱动目录。
 
 ~~~powershell
 # 路径均为示例；默认只预检，不写入玩家档案。
@@ -28,7 +28,7 @@
 
 ## 旧技能系统导入范围
 
-同版源码提供 `tools/migrate-legacy.ps1`。先解压源码包；若使用完整安装包，还需解压其中 `source/` 下的源码 ZIP。在包含 `pom.xml` 的源码项目根目录运行 `./build.ps1`，准备 `target/LiSkills-1.13.0.jar` 与 `lib/api/` 后再执行下面命令。仅把下载的插件 Jar 放在脚本旁边不能满足这个入口的目录要求。
+`tools/migrate-legacy.ps1` 位于 LiSkills 源码工程中。若你已取得同版完整工程，在包含 `pom.xml` 的项目根目录运行 `./build.ps1`，准备 `target/LiSkills-1.13.0.jar` 与 `lib/api/` 后再执行下面命令。仅把插件 Jar 放在脚本旁边不能满足这个入口的目录要求；本导航只说明用法，不提供或交付工程文件。
 
 `SourceUserdata` 指向旧玩家 YAML，`TargetPlayers` 指向 LiSkills 新玩家目录。默认预检，显式 `Apply` 才新建目标，格式来源见[许可及来源](License.md)。
 

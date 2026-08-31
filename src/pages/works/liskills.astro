@@ -4,7 +4,6 @@ import { works } from '@/data/site';
 import { withBase } from '@/lib/paths';
 
 const work = works.find((entry) => entry.slug === 'liskills')!;
-const release = withBase(`/downloads/liskills/${work.version}/`);
 ---
 
 <BaseLayout title="LiSkills" description={work.summary}>
@@ -12,13 +11,12 @@ const release = withBase(`/downloads/liskills/${work.version}/`);
     <div class="shell">
       <div class="work-hero__top">
         <div>
-          <div class="work-hero__labels"><span class="eyebrow">Skills / 生存成长</span><span class="tag tag--free">免费下载 · GPL-3.0</span></div>
+          <div class="work-hero__labels"><span class="eyebrow">Skills / 生存成长</span><span class="tag tag--free">免费插件 · GPL-3.0</span></div>
           <h1>LiSkills</h1>
           <p class="work-hero__lead">{work.summary}</p>
           <div class="button-row" style="margin-top: 2rem;">
-            <a class="button button--primary" href={`${release}LiSkills-${work.version}.jar`} download>下载 {work.version} Jar</a>
-            <a class="button" href={withBase('/docs/liskills/home/')}>阅读中文 Wiki</a>
-            <a class="button" href={`${release}LiSkills-${work.version}.zip`} download>完整安装包与源码</a>
+            <a class="button button--primary" href={withBase('/docs/liskills/home/')}>阅读中文 Wiki</a>
+            <a class="button" href={withBase('/docs/liskills/install/')}>安装与升级说明</a>
           </div>
         </div>
         <div class="work-emblem work-emblem--catalog" aria-label="15 职业技能，70 项被动">
@@ -80,12 +78,11 @@ const release = withBase(`/downloads/liskills/${work.version}/`);
 
   <section class="cta-band">
     <div class="cta-band__inner shell">
-      <h2>安装一个 Jar，<br />从 /lsk 开始。</h2>
+      <h2>了解技能玩法，<br />从使用文档开始。</h2>
       <div class="button-row">
-        <a class="button button--primary" href={`${release}LiSkills-${work.version}.jar`} download>下载插件</a>
+        <a class="button button--primary" href={withBase('/docs/liskills/home/')}>阅读使用文档</a>
         <a class="button" href={withBase('/docs/liskills/install/')}>安装与升级指南</a>
-        <a class="button" href={`${release}LiSkills-${work.version}-source.zip`} download>完整源码</a>
-        <a class="button" href={`${release}SHA256SUMS.txt`}>文件校验值</a>
+        <a class="button" href={withBase('/docs/liskills/compatibility/')}>查看兼容范围</a>
       </div>
     </div>
   </section>
