@@ -304,10 +304,10 @@ export const works: WorkEntry[] = [
     name: 'LiPet',
     catalogLabel: '宠物',
     kicker: '宠物养成、捕捉、骑乘与战斗',
-    summary: '骑乘时对所有玩家隐藏宠物名牌，原地及持续前进跟随实时视角转向；提供等级模型、随机捕捉、商城与中文宠物养成配置。',
+    summary: '修复召唤偶发无响应与实体任务退休后队列卡住，统一等待和异常反馈；保留骑乘名牌隐藏、实时转向、等级模型与随机捕捉。',
     description:
-      'LiPet 是面向群组服的 Bukkit 宠物框架，采用 pet-types.yml 公共默认值与宠物目录单宠差异配置；默认捕捉规则允许的全部原版生物会生成中文独立 YML，MCPets 单宠文件可直接放入中文子目录并通过 MythicMobs 生成自定义实体。0.27.7 修复骑乘名牌旁观者可见与旧视角转向：开启隐藏时对所有玩家隐藏双行及载体名称，下马恢复；上马立即逐 tick 读取当前视角和按键，支持原地转头与持续前进转向。插件同时提供三种商城货币名称热重载、旧原版类型 ID 兼容、每宠 MythicMobs 等级技能、管理页原路返回、“我的宠物”列表、仓库四键、SQLite/MySQL 热切换、双排行榜、PlayerPoints/Vault 商城、属性成长、MEG 等级模型、原版捕捉随机属性、真实捕捉球商店、捕捉仪式、完全自定义 GUI、离线及全服宠物管理、骑乘、战斗导航、外部模型、CraftEngine 完整物品挂钩与可启停的 CE 捕捉球/食物案例，以及扩展 API。',
-    version: '0.27.7-SNAPSHOT',
+      'LiPet 是面向群组服的 Bukkit 宠物框架，采用 pet-types.yml 公共默认值与宠物目录单宠差异配置；默认捕捉规则允许的全部原版生物会生成中文独立 YML，MCPets 单宠文件可直接放入中文子目录并通过 MythicMobs 生成自定义实体。0.27.8 修复实体任务已受理却在执行前退休时未完成 Future，导致同一玩家召唤与后续操作长期等待的问题；失败按本次已保存的 revision 回滚，同步依赖错误与查询占位正确释放，命令和仓库统一反馈，等待超过 100 tick 才提示一次。0.27.7 的骑乘名牌全员隐藏、下马恢复与逐 tick 实时视角转向继续保留。插件同时提供三种商城货币名称热重载、旧原版类型 ID 兼容、每宠 MythicMobs 等级技能、管理页原路返回、“我的宠物”列表、仓库四键、SQLite/MySQL 热切换、双排行榜、PlayerPoints/Vault 商城、属性成长、MEG 等级模型、原版捕捉随机属性、真实捕捉球商店、捕捉仪式、完全自定义 GUI、离线及全服宠物管理、骑乘、战斗导航、外部模型、CraftEngine 完整物品挂钩与可启停的 CE 捕捉球/食物案例，以及扩展 API。',
+    version: '0.27.8-SNAPSHOT',
     status: '持续维护',
     platform: 'Paper / Folia',
     minecraft: '1.21.11 · 26.1.2 · 26.2',
@@ -316,6 +316,9 @@ export const works: WorkEntry[] = [
     priceCny: 68,
     dependencies: ['Vault / PlayerPoints（商城货币可选）', 'PlaceholderAPI（可选）', 'MythicMobs（自定义实体与等级技能可选）', 'ModelEngine / CraftEngine（按配置可选）', 'MySQL / Redis（跨服功能按需）'],
     features: [
+      '实体任务退休、拒绝与异常完整结束，避免召唤队列卡住',
+      '按本次已保存版本回滚，依赖错误与查询失败可继续重试',
+      '命令和仓库统一反馈，等待 100 tick 提示一次且可关闭',
       '骑乘名牌全员隐藏、载体无残留名称与下马恢复',
       '上马即启动逐 tick 控制，原地和持续前进按视角转向',
       '骑乘暂停原版方向控制，下马恢复且跟随战斗不抢方向',
