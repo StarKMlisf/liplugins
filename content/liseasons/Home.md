@@ -2,7 +2,9 @@
 
 LISeasons 的使用、配置、维护和扩展指南。
 
-> 本文档对应 `LISeasons 1.0.68`。季节染色通过 PacketEvents 生成玩家独立的客户端群系视图，不修改世界真实群系。
+> 本文档对应 `LISeasons 1.0.69`。季节染色通过 PacketEvents 生成玩家独立的客户端群系视图，不修改世界真实群系。
+
+本次更新加入 Residence 冰雪权限兼容与台阶/楼梯安全积雪，详见[更新日志](更新日志.md)。
 
 ## 从这里开始
 
@@ -54,7 +56,7 @@ LISeasons 把一个服务器世界拆成六个相互连接、但可以分别配�
 
 ## 兼容范围
 
-| 项目 | 1.0.68 状态 |
+| 项目 | 1.0.69 状态 |
 | --- | --- |
 | Paper/Leaves/Lophine 1.21.1-1.21.8 | Paper 1.21.1 API 最低编译基线；Paper 1.21.1 stable 真实加载验证 |
 | Paper/Leaves/Lophine 1.21.9 | PacketEvents 运行验证；Paper 官方仅提供 Alpha 构建 |
@@ -68,6 +70,7 @@ LISeasons 把一个服务器世界拆成六个相互连接、但可以分别配�
 | PlaceholderAPI | 可选，用于 TAB、聊天和其他界面显示 |
 | CustomCrops | 可选，自定义作物季节联动 |
 | Dominion | 可选，领地环境联动 |
+| Residence | 可选，通过 Bukkit 事件遵守 `iceform`、`icemelt`；Residence 自身需要匹配的 CMILib |
 
 ## 重要的安全边界
 

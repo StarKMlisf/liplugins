@@ -1,6 +1,7 @@
 # LISeasons 文档
 
 - [LISeasons](Home.md)
+- [更新日志](更新日志.md)
 
 ## 玩家文档
 

@@ -72,7 +72,7 @@ const work = works.find((entry) => entry.slug === 'liseasons')!;
         <p>季节调色通过 PacketEvents 为每位玩家发送独立的客户端群系视图，不调用 setBiome、refreshChunk 或 NMS，也不会把季节目标群系保存进世界。配合冬季结冰、春季融化、作物和天气规则，让不同季节在生存世界里呈现可辨认的状态。</p>
         <div class="feature-list">
           <div><strong>季节群系染色</strong><span>春绿、夏盛、秋暖、冬冷的整体自然色调。</span></div>
-          <div><strong>冬冻春融</strong><span>按预算渐进处理玩家附近水面和季节冰。</span></div>
+          <div><strong>冬冻春融</strong><span>按预算渐进处理冰雪，遵守 Residence 领地权限与原版积雪支撑规则。</span></div>
           <div><strong>作物与天气</strong><span>按季节控制生长倍率、降水与世界反馈。</span></div>
           <div><strong>体感温度与增益条</strong><span>环境共同参与温度，BossBar 直接呈现当前季节 Buff。</span></div>
         </div>
@@ -107,7 +107,7 @@ const work = works.find((entry) => entry.slug === 'liseasons')!;
         <div class="directory-card"><span class="directory-card__group">必须前置</span><h2>PacketEvents 2.13.0+</h2><p>缺失或版本过低时群系染色无法初始化；ProtocolLib 不再需要。</p></div>
         <div class="directory-card"><span class="directory-card__group">支持核心</span><h2>Paper / Folia</h2><p>Paper 系从 1.21.1 起，Folia stable 从 1.21.8 起，并覆盖 26.1.2 与 26.2；季节染色不使用 NMS 或反射。</p></div>
         <div class="directory-card"><span class="directory-card__group">Java</span><h2>Java 21</h2><p>插件字节码和构建配置使用 Java 21。</p></div>
-        <div class="directory-card"><span class="directory-card__group">可选联动</span><h2>PAPI · Crops · Dominion</h2><p>显示占位符、自定义作物与领地环境规则按需启用。</p></div>
+        <div class="directory-card"><span class="directory-card__group">可选联动</span><h2>PAPI · Crops · Dominion · Residence</h2><p>1.0.69 接入 Residence 冰雪权限，支持上半台阶、双台阶与倒置楼梯安全积雪；下半台阶和普通楼梯跳过，不覆盖建筑。</p></div>
       </div>
     </div>
   </section>
