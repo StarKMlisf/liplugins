@@ -1,6 +1,6 @@
 # LiPet Wiki
 
-适用版本：`0.27.8-SNAPSHOT`
+适用版本：`0.27.9-SNAPSHOT`
 
 适用服务端：
 
@@ -10,7 +10,18 @@
 
 运行建议：Java 25。插件成品 Jar 使用 Java 21 字节码构建，便于跨版本运行。
 
-## 今日更新 · 2026-09-01 · 0.27.8
+## 今日更新 · 2026-09-02 · 0.27.9
+
+- 道具商城余额不足使用 `item-shop-insufficient-funds`，默认明确写“无法购买该道具”；宠物商城的原提示不变。
+- 道具扣款后的发放任务受理后退休会结束并退款，不再出现 Future 一直等待。
+- 宠物速度同时写入实体支持的 `MOVEMENT_SPEED` 和 `FLYING_SPEED`，覆盖鹦鹉等具有独立飞行属性的实体。
+- 骑乘每 tick 读取疾跑键；`behavior.riding-sprint-multiplier` 默认 `1.5`、范围 `1.0-3.0`，同时放大水平速度和飞行俯仰升降速度。
+- `/lipet store`、管理 GUI 与信号棒共用回收反馈；超过 100 tick 提示一次，`pet-store-pending: ""` 可关闭，结果提示异常与数据库保存失败分开说明。
+- 旧配置只补缺失节点和中文注释，已有货币 ID、价格、骑乘速度与管理员消息保留。
+
+完整说明见 [2026-09-02 商城、飞行加速与回收更新](更新日志-2026-09-02-商城飞行加速与回收.md)。默认兼容构建与 Paper 26.2 Profile 各 312 项测试通过；同一最终 Jar 在 Paper 26.1.2 Build 70、26.2 Build 111 各完成 8 轮真实 SQLite 回收，并验证鹦鹉 `FLYING_SPEED` 与 1.5 倍疾跑。两服均安全关闭；未做真人客户端或 Folia 实服验证。
+
+## 上一版 · 2026-09-01 · 0.27.8
 
 - 修复实体任务受理后在执行前退休，却未结束召唤 Future 的问题；同一玩家后续操作不再因这条遗留结果长期排队。
 - 执行、拒绝、退休和同步异常都会结束实体任务；召唤失败依据本次最后一次已成功保存的 revision 回滚并释放租约。首个 ACTIVE 写入冲突或失败时只释放租约，不按猜测的版本号回滚其他记录。
@@ -52,17 +63,16 @@
 - 原版宠物捕捉成功时生成四项初始随机属性，默认力量、体质、防御、敏捷各 0–5；保存后不因重召唤、重载或重启重新随机。
 - 道具商店支持 `item.capture-ball`，通过捕捉球服务发放带识别标记的真实捕捉球；材质、名称和介绍来自 `capture.yml`。
 - 默认商店包含普通捕捉球案例，原有商品、自定义数值和注释保留。
-- 206 项自动测试通过；Paper 26.1.2 / 26.2 已验证启动、重载、捕捉球标记与 SQLite 随机值重启保持；MEG 客户端视觉尚未实测。
 
 完整配置见 [等级模型、随机属性与捕捉球商店](等级模型与捕捉球商店.md)，版本记录见 [2026-08-30 更新日志](更新日志-2026-08-30-等级模型与随机捕捉.md)。
 
 ## 上一版 · 2026-08-29 · 0.27.4
 
 - `capture.yml` 新增默认关闭的 `balls.craftengine_example`，包含 CE 完整物品 ID、名称、Lore 与概率案例。
-- `pet-types.yml -> defaults.growth.foods` 新增默认关闭的 `craftengine_example`，所有继承公共默认值的宠物均可使用。
-- 捕捉球和食物都新增 `enabled` 开关；关闭节点在物品 ID 校验前跳过，不要求未安装 CE 的服务器解析占位 ID。
-- 旧服只补齐缺失的开关与案例，不覆盖现有 Material、CE ID、数值或管理员注释。
-- 默认构建与 Paper 26.2 Profile 各 165 项测试通过，并在 CraftEngine 26.8 的 109 个物品环境验证 CE 食物与捕捉球双入口。
+- `pet-types.yml` 新增默认关闭的 `defaults.growth.foods.craftengine_example`，所有继承公共配置的宠物均可使用。
+- 捕捉球和食物都支持 `enabled`；关闭案例不会进入补全、识别、扣除、发放或食物列表。
+- 只需把 `yourpack:*` 改成真实 CraftEngine ID、设为 `true`，再执行 `/lipet reload`。
+- 旧服只补缺失节点和注释，不覆盖现有 Material、CE ID 或食物数值。
 
 完整记录见 [2026-08-29 CraftEngine 捕捉球与食物案例更新日志](更新日志-2026-08-29-CE捕捉球与食物案例.md)。
 
@@ -82,11 +92,10 @@
 - 召唤、同类型持有上限与管理员按类型操作共用兼容规则，避免旧 ID 和新 ID 被当成两只不同种类。
 - 商城 10 种宠物现在各有一个独立 YML；已有狼、猫或服主自定义类型不会被覆盖。
 - 每个新文件包含完整中文注释、原版属性、成长、食物、模型和 MythicMobs 等级技能示例。
-- 默认构建与 Paper 26.2 Profile 各 151 项测试通过；Paper 26.2 Build 111 已验证旧配置补全、旧 ID 解析、热重载与安全关闭。
 
 完整记录见 [2026-08-29 老宠物类型兼容更新日志](更新日志-2026-08-29-老宠物类型兼容.md)。
 
-## 上一轮更新 · 2026-08-29 · 0.27.1
+## 更早版本 · 2026-08-29 · 0.27.1
 
 - MM 技能冷却现在先于概率抽取判断，冷却期间不再产生无效随机数；`PASSIVE` 和 `INTERVAL` 每轮合并为一次扫描。
 - MM 返回 `false` 时保留配置冷却；零冷却失败技能至少退避 1 秒，错误日志按技能名分别每 30 秒最多输出一次。
@@ -96,7 +105,7 @@
 
 完整记录见 [2026-08-29 MythicMobs 技能优化日志](更新日志-2026-08-29-MythicMobs技能优化.md)。
 
-## 上一版 · 2026-08-29 · 0.27.0
+## 上两版 · 2026-08-29 · 0.27.0
 
 - 每个 `宠物类型/*.yml` 可单独配置 MythicMobs 技能，并通过 `unlock-level` 指定宠物达到多少级后解锁。
 - 支持主人攻击/受击、宠物攻击/受击、主人交互及定时触发，并可配置概率、独立冷却、基础 `power` 与每级成长。
@@ -265,7 +274,7 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 
 ## 2. 安装
 
-1. 将 `LiPet-0.27.8-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
+1. 将 `LiPet-0.27.9-SNAPSHOT.jar` 放入服务器 `plugins/` 目录。
 2. 启动服务器一次，让插件生成默认配置。
 3. 停服，编辑 `plugins/LiPet/` 下的配置文件。
 4. 再次启动服务器。
@@ -278,8 +287,8 @@ LiPet 是一个面向群组服的宠物插件，目标是提供完整、可配�
 | 文件 | 用途 |
 | --- | --- |
 | `config.yml` | 存储、服务器 ID、群组、依赖下载、三种货币显示名称、内置货币初始余额、排行榜分页 |
-| `pet-types.yml` | 宠物类型目录、原版自动注册、名牌、骑乘和背包全局设置；兼容旧 `types` 节点 |
-| `宠物类型/*.yml` | 每种宠物独立的实体、旧 ID、模型、属性、行为、成长、食物与 MM 技能；目录和文件名可用中文 |
+| `pet-types.yml` | `defaults` 公共宠物参数、目录、原版自动注册、名牌、骑乘和背包全局设置；兼容旧 `types` 节点 |
+| `宠物/**/*.yml` | 每只宠物的身份与差异项，也可直接放 MCPets 单宠物文件；目录和文件名可用中文 |
 | `shop.yml` | 商城总开关、宠物商城和宠物道具商城 |
 | `gui.yml` | GUI 标题、尺寸、槽位、留白/边框、图标、点击动作与音效 |
 | `capture.yml` | 捕捉球、捕捉概率、捕捉仪式、音效、粒子、实体映射 |
@@ -761,6 +770,7 @@ foods:
   # CraftEngine 物品必须填写完整 namespace:item_id。
   # 节点名只是管理员自定别名；使用 item-id 后也完整支持含点号的合法 ID。
   craftengine_example:
+    # 默认关闭；改好真实 CE ID 后再启用。
     enabled: false
     item-id: "yourpack:pet_food"
     display-name: "灵契宠物粮"
@@ -774,7 +784,7 @@ foods:
 规则：
 
 - 玩家手持配置的原版或 CraftEngine 食物右键自己的宠物即可喂食。
-- 把案例中的 `item-id` 换成真实 CE ID，再将 `enabled` 改为 `true`；关闭案例不会参与识别、扣除或信息界面展示。
+- `enabled: false` 的食物不会参与识别、扣除或界面食物列表；旧食物未填写时按 `true` 兼容。
 - CraftEngine 物品按完整自定义 ID 精确识别；即使多个物品都以 `PAPER` 为底材，也只会匹配配置的那一个。
 - 简单 CE ID 可直接作为节点名，例如 `'default:pet_biscuit':`；ID 含 `.` 时请使用普通节点别名并填写 `item-id`。
 - `CraftEngine` 是可选软依赖。未安装时原版食物仍可使用，CE 食物配置会保留但不会匹配。
@@ -801,8 +811,13 @@ foods:
 ```yaml
 # capture.yml
 balls:
-  spirit:
-    material: "mypack:spirit_capture_ball"
+  craftengine_example:
+    enabled: false
+    material: "yourpack:pet_capture_ball"
+    name: "<gradient:#69F0AE:#40C4FF><bold>灵契捕捉球</bold></gradient>"
+    base-chance: 0.25
+    low-health-bonus: 0.50
+    maximum-chance: 0.75
 
 # skills.yml
 skills:
@@ -869,21 +884,6 @@ ritual:
     success: "ENTITY_PLAYER_LEVELUP"
     failure: "ENTITY_ITEM_BREAK"
 ```
-
-默认文件还提供一个关闭状态的 CraftEngine 捕捉球案例：
-
-```yaml
-balls:
-  craftengine_example:
-    enabled: false
-    material: "yourpack:pet_capture_ball"
-    name: "<gradient:#69F0AE:#40C4FF><bold>灵契捕捉球</bold></gradient>"
-    base-chance: 0.25
-    low-health-bonus: 0.50
-    maximum-chance: 0.75
-```
-
-把 `material` 换成真实 CE 完整 ID，再将 `enabled` 改为 `true`。关闭的球不会出现在 `/lipet captureball` 补全、识别和发放流程中；至少要保留一个已启用捕捉球。
 
 兼容处理：
 
@@ -1164,12 +1164,16 @@ action: "close"                         # 关闭菜单
 ```yaml
 behavior:
   riding-speed: 0.35
+  # 按住疾跑键时的倍率，范围 1.0-3.0。
+  riding-sprint-multiplier: 1.5
   jump-velocity: 0.5
 ```
 
 末影龙的翅膀、头部和身体属于独立交互部件；LiPet 会循环把这些部件解析回龙本体，因此普通右键骑乘和潜行右键管理都可正常使用。`0.26.17+` 会在召唤、区块恢复、跟随与骑乘时把末影龙稳定在 `HOVER` 阶段，避免原版阶段 AI 飞向末地传送门。飞行宠物会根据骑手视角俯仰升降，跳跃键可主动爬升。
 
 `0.27.7` 起，骑乘控制上马即启动，每 tick 读取骑手当前视角与按键。即使按键没有改变，原地转头、按住前进键持续移动和飞行时改变俯仰也会更新控制；无需松开再按前进键。下马、玩家退出或骑乘对象失效时清理对应任务。
+
+`0.27.9` 起，骑乘还会读取疾跑键。按住疾跑时以 `riding-speed × riding-sprint-multiplier` 计算移动；飞行宠物的水平速度和按视角俯仰产生的升降速度一起加速。默认倍率为 `1.5`；设为 `1.0` 可关闭加速效果。
 
 骑乘期间临时关闭载体 `aware`，暂停可能把朝向拉回或清零俯仰的原版 LookControl / MoveControl；不会关闭 `hasAI`，不会切换坐下状态，也不取消实体物理与动作。下马、退出、控制异常或换骑后，在实体区域恢复此前的感知状态，并检查当前骑乘关系，避免迟到的旧恢复任务影响新骑乘。跟随、战斗和延迟回传也在执行前检查包含模型嵌套座位的骑乘关系，仍在骑乘时不抢方向或回传。
 
@@ -1262,7 +1266,7 @@ LiPet 当前使用 Java 21 字节码构建，运行端推荐 Java 25。调度逻
 
 `0.27.3-SNAPSHOT` 默认构建与 Paper 26.2 Profile 各 160 项自动测试通过，失败、错误和跳过均为 0。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上使用真实 0.27.2 多 YML 配置启动：旧 `宠物类型/` 成功迁移为 `宠物/`，首次只生成 77 个缺失文件，最终为 87 种默认可捕捉原版生物各保留一份独立 YML，并直接载入原始 MCPets 龙骑文件。复制前后龙骑文件 SHA-256 同为 `3171CEC007C3B88C6234B5529F02F07B4F7B31347FF78B2EE55A5E8DF9A3EBD9`，证明加载未改写；热重载成功，第二次启动未重复生成，旧 ID 探针继续全部通过并安全关闭。MythicMobs 生成反射同时覆盖 MCPets 当前使用的 APIHelper 路径和旧 MobManager 后备路径。当前环境没有真实 MythicMobs Jar 和在线客户端，因此龙骑 Mob 的实际生成、模型与骑乘画面仍需目标测试服确认。成品大小为 `787007` 字节，SHA-256 为 `C2D0C846440CC81906A3FB719551E69EDE02DCA913045B5B99542ACCB83C71DF`。
 
-`0.27.2-SNAPSHOT` 默认构建与 Paper 26.2 Profile 各 151 项自动测试通过，失败、错误和跳过均为 0。新增测试覆盖旧原版 ID、命名空间 ID、自定义 `legacy-ids`、当前 ID 优先级和模板 YAML 解析。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上从旧版配置启动，安全补齐 8 个缺失文件并形成商城 10 种宠物各自独立 YML；原狼、猫文件哈希保持不变，第二次启动不重复生成。兼容探针验证 `bat`、`minecraft:bat`、`fox` 均能匹配当前类型，`/lipet reload` 成功并安全关闭。当前没有在线客户端，旧宠物在游戏中的最终召唤点击仍需目标测试服确认。成品大小为 `761171` 字节，SHA-256 为 `B4F035367B1242193775A5F43BCFF8A21909F09C4F41C39A553B56976288F859`。
+`0.27.2-SNAPSHOT` 默认构建与 Paper 26.2 Profile 各 151 项自动测试通过，失败、错误和跳过均为 0。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上使用真实 0.27.1 旧配置启动；首次升级只新增缺失的 8 个商城宠物文件，原狼、猫文件 SHA-256 前后完全一致。运行时探针确认 `bat`、`minecraft:bat` 与 `fox` 均可解析到对应 `vanilla_` 类型，第二次启动没有重复生成文件；`/lipet reload` 成功并安全关闭。当前没有在线客户端，实际点击召唤的最终画面仍需目标测试服确认。成品大小为 `761171` 字节，SHA-256 为 `B4F035367B1242193775A5F43BCFF8A21909F09C4F41C39A553B56976288F859`。
 
 `0.27.1-SNAPSHOT` 默认构建与 Paper 26.2 Profile 各 148 项自动测试通过，失败、错误和跳过均为 0。新增测试覆盖失败施放退避、冷却期间跳过随机抽取、两种定时触发合并扫描、静态 APIHelper、`double power` 和历史官方状态语言迁移。最终成品在 Paper 26.2 Build 111 + Java 25 + PlayerPoints 3.3.5 上使用真实旧配置启动，并在隔离配置中启用一条 MM 规则；旧 `status-mythicmobs` 自动补入统计变量，`/lipet status` 显示 PlayerPoints `ONLINE`、MythicMobs `OFFLINE`、技能类型 `1`、规则 `1`，热重载后保持一致并安全关闭，LiPet 无报错。当前环境没有真实 MythicMobs Jar，因此 MM 技能在实际战斗中的最终施放仍需在安装 MM 的目标测试服确认。成品大小为 `750989` 字节，SHA-256 为 `B4630BFD0F23FD9CA0003B057269DED973ADD6E5C2743F6785523C45BA671B27`。
 
@@ -1432,6 +1436,8 @@ storage:
 
 LiPet 会补全新增配置节点，但不会覆盖已有自定义配置值。
 
+升级到 `0.27.9` 后会补全道具余额不足、回收等待/反馈异常消息和 `riding-sprint-multiplier`；已有支付 ID、价格、骑乘速度和自定义文本不覆盖。换 Jar 并重启后，可再用 `/lipet reload` 调整倍率或消息。
+
 升级到 `0.27.8` 必须替换 Jar 后重启，旧版的配置重载不能修复已卡住的运行时操作队列。保留宠物数据与全部自定义消息；新增等待提示可设为空字符串关闭，不影响召唤结果或状态保存。
 
 升级到 `0.27.7` 请停服备份后替换 Jar 并重启；保留已有 `nameplate.hide-while-ridden` 值与自定义注释。想让骑手及旁观者都不看到骑乘名牌时设为 `true`，想保留显示时设为 `false`；后续修改该配置可执行 `/lipet reload` 应用。
@@ -1455,5 +1461,5 @@ mvn -Ppaper-26.2 clean package
 输出：
 
 ```text
-target/LiPet-0.27.8-SNAPSHOT.jar
+target/LiPet-0.27.9-SNAPSHOT.jar
 ```
