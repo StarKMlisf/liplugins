@@ -232,6 +232,15 @@ const liPetDocs = defineDocs('lipet', [
 ]);
 
 
+const liDungeonDocs = defineDocs('lidungeon', [
+  { file: 'Home.md', slug: 'home', title: 'LiDungeon 完整 Wiki', summary: '地牢编辑、触发器、刷怪权重、指令、权限和生产环境排障的一站式中文入口。', group: '文档总览', order: 1 },
+  { file: 'Quick-Start.md', slug: 'quick-start', title: '五分钟快速上手', summary: '从安装插件到创建地牢、设置触发器与验证核心流程。', group: '玩家文档', order: 10 },
+  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: 'Paper / Folia 26.1.2 与 26.2 的安装步骤、前置、配置迁移与重载验证。', group: '管理员文档', order: 20 },
+  { file: '触发器与条件.md', slug: 'triggers', title: '触发器与条件', summary: '任务流、计时触发、条件分支与动作配置的逻辑说明。', group: '管理员文档', order: 21 },
+  { file: '故障排查.md', slug: 'troubleshooting', title: '故障排查', summary: '卡顿、编辑卡死、重载失败、任务未触发的常见排查清单与复现步骤。', group: '管理员文档', order: 22 },
+  { file: 'FAQ.md', slug: 'faq', title: '常见问题', summary: '关于地牢保存、触发链、权限、刷怪、奖励与多世界运行的常见疑问。', group: '管理员文档', order: 23 },
+]);
+
 const lichQianDocs = defineDocs('lichqian', [
   { file: 'Home.md', slug: 'home', title: 'LichQian 使用说明', summary: '安装、命令、权限、时间、文本、GUI、变量和配置升级。', group: '文档总览', order: 1 },
   { file: '玩家入门.md', slug: 'player', title: '玩家入门', summary: '打开抽签菜单、直接抽签、查看次数和理解每日重置。', group: '玩家文档', order: 10 },
@@ -314,6 +323,7 @@ export const docSets: DocSet[] = [
   { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev199-paper26', summary: '真实附魔、YML/API 扩展、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
   { slug: 'lititle', name: 'LiTitle', version: '0.1.93', summary: '称号、商店、仓库、聊天、昵称、存储与跨服部署文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lititleDocs },
   { slug: 'lipet', name: 'LiPet', version: '0.27.9-SNAPSHOT', summary: '道具商城安全退款、飞行与疾跑加速、统一回收反馈，以及中文宠物养成配置。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
+  { slug: 'lidungeon', name: 'LiDungeon', version: '2.0.1-zhcn-folia.8', summary: 'Folia 1.21.11 地牢副本系统，提供完整中文地牢编辑、触发器与运维文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liDungeonDocs },
   { slug: 'liskin', name: 'LiSkin', version: '1.9.7', summary: 'CraftEngine 外观皮肤、顶部分类换装、沉浸旁观视角、常驻 NPC、商店、权限与跨服文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liSkinDocs },
   { slug: 'jisseechessgames', name: 'JisseeChessGames', version: '2.1.0', summary: '棋盘生成、五子棋、中国象棋、军棋、房间、持久化与验证文档。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: jisseeChessDocs },
   { slug: 'liseasons', name: 'LISeasons', version: '1.0.70', summary: '四季、节气、Folia 流星雨、世界规则、Residence 冰雪兼容与运维开发文档。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },
