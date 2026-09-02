@@ -233,12 +233,23 @@ const liPetDocs = defineDocs('lipet', [
 
 
 const liDungeonDocs = defineDocs('lidungeon', [
-  { file: 'Home.md', slug: 'home', title: 'LiDungeon 完整 Wiki', summary: '地牢编辑、触发器、刷怪权重、指令、权限和生产环境排障的一站式中文入口。', group: '文档总览', order: 1 },
-  { file: 'Quick-Start.md', slug: 'quick-start', title: '五分钟快速上手', summary: '从安装插件到创建地牢、设置触发器与验证核心流程。', group: '玩家文档', order: 10 },
-  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: 'Paper / Folia 26.1.2 与 26.2 的安装步骤、前置、配置迁移与重载验证。', group: '管理员文档', order: 20 },
-  { file: '触发器与条件.md', slug: 'triggers', title: '触发器与条件', summary: '任务流、计时触发、条件分支与动作配置的逻辑说明。', group: '管理员文档', order: 21 },
-  { file: '故障排查.md', slug: 'troubleshooting', title: '故障排查', summary: '卡顿、编辑卡死、重载失败、任务未触发的常见排查清单与复现步骤。', group: '管理员文档', order: 22 },
-  { file: 'FAQ.md', slug: 'faq', title: '常见问题', summary: '关于地牢保存、触发链、权限、刷怪、奖励与多世界运行的常见疑问。', group: '管理员文档', order: 23 },
+  { file: 'Home.md', slug: 'home', title: 'LiDungeon 完整 Wiki', summary: '以当前 2.0.1-zhcn-folia.8 源码与配置为准的安装、游玩、编辑和运维入口。', group: '文档总览', order: 1 },
+  { file: 'Quick-Start.md', slug: 'quick-start', title: '五分钟快速上手', summary: '创建最小经典地牢，设置出生、完成触发器、保存并完成第一次玩家测试。', group: '玩家文档', order: 10 },
+  { file: '玩家游玩指南.md', slug: 'player-guide', title: '玩家游玩指南', summary: 'play、难度、队伍、准备、生命、旁观、退出与无法进入时的提示。', group: '玩家文档', order: 11 },
+  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: 'Paper/Folia 1.21.11 与 26.2 环境、全新安装、覆盖更新、迁移和回滚。', group: '管理员文档', order: 20 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '统一 /lidungeon 命令树、快捷命令、完整参数、权限和分组建议。', group: '管理员文档', order: 21 },
+  { file: '地牢创建与编辑.md', slug: 'creation-editor', title: '地牢创建与编辑', summary: '创建参数、出生点、构建器、物品、钥匙、保存、重载与编辑验收。', group: '管理员文档', order: 22 },
+  { file: '地牢类型与程序化生成.md', slug: 'dungeon-types-generation', title: '地牢类型与程序化生成', summary: 'Classic、Procedural、Continuous、房间、连接点、门与两种布局。', group: '管理员文档', order: 23 },
+  { file: '主配置说明.md', slug: 'global-configuration', title: '主配置说明', summary: '全局实例、队伍、准备、Folia、多世界、实验功能和旁观配置逐项说明。', group: '管理员文档', order: 24 },
+  { file: '单地牢配置.md', slug: 'dungeon-configuration', title: '单地牢配置', summary: '生命周期、要求、钥匙、难度、奖励冷却、地图与玩法保护规则。', group: '管理员文档', order: 25 },
+  { file: 'Folia与多世界.md', slug: 'folia-multiworld', title: 'Folia 与多世界实例', summary: '预加载世界池、远端隔离回退、容量计算、制图流程与调度排查。', group: '管理员文档', order: 26 },
+  { file: '触发器与条件.md', slug: 'triggers-conditions', title: '触发器与条件', summary: '15 个触发器、最多 11 个条件、目标上下文、常用配方与逐层排查。', group: '管理员文档', order: 27 },
+  { file: '功能与奖励.md', slug: 'functions-rewards', title: '功能、奖励与流程编排', summary: '38 个基础功能、可选扩展、奖励、目标类型和安全流程编排。', group: '管理员文档', order: 28 },
+  { file: '可选联动与变量.md', slug: 'integrations-placeholders', title: '可选联动与变量', summary: 'PlaceholderAPI 变量、MythicMobs、Citizens、Vault、PacketEvents 与队伍联动。', group: '管理员文档', order: 29 },
+  { file: '备份迁移与回滚.md', slug: 'backup-migration-rollback', title: '备份、迁移与回滚', summary: '数据范围、备份节奏、MythicDungeons/Paper/Folia 迁移与灾难恢复。', group: '管理员文档', order: 30 },
+  { file: '故障排查.md', slug: 'troubleshooting', title: '故障排查', summary: '编辑线程等待、世界池、队列、触发器、配置、奖励与数据恢复问题树。', group: '管理员文档', order: 31 },
+  { file: 'FAQ.md', slug: 'faq', title: '常见问题', summary: '主命令、多世界、触发器数量、完成语义、重载、保存和自动关机说明。', group: '管理员文档', order: 32 },
+  { file: '验证清单.md', slug: 'validation-checklist', title: '上线验收清单', summary: '启动、Folia、编辑、玩家、触发、奖励、数据与发布记录的逐项验收。', group: '管理员文档', order: 33 },
 ]);
 
 const lichQianDocs = defineDocs('lichqian', [
