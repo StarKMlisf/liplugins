@@ -99,7 +99,7 @@ export const works: WorkEntry[] = [
     summary: '让季节不只是计时器，而是会真正改变天空、群系、冰雪、作物、温度与夜空的世界规则。',
     description:
       'LISeasons 为长期生存服提供完整的时间与自然循环：四季、二十四节气、三种日历、体感温度、PacketEvents 客户端群系染色、冬冻春融、季节事件、节日和六页日历 GUI。',
-    version: '1.0.70',
+    version: '1.0.71',
     status: '持续维护',
     platform: 'Paper / Folia',
     minecraft: 'Paper 1.21.1+ · Folia 1.21.8+ · 26.2',
