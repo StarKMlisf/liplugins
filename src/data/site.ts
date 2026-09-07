@@ -34,6 +34,23 @@ export interface WorkEntry {
 
 export const works: WorkEntry[] = [
   {
+    slug: 'playerplushiestudio',
+    name: '玩家玩偶工坊',
+    catalogLabel: '玩家玩偶',
+    kicker: 'CraftEngine 玩家玩偶图形化生成工具',
+    summary: '识别服务器玩家，自定义皮肤与手持物，一键生成 CraftEngine 玩偶，支持模型预览、单人更新和备份移除。',
+    description: '玩家玩偶工坊 1.6.0 是 Windows 中文桌面工具，内置生成核心 2.4.6。可扫描玩家状态、修复旧模型、导入本地皮肤并配置左右手持物；批量任务会记录成功与失败结果。',
+    version: '1.6.0',
+    status: '持续维护',
+    platform: 'Windows x64',
+    minecraft: '由 CraftEngine 版本决定',
+    java: '桌面工具无需 Java',
+    availability: '免费',
+    dependencies: ['CraftEngine（服务器加载生成内容）', '可访问的服务器目录'],
+    artwork: { src: '/images/playerplushiestudio/wallpaper.png', alt: '玩家玩偶工坊品牌壁纸' },
+    features: ['识别新玩家与待修复模型', '本地皮肤与可旋转模型预览', '左右手持物与偏移旋转配置', '批量生成与指定玩家更新', '单个玩偶移除、备份与排除重建', 'MiniMessage 名称与 Lore 编辑'],
+  },
+  {
     slug: 'liskills',
     name: 'LiSkills',
     catalogLabel: '技能',
@@ -488,9 +505,9 @@ export const catalogSections: CatalogSection[] = [
   {
     id: 'free',
     number: 2,
-    title: '免费插件',
-    description: '可免费获取的玩法与运维插件，同样提供完整使用和管理文档。',
-    works: selectWorks(['liskills', 'liseasons', 'enderdragon', 'lwe', 'lianimalscale', 'lichqian', 'lidungeon']),
+    title: '免费插件与工具',
+    description: '可免费获取的玩法插件与桌面工具，提供使用和管理文档。',
+    works: selectWorks(['playerplushiestudio', 'liskills', 'liseasons', 'enderdragon', 'lwe', 'lianimalscale', 'lichqian', 'lidungeon']),
   },
   {
     id: 'developing',

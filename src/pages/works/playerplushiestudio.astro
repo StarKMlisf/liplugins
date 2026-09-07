@@ -1,20 +1,9 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { catalogSections, works, type WorkEntry } from '@/data/site';
+import { catalogSections, works } from '@/data/site';
 import { withBase } from '@/lib/paths';
 
-export function getStaticPaths() {
-  const bespokePages = new Set(['liseasons', 'lititle', 'lirealenchant', 'liskills', 'playerplushiestudio']);
-  return works
-    .filter((work) => !bespokePages.has(work.slug))
-    .map((work) => ({ params: { slug: work.slug }, props: { work } }));
-}
-
-interface Props {
-  work: WorkEntry;
-}
-
-const { work } = Astro.props;
+const work = works.find((entry) => entry.slug === 'playerplushiestudio')!;
 const catalogSection = catalogSections.find((section) => section.works.some((entry) => entry.slug === work.slug));
 const catalogIndex = catalogSection?.works.findIndex((entry) => entry.slug === work.slug) ?? 0;
 const workNumber = catalogSection ? `${catalogSection.number}-${catalogIndex + 1}` : String(works.findIndex((entry) => entry.slug === work.slug) + 1).padStart(2, '0');
@@ -38,7 +27,7 @@ const availabilityClass =
       <div class="work-hero__top">
         <div>
           <div class="work-hero__labels">
-            <span class="eyebrow">Work {workNumber} / [{work.catalogLabel}] Plugin profile</span>
+            <span class="eyebrow">Work {workNumber} / [{work.catalogLabel}] Desktop tool</span>
             <span class:list={['tag', availabilityClass]}>{availabilityLabel}</span>
           </div>
           <h1>{work.name}</h1>
@@ -66,7 +55,7 @@ const availabilityClass =
 
   <section class="section shell">
     <div class="section-heading">
-      <span class="eyebrow">Overview / 插件介绍</span>
+      <span class="eyebrow">Overview / 工具介绍</span>
       <div>
         <h2>{work.kicker}</h2>
         <p>{work.description}</p>
@@ -92,8 +81,8 @@ const availabilityClass =
         <div><h2>安装前先确认版本与前置。</h2><p>兼容范围以当前作品说明为准，正式服更新前建议先在测试环境验证配置和数据。</p></div>
       </div>
       <div class="directory-grid">
-        <div class="directory-card"><span class="directory-card__group">支持核心</span><h2>{work.platform}</h2><p>Minecraft {work.minecraft}</p></div>
-        <div class="directory-card"><span class="directory-card__group">运行环境</span><h2>{work.java}</h2><p>服务端 Java 版本还需满足对应 Paper 或 Folia 核心要求。</p></div>
+        <div class="directory-card"><span class="directory-card__group">运行平台</span><h2>{work.platform}</h2><p>Minecraft {work.minecraft}</p></div>
+        <div class="directory-card"><span class="directory-card__group">运行环境</span><h2>{work.java}</h2><p>桌面成品无需另装 Python；生成内容需由服务器中的 CraftEngine 加载。</p></div>
         <div class="directory-card"><span class="directory-card__group">发布状态</span><h2>{availabilityLabel}</h2><p>{work.availability === '暂不发售' ? '当前版本仍在完善，不提供购买。' : '具体授权、交付与支持方式以获取时说明为准。'}</p></div>
         <div class="directory-card"><span class="directory-card__group">依赖与联动</span><h2>{work.dependencies.length} 项说明</h2><p>{work.dependencies.join(' · ')}</p></div>
       </div>

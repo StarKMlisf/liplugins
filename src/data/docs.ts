@@ -328,6 +328,13 @@ const lirealEnchantDocs = fs.readdirSync(enchantDirectory)
   });
 
 export const docSets: DocSet[] = [
+  { slug: 'playerplushiestudio', name: '玩家玩偶工坊', version: '1.6.0', summary: 'Windows 玩家玩偶生成、皮肤、手持物、备份移除与兼容排错。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: defineDocs('playerplushiestudio', [
+    { file: 'Home.md', slug: 'home', title: '玩家玩偶工坊', summary: '认识 1.6.0 功能与使用流程。', group: '文档总览', order: 1 },
+    { file: '快速开始.md', slug: 'quick-start', title: '快速开始', summary: '选择服务器目录，识别并生成玩家玩偶。', group: '管理员文档', order: 10 },
+    { file: '皮肤与玩偶管理.md', slug: 'management', title: '皮肤与玩偶管理', summary: '本地皮肤、手持物、单人更新与备份移除。', group: '管理员文档', order: 20 },
+    { file: '兼容与排错.md', slug: 'troubleshooting', title: '兼容与排错', summary: 'Windows 运行要求与皮肤模型故障排查。', group: '管理员文档', order: 30 },
+    { file: '版本说明.md', slug: 'changelog', title: '版本说明', summary: '1.6.0 收录信息与升级提醒。', group: '文档总览', order: 2 },
+  ]) },
   { slug: 'liskills', name: 'LiSkills', version: '1.13.0', summary: '15 职业技能、70 被动、生命魔力 HUD、配置、防刷、迁移与安全卸载指南。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: defineDocs('liskills', liSkillsDocDefinitions) },
   { slug: 'liemc', name: 'LIEMC', version: '0.1.0+build.107', summary: 'EMC 经济、权限出售倍率、物品回收、解锁兑换、自定义 GUI、全局 Lore、CraftEngine 与跨服同步文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liemcDocs },
   { slug: 'lwe', name: 'LWE 小创世神', version: '0.1.0+build.15', summary: '轻量选区施工、材料消耗、LIEMC 自动补料、配置与故障排查。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lweDocs },
