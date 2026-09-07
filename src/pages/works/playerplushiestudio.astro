@@ -30,7 +30,7 @@ const availabilityClass =
             <span class="eyebrow">Work {workNumber} / [{work.catalogLabel}] Desktop tool</span>
             <span class:list={['tag', availabilityClass]}>{availabilityLabel}</span>
           </div>
-          <h1>{work.name}</h1>
+          <h1><img class="plushie-logo" src={withBase('/images/playerplushiestudio/logo.png')} alt="玩家玩偶工坊 Logo" width="80" height="80" />{work.name}</h1>
           <p class="work-hero__lead">{work.summary}</p>
         </div>
         <div class:list={['work-emblem', 'work-emblem--catalog', work.availability === '付费' && 'work-emblem--gold']} aria-label={`${work.name}，${availabilityLabel}`}>
@@ -54,6 +54,7 @@ const availabilityClass =
   </header>
 
   <section class="section shell">
+    <img class="plushie-wallpaper" src={withBase('/images/playerplushiestudio/wallpaper.png')} alt="玩家玩偶工坊品牌壁纸，展示方块玩偶工坊主题" width="1920" height="1080" />
     <div class="section-heading">
       <span class="eyebrow">Overview / 工具介绍</span>
       <div>
@@ -99,3 +100,8 @@ const availabilityClass =
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .plushie-logo { display: inline-block; width: 1.2em; height: 1.2em; object-fit: contain; vertical-align: middle; margin-right: 0.25em; }
+  .plushie-wallpaper { display: block; width: 100%; height: auto; border-radius: 12px; margin-bottom: 3rem; }
+</style>
