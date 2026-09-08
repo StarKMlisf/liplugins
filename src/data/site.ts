@@ -34,6 +34,22 @@ export interface WorkEntry {
 
 export const works: WorkEntry[] = [
   {
+    slug: 'liweaponreset',
+    name: 'LiWeaponReset',
+    catalogLabel: '武器回归',
+    kicker: '米饭强化残留属性回归工具',
+    summary: '手持带米饭强化标记的武器，自动备份并将攻击伤害和攻速恢复为材质原版值，支持手动预览与撤销。',
+    description: 'LiWeaponReset 1.0.3 是独立的武器数值回归插件。默认约 1 秒检测主手，跳过普通武器与已处理物品；撤销后持久化豁免。无法反推被米饭覆盖的自定义基础数值，不支持 Folia。',
+    version: '1.0.3',
+    status: '持续维护',
+    platform: 'Bukkit / Paper（不支持 Folia）',
+    minecraft: 'Paper 26.1.2',
+    java: 'Java 25',
+    availability: '免费',
+    dependencies: ['无强制前置插件', 'MiniMessage（运行库自动下载）', '须先停服移除 PlayerIntensify'],
+    features: ['主手自动检测与米饭等级标记识别', '攻击伤害和攻速恢复为材质默认值', '修改前持久化备份与精确撤销', '防重复处理与撤销后持久化豁免', '保留其他属性、附魔、耐久与 Lore', '中文配置、手动预览和运行时自检'],
+  },
+  {
     slug: 'playerplushiestudio',
     name: '玩家玩偶工坊',
     catalogLabel: '玩家玩偶',
@@ -507,7 +523,7 @@ export const catalogSections: CatalogSection[] = [
     number: 2,
     title: '免费插件与工具',
     description: '可免费获取的玩法插件与桌面工具，提供使用和管理文档。',
-    works: selectWorks(['playerplushiestudio', 'liskills', 'liseasons', 'enderdragon', 'lwe', 'lianimalscale', 'lichqian', 'lidungeon']),
+    works: selectWorks(['liweaponreset', 'playerplushiestudio', 'liskills', 'liseasons', 'enderdragon', 'lwe', 'lianimalscale', 'lichqian', 'lidungeon']),
   },
   {
     id: 'developing',

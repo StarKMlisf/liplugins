@@ -328,6 +328,13 @@ const lirealEnchantDocs = fs.readdirSync(enchantDirectory)
   });
 
 export const docSets: DocSet[] = [
+  { slug: 'liweaponreset', name: 'LiWeaponReset 武器回归', version: '1.0.3', summary: '米饭强化残留属性自动回归、备份撤销与安全边界。', icon: 'redstone', groups: ['文档总览', '管理员文档'], docs: defineDocs('liweaponreset', [
+    { file: 'Home.md', slug: 'home', title: '武器数值回归', summary: '主手自动恢复材质原版攻击属性，先备份再修改。', group: '文档总览', order: 1 },
+    { file: '安装与自动恢复.md', slug: 'install', title: '安装与自动恢复', summary: '运行环境、自动检测条件和部署检查。', group: '管理员文档', order: 10 },
+    { file: '指令与撤销.md', slug: 'commands', title: '指令与备份撤销', summary: '手动预览、权限、精确撤销与持久化豁免。', group: '管理员文档', order: 20 },
+    { file: '配置与排错.md', slug: 'configuration', title: '配置与故障排查', summary: '完整默认配置及不恢复、无法撤销的排查方法。', group: '管理员文档', order: 30 },
+    { file: '更新日志.md', slug: 'changelog', title: '更新日志与验证', summary: '1.0.3 自动回归与 51 项服务端自检记录。', group: '文档总览', order: 2 },
+  ]) },
   { slug: 'playerplushiestudio', name: '玩家玩偶工坊', version: '1.6.0', summary: 'Windows 玩家玩偶生成、皮肤、手持物、备份移除与兼容排错。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: defineDocs('playerplushiestudio', [
     { file: 'Home.md', slug: 'home', title: '玩家玩偶工坊', summary: '认识 1.6.0 功能与使用流程。', group: '文档总览', order: 1 },
     { file: '快速开始.md', slug: 'quick-start', title: '快速开始', summary: '选择服务器目录，识别并生成玩家玩偶。', group: '管理员文档', order: 10 },
