@@ -404,7 +404,7 @@ export const works: WorkEntry[] = [
     summary: '面向 RPG 服的全中文地牢编辑器与流程引擎，提供 15 类触发器、38 个基础功能和 Folia 预加载多世界池。',
     description:
       'LiDungeon 是 MythicDungeons 2.0.1 的全中文 Paper/Folia 兼容版，统一使用 /lidungeon，支持经典、程序化与持续型地牢、完整条件/功能链、奖励、队伍、PAPI/MythicMobs 联动和可回溯的实例运维。',
-    version: '2.0.1-zhcn-folia.8',
+    version: '2.0.1-zhcn-folia.9',
     status: '持续维护',
     platform: 'Paper / Folia',
     minecraft: '1.21.11 · 26.2',
@@ -417,6 +417,7 @@ export const works: WorkEntry[] = [
       '15 类触发器、9 至 11 类条件与 38 个基础功能',
       '难度、队伍、钥匙、冷却、奖励和玩家变量',
       'Folia 预加载多世界池与远端隔离回退',
+      'Folia 离线世界安全导入，不调用运行期世界创建/卸载 API',
       '17 篇安装、配置、编辑、排障和验收文档',
     ],
   },

@@ -233,7 +233,7 @@ const liPetDocs = defineDocs('lipet', [
 
 
 const liDungeonDocs = defineDocs('lidungeon', [
-  { file: 'Home.md', slug: 'home', title: 'LiDungeon 完整 Wiki', summary: '以当前 2.0.1-zhcn-folia.8 源码与配置为准的安装、游玩、编辑和运维入口。', group: '文档总览', order: 1 },
+  { file: 'Home.md', slug: 'home', title: 'LiDungeon 完整 Wiki', summary: '以当前 2.0.1-zhcn-folia.9 源码与配置为准的安装、游玩、编辑和运维入口。', group: '文档总览', order: 1 },
   { file: 'Quick-Start.md', slug: 'quick-start', title: '五分钟快速上手', summary: '创建最小经典地牢，设置出生、完成触发器、保存并完成第一次玩家测试。', group: '玩家文档', order: 10 },
   { file: '玩家游玩指南.md', slug: 'player-guide', title: '玩家游玩指南', summary: 'play、难度、队伍、准备、生命、旁观、退出与无法进入时的提示。', group: '玩家文档', order: 11 },
   { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: 'Paper/Folia 1.21.11 与 26.2 环境、全新安装、覆盖更新、迁移和回滚。', group: '管理员文档', order: 20 },
@@ -242,7 +242,7 @@ const liDungeonDocs = defineDocs('lidungeon', [
   { file: '地牢类型与程序化生成.md', slug: 'dungeon-types-generation', title: '地牢类型与程序化生成', summary: 'Classic、Procedural、Continuous、房间、连接点、门与两种布局。', group: '管理员文档', order: 23 },
   { file: '主配置说明.md', slug: 'global-configuration', title: '主配置说明', summary: '全局实例、队伍、准备、Folia、多世界、实验功能和旁观配置逐项说明。', group: '管理员文档', order: 24 },
   { file: '单地牢配置.md', slug: 'dungeon-configuration', title: '单地牢配置', summary: '生命周期、要求、钥匙、难度、奖励冷却、地图与玩法保护规则。', group: '管理员文档', order: 25 },
-  { file: 'Folia与多世界.md', slug: 'folia-multiworld', title: 'Folia 与多世界实例', summary: '预加载世界池、远端隔离回退、容量计算、制图流程与调度排查。', group: '管理员文档', order: 26 },
+  { file: 'Folia与多世界.md', slug: 'folia-multiworld', title: 'Folia 与多世界实例', summary: '预加载世界池、离线世界导入、远端隔离回退、容量计算与调度排查。', group: '管理员文档', order: 26 },
   { file: '触发器与条件.md', slug: 'triggers-conditions', title: '触发器与条件', summary: '15 个触发器、最多 11 个条件、目标上下文、常用配方与逐层排查。', group: '管理员文档', order: 27 },
   { file: '功能与奖励.md', slug: 'functions-rewards', title: '功能、奖励与流程编排', summary: '38 个基础功能、可选扩展、奖励、目标类型和安全流程编排。', group: '管理员文档', order: 28 },
   { file: '可选联动与变量.md', slug: 'integrations-placeholders', title: '可选联动与变量', summary: 'PlaceholderAPI 变量、MythicMobs、Citizens、Vault、PacketEvents 与队伍联动。', group: '管理员文档', order: 29 },
@@ -348,7 +348,7 @@ export const docSets: DocSet[] = [
   { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev199-paper26', summary: '真实附魔、YML/API 扩展、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
   { slug: 'lititle', name: 'LiTitle', version: '0.1.93', summary: '称号、商店、仓库、聊天、昵称、存储与跨服部署文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lititleDocs },
   { slug: 'lipet', name: 'LiPet', version: '0.27.9-SNAPSHOT', summary: '道具商城安全退款、飞行与疾跑加速、统一回收反馈，以及中文宠物养成配置。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
-  { slug: 'lidungeon', name: 'LiDungeon', version: '2.0.1-zhcn-folia.8', summary: 'Folia 1.21.11 地牢副本系统，提供完整中文地牢编辑、触发器与运维文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liDungeonDocs },
+  { slug: 'lidungeon', name: 'LiDungeon', version: '2.0.1-zhcn-folia.9', summary: 'Paper/Folia 1.21.11 至 26.2 地牢副本系统，支持 Folia 离线世界导入与完整中文运维文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liDungeonDocs },
   { slug: 'liskin', name: 'LiSkin', version: '1.9.7', summary: 'CraftEngine 外观皮肤、顶部分类换装、沉浸旁观视角、常驻 NPC、商店、权限与跨服文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liSkinDocs },
   { slug: 'jisseechessgames', name: 'JisseeChessGames', version: '2.1.0', summary: '棋盘生成、五子棋、中国象棋、军棋、房间、持久化与验证文档。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: jisseeChessDocs },
   { slug: 'liseasons', name: 'LISeasons', version: '1.0.71', summary: '四季、节气、Folia 流星雨、秋季树叶、Residence 冰雪兼容与运维开发文档。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },

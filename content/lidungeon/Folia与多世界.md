@@ -66,7 +66,9 @@ Folia:
 
 ## Folia 制图流程
 
-`/lidungeon create` 和 `/lidungeon import` 的传统实现需要创建/加载世界。最稳妥流程是：
+Folia 没有提供可供插件安全调用的运行期世界创建/卸载 API，因此 `/lidungeon create` 会直接给出中文说明，不执行 `WorldCreator.createWorld()`。管理员有两种制图方式。
+
+### 方式一：在 Paper 制作后迁移
 
 1. 在同版本 Paper 测试服创建或导入地图；
 2. 完成编辑、保存、重启复测；
@@ -76,7 +78,39 @@ Folia:
 6. 用一个测试实例验证；
 7. 再逐步增加并发。
 
-不要在 Folia 正式服高峰期尝试热建、热载或热卸世界。
+### 方式二：在 Folia 导入离线世界
+
+从 `.9` 起，`/lidungeon import` 不再为了读取出生点临时加载世界。它会读取离线 `level.dat`，在异步线程复制目录，再把完成品载入为地牢配置。
+
+操作前检查：
+
+- 世界目录位于服务端根目录，例如 `<服务端>/ender_arena/`；
+- 目录中至少有 `level.dat` 和该维度的区块数据；
+- 该世界当前没有被服务端、Multiverse 或其他插件加载；
+- `plugins/LiDungeon/maps/ender_arena/` 尚不存在；
+- 确认维度参数：主世界 `NORMAL`、下界 `NETHER`、末地 `THE_END`。
+
+然后执行：
+
+```text
+/lidungeon import ender_arena THE_END
+```
+
+导入内部顺序如下：
+
+```text
+检查已加载世界和同名地牢
+→ 异步读取 level.dat 出生点
+→ 复制到 plugins/LiDungeon/import-staging/
+→ 完整复制成功后移入 maps/ender_arena/
+→ 加载地牢并写入维度、大厅出生点
+```
+
+这样即使复制中途失败，也不会把半份地图直接暴露为正式地牢。若 `level.dat` 缺少有效出生坐标，插件会使用 `X=0, Y=64, Z=0` 并显示提醒；随后执行 `/lidungeon edit ender_arena`，站到安全位置后运行 `/lidungeon setlobby` 和 `/lidungeon setspawn`。
+
+若提示世界仍在加载，不要反复执行命令。先从预加载配置中移除该世界并完整重启，使目录保留但 Bukkit 世界注册表不再包含它，然后重新导入。世界池供“实例运行”使用，待导入的源世界必须保持离线，两者不要使用同一个世界名。
+
+不要在 Folia 正式服高峰期导入大型世界；文件复制虽然异步执行，仍会占用磁盘吞吐。Folia 运行中仍不支持热建、热载或热卸世界。
 
 ## 调度与编辑保存
 
@@ -97,6 +131,8 @@ Folia:
 | “世界尚未加载，已跳过” | Bukkit 未登记该世界 | 修启动加载顺序，重启 |
 | “维度与配置段不一致” | NORMAL/NETHER/THE_END 填错 | 移到正确列表 |
 | “已回退到单世界远端隔离区” | 没有有效池 | 可临时运行，正式服应修池 |
+| “Folia 不能导入仍在加载的世界” | 导入源仍在 Bukkit 世界列表 | 移除预加载并完整重启，再导入离线目录 |
+| `CraftServer.createWorld UnsupportedOperationException` | 正在运行 `.8` 或更早版本 | 更新到 `.9`，删除旧 Jar 后完整重启 |
 | 玩家一直排队 | 实例/池容量已满或加载未完成 | 看 `/lidungeon status` 与实例日志 |
 | watchdog 显示全局线程等待 | 可能仍有同步等待链 | 保存完整线程栈与时间点，停止新增实例并排查插件版本 |
 

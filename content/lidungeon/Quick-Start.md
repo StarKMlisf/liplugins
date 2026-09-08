@@ -41,7 +41,7 @@
 
 `edit` 只能打开已经存在的地牢。出现“找不到地牢”时不要反复执行，应先检查 `create` 是否成功以及 `maps/tutorial/` 是否存在。
 
-> Folia 不适合在运行中创建世界。Folia 正式服请先在 Paper 测试服创建并完成模板，再迁移 `maps/tutorial/`；详见 [Folia 与多世界实例](Folia与多世界.md)。
+> Folia 会拒绝 `create`，因为服务端不提供安全的运行期建图 API。可在 Paper 测试服制作后迁移 `maps/tutorial/`，也可把已停用的世界目录放到 Folia 服务端根目录，执行 `/lidungeon import tutorial NORMAL`；详见 [Folia 与多世界实例](Folia与多世界.md)。
 
 ## 3. 设置三个位置
 

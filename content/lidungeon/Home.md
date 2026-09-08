@@ -1,6 +1,6 @@
 # LiDungeon 完整 Wiki
 
-LiDungeon 是 MythicDungeons 2.0.1 的全中文 Paper/Folia 兼容版。当前发布版本为 `2.0.1-zhcn-folia.8`，对外唯一地牢主指令为 `/lidungeon`，适配 Minecraft 1.21.11 与 26.2。
+LiDungeon 是 MythicDungeons 2.0.1 的全中文 Paper/Folia 兼容版。当前发布版本为 `2.0.1-zhcn-folia.9`，对外唯一地牢主指令为 `/lidungeon`，适配 Minecraft 1.21.11 与 26.2。
 
 这套 Wiki 按实际插件源码、默认配置和当前成品 Jar 编写。旧文档中的 `/md`、`/mythicdungeons`、`/md join <地牢>` 等写法不要再用于玩家公告或管理教程。
 
@@ -11,7 +11,7 @@ LiDungeon 是 MythicDungeons 2.0.1 的全中文 Paper/Folia 兼容版。当前�
 - 管理员编辑已有地牢：`/lidungeon edit <地牢>`；`edit` 不会自动创建不存在的地牢。
 - `/lidungeon join <玩家>` 是管理员进入指定玩家所在实例，不是玩家进入地牢的命令。
 - Paper 可以使用传统动态多世界或单容器世界模式。
-- Folia 不能在插件运行期安全创建、加载或卸载世界；正式服应使用已预加载世界池，未配置时回退到单世界远端隔离区。
+- Folia 不能在插件运行期安全创建、加载或卸载世界；`.9` 起 `/lidungeon import` 可直接复制未加载的离线世界目录，实例运行仍应使用预加载世界池或单世界远端隔离区。
 - 无可选联动时，正常启动会加载 38 个功能、15 个触发器和 9 个条件。安装 MythicMobs、Citizens、PlaceholderAPI 后，对应菜单项会替换或增加。
 - 配置升级只补齐缺失节点和注释，不应覆盖管理员已有值；更新前仍必须备份。
 

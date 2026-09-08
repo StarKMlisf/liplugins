@@ -16,7 +16,7 @@
 
 ## `edit` 会自动创建地牢吗？
 
-不会。先 `create`，再 `edit`。Folia 建议在同版本 Paper 测试服创建/导入模板后迁移。
+不会。Paper 上先 `create`，再 `edit`。Folia 不能运行期建图，可在同版本 Paper 测试服创建后迁移，也可用 `/lidungeon import` 导入服务器根目录下未加载的离线世界。
 
 ## 副本是不是多世界？
 
