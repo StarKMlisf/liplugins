@@ -32,7 +32,7 @@ const defineDocs = (project: string, definitions: DocDefinition[]): DocEntry[] =
   definitions.map((definition) => ({ project, ...definition }));
 
 const liseasonsDocs = defineDocs('liseasons', [
-  { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: '1.0.73 龙卷风、漏斗风柱、范围卷吸与避险保护。', group: '文档总览', order: 2 },
+  { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: '1.0.74 原生立体风柱、预警云盘、尘屑与五种灾害强度演变。', group: '文档总览', order: 2 },
   { file: '自然灾害与龙卷风.md', slug: 'natural-disasters', title: '自然灾害与龙卷风', summary: '移动风柱、卷吸抬升、作用范围、避险、中文配置与插件联动。', group: '管理员文档', order: 28 },
   { file: 'Home.md', slug: 'home', title: 'LISeasons', summary: 'LISeasons 的使用、配置、维护和扩展指南。', group: '文档总览', order: 1 },
   { file: '玩家文档.md', slug: 'player', title: '玩家文档 · 总览', summary: '从查询季节、打开手账到应对冷暖与流星雨，快速开始 LISeasons 生存。', group: '玩家文档', order: 10 },
@@ -352,7 +352,7 @@ export const docSets: DocSet[] = [
   { slug: 'lidungeon', name: 'LiDungeon', version: '2.0.1-zhcn-folia.9', summary: 'Paper/Folia 1.21.11 至 26.2 地牢副本系统，支持 Folia 离线世界导入与完整中文运维文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liDungeonDocs },
   { slug: 'liskin', name: 'LiSkin', version: '1.9.7', summary: 'CraftEngine 外观皮肤、顶部分类换装、沉浸旁观视角、常驻 NPC、商店、权限与跨服文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liSkinDocs },
   { slug: 'jisseechessgames', name: 'JisseeChessGames', version: '2.1.0', summary: '棋盘生成、五子棋、中国象棋、军棋、房间、持久化与验证文档。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: jisseeChessDocs },
-  { slug: 'liseasons', name: 'LISeasons', version: '1.0.73', summary: '四季、节气、龙卷风、持续自然灾害、中暑冻伤、Folia 流星雨与 Residence 冰雪兼容文档。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },
+  { slug: 'liseasons', name: 'LISeasons', version: '1.0.74', summary: '四季、节气、立体龙卷风、渐变自然灾害、中暑冻伤、Folia 流星雨与 Residence 冰雪兼容文档。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },
   { slug: 'enderdragon', name: 'EnderDragon', version: '26.1.14', summary: '末影龙接管、召唤、复活、奖励、配置、变量与故障排查文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: enderDragonDocs },
   { slug: 'blockcraft', name: 'BlockCraft', version: '1.0.13', summary: '八基座祭坛合成、物品来源挂钩、费用与成功率、粒子与音效、故障排查与命令说明。', icon: 'redstone', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: blockCraftDocs },
   { slug: 'lianimalscale', name: 'LiAnimalScale', version: '1.1.0', summary: '动物缩放、命令权限、配置、Folia 兼容、热加载与验证文档。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liAnimalScaleDocs },
