@@ -132,7 +132,7 @@ export const works: WorkEntry[] = [
     summary: '让季节不只是计时器，而是会真正改变天空、群系、冰雪、作物、温度与夜空的世界规则。',
     description:
       'LISeasons 为长期生存服提供完整的时间与自然循环：四季、二十四节气、三种日历、体感温度、PacketEvents 客户端群系染色、冬冻春融、季节事件、节日和六页日历 GUI。',
-    version: '1.0.80',
+    version: '1.0.81',
     status: '持续维护',
     platform: 'Paper / Folia',
     minecraft: 'Paper 1.21.1+ · Folia 1.21.8+ · 26.2',
@@ -145,7 +145,7 @@ export const works: WorkEntry[] = [
       'Residence 冰雪权限与台阶安全积雪',
       '持续中暑、冻伤与季节 Buff BossBar',
       '大型灾害动态粒子、阶段演化与定向音景',
-      'MM + ME 十五种可选模型与散落奖励',
+      'MM + ME 十五种可选模型与流星奖励箱',
       '节日系统与六页日历 GUI',
     ],
   },

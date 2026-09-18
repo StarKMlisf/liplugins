@@ -32,7 +32,7 @@ const defineDocs = (project: string, definitions: DocDefinition[]): DocEntry[] =
   definitions.map((definition) => ({ project, ...definition }));
 
 const liseasonsDocs = defineDocs('liseasons', [
-  { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: '1.0.80 龙卷风进气带、雷暴蓄电连闪、蘑菇云冷却演化、流星分叉与定向音景。', group: '文档总览', order: 2 },
+  { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: '1.0.81 流星真实奖励箱、同批奖励安全回退、空箱清理与世界存档持久化。', group: '文档总览', order: 2 },
   { file: '自然灾害与龙卷风.md', slug: 'natural-disasters', title: '自然灾害与龙卷风', summary: '十三种持续灾害、移动云雾龙卷风、无损模型、避险与中文配置。', group: '管理员文档', order: 28 },
   { file: 'Home.md', slug: 'home', title: 'LISeasons', summary: 'LISeasons 的使用、配置、维护和扩展指南。', group: '文档总览', order: 1 },
   { file: '玩家文档.md', slug: 'player', title: '玩家文档 · 总览', summary: '从查询季节、打开手账到应对冷暖与流星雨，快速开始 LISeasons 生存。', group: '玩家文档', order: 10 },
@@ -48,7 +48,7 @@ const liseasonsDocs = defineDocs('liseasons', [
   { file: '季节效果与世界规则.md', slug: 'world-rules', title: '季节效果与世界规则', summary: '作物、天气、视觉、生物以及冬冻春融。', group: '管理员文档', order: 24 },
   { file: '体温系统.md', slug: 'temperature', title: '体温系统', summary: '体温公式、潮湿、环境、装备、物品、HUD 与极端温度效果。', group: '管理员文档', order: 25 },
   { file: 'NMS季节染色.md', slug: 'nms-biome-color', title: 'NMS 季节染色', summary: '版本适配、批量群系更新、预算、持久化与降级。', group: '管理员文档', order: 26 },
-  { file: '季节事件与流星雨.md', slug: 'events-and-meteors', title: '季节事件与流星雨', summary: '事件触发器、效果语法、真实感夜间流星与奖励配置。', group: '管理员文档', order: 27 },
+  { file: '季节事件与流星雨.md', slug: 'events-and-meteors', title: '季节事件与流星雨', summary: '事件触发器、流星奖励箱、持久化、领地回退与奖励配置。', group: '管理员文档', order: 27 },
   { file: '节日系统.md', slug: 'festivals', title: '节日系统', summary: '现实日期、节日配置、提醒行为与当前实现边界。', group: '管理员文档', order: 28 },
   { file: '日历GUI.md', slug: 'calendar-gui', title: '日历 GUI', summary: '六页菜单、字符布局、图标、动作和占位符。', group: '管理员文档', order: 29 },
   { file: '配置文件参考.md', slug: 'configuration', title: '配置文件参考', summary: '所有配置文件与主要节点的集中速查。', group: '管理员文档', order: 30 },
@@ -352,7 +352,7 @@ export const docSets: DocSet[] = [
   { slug: 'lidungeon', name: 'LiDungeon', version: '2.0.1-zhcn-folia.9', summary: 'Paper/Folia 1.21.11 至 26.2 地牢副本系统，支持 Folia 离线世界导入与完整中文运维文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liDungeonDocs },
   { slug: 'liskin', name: 'LiSkin', version: '1.9.7', summary: 'CraftEngine 外观皮肤、顶部分类换装、沉浸旁观视角、常驻 NPC、商店、权限与跨服文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liSkinDocs },
   { slug: 'jisseechessgames', name: 'JisseeChessGames', version: '2.1.0', summary: '棋盘生成、五子棋、中国象棋、军棋、房间、持久化与验证文档。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: jisseeChessDocs },
-  { slug: 'liseasons', name: 'LISeasons', version: '1.0.80', summary: '四季、节气、十三种持续灾害、动态粒子音景、安全预览与 Folia 兼容文档。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },
+  { slug: 'liseasons', name: 'LISeasons', version: '1.0.81', summary: '四季、节气、持续灾害、动态粒子音景、流星奖励箱与 Folia 兼容文档。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },
   { slug: 'enderdragon', name: 'EnderDragon', version: '26.1.14', summary: '末影龙接管、召唤、复活、奖励、配置、变量与故障排查文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: enderDragonDocs },
   { slug: 'blockcraft', name: 'BlockCraft', version: '1.0.13', summary: '八基座祭坛合成、物品来源挂钩、费用与成功率、粒子与音效、故障排查与命令说明。', icon: 'redstone', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: blockCraftDocs },
   { slug: 'lianimalscale', name: 'LiAnimalScale', version: '1.1.0', summary: '动物缩放、命令权限、配置、Folia 兼容、热加载与验证文档。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liAnimalScaleDocs },
