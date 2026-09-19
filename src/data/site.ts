@@ -338,10 +338,10 @@ export const works: WorkEntry[] = [
     name: 'LiPet',
     catalogLabel: '宠物',
     kicker: '宠物养成、捕捉、骑乘与战斗',
-    summary: '捕捉品质、性格与闪光，持久化成长快照，以及骑乘、命名和自定义名牌。',
+    summary: '主动索敌与跟随优先，捕捉品质、性格与闪光，持久化成长快照，以及骑乘、命名和自定义名牌。',
     description:
-      'LiPet 0.29.0 为捕捉宠物增加品质、性格和闪光：权重、概率、成长与属性倍率可配置，已捕捉特性独立存档，旧宠物保持原数值。仓库、详情、名牌与 PAPI 展示特性，保留自动迈步、朝向、命名规则、双商城、背包、等级模型与死亡扣级。材料进化及探索派遣为后续批次。',
-    version: '0.29.0-SNAPSHOT',
+      'LiPet 0.29.1 增加附近敌对怪物主动索敌，默认 8 格，支持单宠开关，坐下、骑乘及返回时不抢占控制；捕捉宠物支持品质、性格和闪光：权重、概率、成长与属性倍率可配置，已捕捉特性独立存档，旧宠物保持原数值。仓库、详情、名牌与 PAPI 展示特性，保留自动迈步、朝向、命名规则、双商城、背包、等级模型与死亡扣级。材料进化及探索派遣为后续批次。',
+    version: '0.29.1-SNAPSHOT',
     status: '持续维护',
     platform: 'Paper / Folia',
     minecraft: '1.21.11 · 26.1.2 · 26.2',
@@ -350,6 +350,7 @@ export const works: WorkEntry[] = [
     priceCny: 68,
     dependencies: ['Vault / PlayerPoints（商城货币可选）', 'PlaceholderAPI（可选）', 'Residence（局部天气可选）', 'MythicMobs（自定义实体与等级技能可选）', 'ModelEngine / CraftEngine（按配置可选）', 'MySQL / Redis（跨服功能按需）'],
     features: [
+      '主动索敌、友方过滤与跟随优先',
       '独立背包支持1至6行的可选贴图标题，缺失配置回退普通标题',
       '七种只读 GUI 同时拦截点击与顶部拖拽，封堵展示物品取出路径',
       '玩家背包仍可整理，宠物独立背包继续正常存取和保存',
