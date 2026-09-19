@@ -26,6 +26,8 @@
 
 ## PlayerPoints 商城货币
 
+在宠物商城或道具商城商品中填写：
+
 ```yaml
 currency: "PLAYERPOINTS"
 price: 100
@@ -35,7 +37,14 @@ price: 100
 - LiPet 运行时挂钩 PlayerPoints 3.x 的 `look`、`take`、`give` API，不把 PlayerPoints 打入 LiPet Jar。
 - PlayerPoints 使用整数点券，因此价格必须是 `0-2147483647` 的整数；非法配置会在加载时给出中文路径提示。
 - 购买失败仍沿用 LiPet 的自动退款流程。
-- `/lipet status` 会独立显示 `PlayerPoints: ONLINE/OFFLINE`。
+- `/lipet status` 会独立显示 `PlayerPoints: ONLINE/OFFLINE`；即使服主自定义过旧版总状态文本，也能看到新增状态行。
+
+## 升级说明
+
+1. 替换为 `LiPet-0.26.19-SNAPSHOT.jar`。
+2. 启动服务器；缺失的权限、排行榜配置、语言节点与中文注释会自动补齐，旧自定义值不覆盖。
+3. 如需 PlayerPoints 结算，安装并正常启动 PlayerPoints，然后在 `shop.yml` 将对应商品货币改成 `PLAYERPOINTS`。
+4. 执行 `/lipet status`、`/lipet top coin` 和 `/lipet top level` 验证。
 
 ## 验证记录
 
