@@ -186,6 +186,7 @@ const liAnimalScaleDocs = defineDocs('lianimalscale', [
 ]);
 
 const liPetDocs = defineDocs('lipet', [
+  { file: 'docs/更新日志-2026-09-26-鱼类跟随与游泳骑乘.md', slug: 'changelog-2026-09-26-fish-swimming', title: '0.29.8 鱼类水中跟随与骑乘', summary: '水路三维跟随、骑乘松键稳定与空格上浮，保留原生物理和外部模型控制。', group: '管理员文档', order: 0 },
   { file: 'docs/更新日志-2026-09-26-原生宠物体型.md', slug: 'changelog-2026-09-26-native-scale', title: '0.29.7 原生宠物体型缩放', summary: '原生 SCALE、碰撞箱与交互同步，公共和单宠等级倍率，默认关闭并保护外部模型。', group: '管理员文档', order: 0 },
   { file: 'docs/更新日志-2026-09-26-info界面行数.md', slug: 'changelog-2026-09-26-info-layout', title: '0.29.6 info 界面行数修复', summary: '支持 1-6 行，移除仓库按钮强制槽位 40，保留自定义布局与越界校验。', group: '管理员文档', order: 0 },
   { file: 'docs/更新日志-2026-09-26-监守者主人保护.md', slug: 'changelog-2026-09-26-warden-protection', title: '0.29.5 监守者宠物主人保护', summary: '接管监守者原版 Brain，避免攻击主人和范围黑暗，保留受控跟随战斗及野生黑暗。', group: '管理员文档', order: 0 },
@@ -221,7 +222,7 @@ const liPetDocs = defineDocs('lipet', [
   { file: 'docs/更新日志-2026-08-31-货币名称重载.md', slug: 'changelog-2026-08-31-currency-names', title: '0.27.6 货币名称配置与热重载', summary: '宠物币、金币、点券名称配置，成功重载后重开双商城生效，失败保留旧名和原有结算规则。', group: '文档总览', order: 2 },
   { file: 'docs/等级模型与捕捉球商店.md', slug: 'level-models-capture-shop', title: '等级模型、随机属性与捕捉球商店', summary: '1级a模型、2级b模型、四属性随机范围和普通/CE捕捉球商店案例。', group: '文档总览', order: 2 },
   { file: 'docs/更新日志-2026-08-30-等级模型与随机捕捉.md', slug: 'changelog-2026-08-30', title: '0.27.5 等级模型与随机捕捉更新', summary: 'MEG等级切换、捕捉属性持久化、捕捉球商品与验证记录。', group: '文档总览', order: 2 },
-  { file: 'docs/WIKI.md', slug: 'home', title: 'LiPet 完整 Wiki', summary: '0.29.7 原生体型缩放、属性界面行数修复、监守者主人保护、WG 旗标与召唤跟随及追击绕障、主动索敌、品质、骑乘、捕捉与成长教程。', group: '文档总览', order: 1 },
+  { file: 'docs/WIKI.md', slug: 'home', title: 'LiPet 完整 Wiki', summary: '0.29.8 鱼类水中跟随与骑乘、原生体型缩放、属性界面行数修复、监守者主人保护、WG 旗标与召唤跟随及追击绕障、主动索敌、品质、骑乘、捕捉与成长教程。', group: '文档总览', order: 1 },
   { file: 'docs/PET_FEATURE_MATRIX.md', slug: 'feature-matrix', title: '功能矩阵', summary: '逐项核对宠物能力的实现范围、入口和当前状态。', group: '文档总览', order: 2 },
   { file: 'docs/更新日志-2026-08-29-CE捕捉球与食物案例.md', slug: 'changelog-2026-08-29-ce-capture-food-examples', title: '2026-08-29 CraftEngine 捕捉球与食物案例', summary: '默认关闭的 CE 捕捉球与公共宠物食物案例、启用开关、旧配置安全补全和真实运行验证。', group: '文档总览', order: 3 },
   { file: 'docs/更新日志-2026-08-29-全量宠物配置与MCPets兼容.md', slug: 'changelog-2026-08-29-full-pet-config-mcpets', title: '2026-08-29 全量宠物配置与 MCPets 兼容', summary: '全量原版宠物中文独立 YML、公共默认值与单宠差异、中文目录迁移及 MCPets 直接读取。', group: '文档总览', order: 4 },
@@ -377,7 +378,7 @@ export const docSets: DocSet[] = [
   { slug: 'lwe', name: 'LWE 小创世神', version: '0.1.0+build.15', summary: '轻量选区施工、材料消耗、LIEMC 自动补料、配置与故障排查。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lweDocs },
   { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev199-paper26', summary: '真实附魔、YML/API 扩展、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
   { slug: 'lititle', name: 'LiTitle', version: '0.1.93', summary: '称号、商店、仓库、聊天、昵称、存储与跨服部署文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lititleDocs },
-  { slug: 'lipet', name: 'LiPet', version: '0.29.7-SNAPSHOT', summary: '原生体型缩放与等级倍率、属性界面 1-6 行布局、监守者主人保护、WG 区域开关、重召恢复跟随、主人保护与主动索敌，品质性格闪光、骑乘和可配置名牌。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
+  { slug: 'lipet', name: 'LiPet', version: '0.29.8-SNAPSHOT', summary: '鱼类水中跟随与骑乘升降、原生体型缩放与等级倍率、属性界面 1-6 行布局、监守者主人保护、WG 区域开关、重召恢复跟随、主人保护与主动索敌，品质性格闪光、骑乘和可配置名牌。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
   { slug: 'lidungeon', name: 'LiDungeon', version: '2.0.1-zhcn-folia.9', summary: 'Paper/Folia 1.21.11 至 26.2 地牢副本系统，支持 Folia 离线世界导入与完整中文运维文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liDungeonDocs },
   { slug: 'liskin', name: 'LiSkin', version: '1.9.7', summary: 'CraftEngine 外观皮肤、顶部分类换装、沉浸旁观视角、常驻 NPC、商店、权限与跨服文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liSkinDocs },
   { slug: 'jisseechessgames', name: 'JisseeChessGames', version: '2.1.0', summary: '棋盘生成、五子棋、中国象棋、军棋、房间、持久化与验证文档。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: jisseeChessDocs },
