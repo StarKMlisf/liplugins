@@ -338,10 +338,10 @@ export const works: WorkEntry[] = [
     name: 'LiPet',
     catalogLabel: '宠物',
     kicker: '宠物养成、捕捉、骑乘与战斗',
-    summary: '完整 PlaceholderAPI 变量覆盖活动宠物、等级经验、战斗属性、品质性格、宠物数量、服务器、CraftEngine 捕捉球和内置宠物币；宠物币余额异步预热并在交易及奖励后刷新。',
+    summary: '监守者拥有正确攻击动作与无路径追随兜底；凋灵由 LiPet 接管三个头部目标与飞行移动，不再随机发射凋灵之首。',
     description:
-      'LiPet 0.29.13 集中整理全部 PlaceholderAPI 变量，并新增内置宠物币余额、名称、格式化余额、常用简写及活动宠物判断。玩家登录时异步预热 SQLite 或 MySQL 余额，查询、交易和玩法奖励结算后刷新缓存，PAPI 回调不阻塞服务器线程；数据库热切换会清理旧缓存。不新增配置节点，不覆盖管理员现有设置。继续保留 CE 捕捉球变量、监守者跟随、停服保存、鱼类骑乘、原生体型、WG 旗标、主人保护、主动索敌、品质性格闪光、仓库、商城、背包与等级模型。',
-    version: '0.29.13-SNAPSHOT',
+      'LiPet 0.29.14 修复监守者近战只有伤害而没有动作的问题，改用服务端实体攻击状态；Paper 拒绝监守者寻路时会在落地状态先按碰撞物理追随，受阻后再安全召回。凋灵关闭原版自主感知并持续清空中心、左、右三个头部目标，跟随和追击改用 LiPet 受控飞行，不再随机发射凋灵之首。不新增配置节点，不覆盖管理员现有设置。继续保留完整 PAPI、宠物币、CE 捕捉球、停服保存、鱼类骑乘、原生体型、WG 旗标、主人保护、主动索敌、品质性格闪光、仓库、商城、背包与等级模型。',
+    version: '0.29.14-SNAPSHOT',
     status: '持续维护',
     platform: 'Paper / Folia',
     minecraft: '1.21.11 · 26.1.2 · 26.2',
@@ -350,6 +350,8 @@ export const works: WorkEntry[] = [
     priceCny: 68,
     dependencies: ['Vault / PlayerPoints（商城货币可选）', 'PlaceholderAPI（可选）', 'Residence（局部天气可选）', 'MythicMobs（自定义实体与等级技能可选）', 'ModelEngine / CraftEngine（按配置可选）', 'MySQL / Redis（跨服功能按需）'],
     features: [
+      '监守者原版攻击动作、落地直追兜底与受阻安全召回',
+      '凋灵三头目标清理、随机投射物抑制与受控飞行跟随',
       '完整宠物 PAPI 与非阻塞内置宠物币余额、名称及格式化变量',
       'CraftEngine 捕捉球 PAPI 按球 ID 读取物品身份、名称与捕捉概率',
       '隔墙绕行、追击范围与卡住目标恢复',
