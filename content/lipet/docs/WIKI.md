@@ -1,10 +1,16 @@
 # LiPet Wiki
 
+## 0.29.16 宠物信息食物展示优化
+
+食物规则使用明确的 `show-in-pet-info` 控制是否出现在宠物信息界面的 `<foods>` 列表；旧 `show-in-info` 继续读取，并在升级时把原布尔值迁移到新节点。全部食物隐藏时，默认直接移除包含 `<foods>` 的整行，不再显示“未公开”。
+
+`gui.yml -> info.foods-display` 可配置整行开关、空列表是否隐藏、单项格式、分隔符及空内容文字。单项格式支持 `<food_name>`、`<experience>`、`<healing>`、`<attribute_points>`、`<minimum_level>` 和 `<maximum_level>`。详见 [0.29.16 更新说明](更新日志-2026-09-28-宠物信息食物展示优化.md)。
+
 ## 0.29.15 宠物食物信息显示开关
 
-宠物信息界面的食物介绍支持整行和单项两级控制。`gui.yml -> info.foods-display.enabled: false` 会移除所有包含 `<foods>` 的介绍行；食物规则内的 `show-in-info: false` 只隐藏这一种食物。两种开关都只影响界面文字，不改变喂养结果。
+宠物信息界面的食物介绍支持整行和单项两级控制。`gui.yml -> info.foods-display.enabled: false` 会移除所有包含 `<foods>` 的介绍行；食物规则内的 `show-in-pet-info: false` 只隐藏这一种食物。两种开关都只影响界面文字，不改变喂养结果。
 
-旧配置会为完整食物规则补全 `show-in-info: true` 和中文注释，管理员已有值、食物 ID、奖励及自定义注释保持不变。详见 [0.29.15 更新说明](更新日志-2026-09-28-食物显示开关.md)。
+旧配置会为完整食物规则补全 `show-in-pet-info: true` 和中文注释，管理员已有值、食物 ID、奖励及自定义注释保持不变。详见 [0.29.15 更新说明](更新日志-2026-09-28-食物显示开关.md)。
 
 ## 0.29.14 监守者动作跟随与凋灵受控 AI
 
@@ -1042,7 +1048,7 @@ types:
         BLAZE_POWDER:
           enabled: true
           display-name: "烈焰粉"
-          show-in-info: true
+          show-in-pet-info: true
           experience: 4
           healing: 6.0
           attribute-points: 0
@@ -1061,7 +1067,7 @@ foods:
     enabled: true
     display-name: "熟牛肉"
     # false 时仍可喂食，只是不出现在宠物信息界面的 <foods> 列表。
-    show-in-info: true
+    show-in-pet-info: true
     experience: 4
     healing: 6.0
     attribute-points: 0
@@ -1075,7 +1081,7 @@ foods:
     enabled: false
     item-id: "yourpack:pet_food"
     display-name: "灵契宠物粮"
-    show-in-info: true
+    show-in-pet-info: true
     experience: 4
     healing: 8.0
     attribute-points: 0
@@ -1087,7 +1093,8 @@ foods:
 
 - 玩家手持配置的原版或 CraftEngine 食物右键自己的宠物即可喂食。
 - `enabled: false` 的食物不会参与识别、扣除或界面食物列表；旧食物未填写时按 `true` 兼容。
-- `show-in-info: false` 只从宠物信息界面的 `<foods>` 列表隐藏这一种食物，不影响喂养和奖励；未填写时按 `true` 兼容。
+- `show-in-pet-info: false` 只从宠物信息界面的 `<foods>` 列表隐藏这一种食物，不影响喂养和奖励；未填写时按 `true` 兼容。
+- 旧名称 `show-in-info` 继续兼容，升级会保留它的布尔值并补写到 `show-in-pet-info`。
 - `gui.yml -> info.foods-display.enabled: false` 会移除信息卡片中所有包含 `<foods>` 的整行介绍。
 - 官方默认喂食经验为 `4`；默认击杀经验为 `round(5 + 目标最大生命 × 0.5)`，最低不少于 `1`。
 - 升级不会覆盖已存在的食物数值；旧服如需采用当前平衡，请手动将对应食物的 `experience` 改为 `4`。

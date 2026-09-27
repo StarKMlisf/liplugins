@@ -338,10 +338,10 @@ export const works: WorkEntry[] = [
     name: 'LiPet',
     catalogLabel: '宠物',
     kicker: '宠物养成、捕捉、骑乘与战斗',
-    summary: '宠物食物支持整行与单项显示开关；隐藏只影响信息界面，不影响正常喂食和成长奖励。',
+    summary: '宠物信息食物支持独立显隐、空行自动移除与可配置排版，旧配置会安全迁移。',
     description:
-      'LiPet 0.29.15 为宠物信息界面的食物介绍加入两级控制：gui.yml 可隐藏整行，每条食物的 show-in-info 可单独决定是否公开。隐藏不会影响物品识别、扣除、喂养、经验、治疗、属性点或等级限制；旧配置只补缺失节点和中文注释，不覆盖管理员现有设置。继续保留监守者动作跟随、凋灵受控 AI、完整 PAPI、宠物币、CE 捕捉球、停服保存、鱼类骑乘、原生体型、WG 旗标、主人保护、主动索敌、品质性格闪光、仓库、商城、背包与等级模型。',
-    version: '0.29.15-SNAPSHOT',
+      'LiPet 0.29.16 将单种食物开关统一为 show-in-pet-info，旧 show-in-info 会保留原值并自动迁移。没有可显示食物时默认移除整行，gui.yml 可自定义单项格式、分隔符、空内容文字和空列表策略；所有显示设置均不影响喂食与成长奖励。继续保留监守者动作跟随、凋灵受控 AI、完整 PAPI、宠物币、CE 捕捉球、停服保存、鱼类骑乘、原生体型、WG 旗标、主人保护、主动索敌、品质性格闪光、仓库、商城、背包与等级模型。',
+    version: '0.29.16-SNAPSHOT',
     status: '持续维护',
     platform: 'Paper / Folia',
     minecraft: '1.21.11 · 26.1.2 · 26.2',
@@ -350,7 +350,7 @@ export const works: WorkEntry[] = [
     priceCny: 68,
     dependencies: ['Vault / PlayerPoints（商城货币可选）', 'PlaceholderAPI（可选）', 'Residence（局部天气可选）', 'MythicMobs（自定义实体与等级技能可选）', 'ModelEngine / CraftEngine（按配置可选）', 'MySQL / Redis（跨服功能按需）'],
     features: [
-      '食物介绍整行开关、单项 show-in-info 与旧配置安全补全',
+      '食物信息独立显隐、空行自动移除、排版配置与旧节点安全迁移',
       '监守者原版攻击动作、落地直追兜底与受阻安全召回',
       '凋灵三头目标清理、随机投射物抑制与受控飞行跟随',
       '完整宠物 PAPI 与非阻塞内置宠物币余额、名称及格式化变量',
