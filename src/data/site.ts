@@ -338,10 +338,10 @@ export const works: WorkEntry[] = [
     name: 'LiPet',
     catalogLabel: '宠物',
     kicker: '宠物养成、捕捉、骑乘与战斗',
-    summary: '全物种攻击分型，优化地面、飞行、水生宠物跟随绕障，支持统一默认与单宠配置。',
+    summary: 'AI 寻路采样缓存、动态障碍复核与索敌开销优化，保留全物种攻击分型和逐宠配置。',
     description:
-      'LiPet 0.30.0 按物种区分近战、弓箭、风弹、火球、凋灵之首等攻击方式，加入蓄力、冷却、实际弹道命中和碰撞箱判距；优化 Brain、飞行、水生与特殊宠物的受控跟随绕障，并阻止宠物破坏地形。提供逐物种隔离服测试记录与公共/单宠 behavior.attack 配置。保留食物信息独立显隐、完整 PAPI、宠物币、CE 捕捉球、停服保存、骑乘、WG、品质性格、商城与等级模型。',
-    version: '0.30.0-SNAPSHOT',
+      'LiPet 0.30.1 为局部寻路增加单次地形缓存与采样上限，路点执行前复核动态障碍、落脚和危险方块；限制移动目标重算频率，清理跨世界旧路线，减少索敌、重复停路和蓄力表现开销。补齐末影人逃光、嘎枝 Brain 和熊猫姿态接管，并提供采样对照与逐物种测试。保留全物种攻击分型、公共/单宠 behavior.attack、食物显隐、完整 PAPI、宠物币、CE 捕捉球、骑乘、WG、品质性格与等级模型。',
+    version: '0.30.1-SNAPSHOT',
     status: '持续维护',
     platform: 'Paper / Folia',
     minecraft: '1.21.11 · 26.1.2 · 26.2',
@@ -350,6 +350,7 @@ export const works: WorkEntry[] = [
     priceCny: 68,
     dependencies: ['Vault / PlayerPoints（商城货币可选）', 'PlaceholderAPI（可选）', 'Residence（局部天气可选）', 'MythicMobs（自定义实体与等级技能可选）', 'ModelEngine / CraftEngine（按配置可选）', 'MySQL / Redis（跨服功能按需）'],
     features: [
+      '寻路读块去重、动态路点安全复核、移动目标限频与距离优先索敌',
       '全物种攻击分型、蓄力冷却、有限寿命投射物与公共/单宠参数',
       'Brain、飞行、水生及特殊宠物跟随绕障，宠物地形保护与逐物种测试记录',
       '食物信息独立显隐、空行自动移除、排版配置与旧节点安全迁移',
