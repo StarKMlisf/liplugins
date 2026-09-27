@@ -1,5 +1,11 @@
 # LiPet
 
+## 0.29.12 CraftEngine 捕捉球 PAPI 变量
+
+新增捕捉开关、球列表及按球 ID 查询 CE 物品 ID、名称、命名空间、类型和三档捕捉概率的 PlaceholderAPI 变量；同时提供配置原值与显示百分比。不新增配置节点，也不覆盖已有捕捉球设置。
+
+详见 [0.29.12 更新说明](docs/更新日志-2026-09-27-CE捕捉变量PAPI.md)。
+
 ## 0.29.11 监守者跟随与召唤名牌
 
 修复监守者受控移动推进间隔、宽体寻路边角及跳跃中断问题，保留原版 Brain 关闭和主人保护。召唤成功注册后才显示名牌，召回及失败后的延迟刷新不再重新创建名牌。不覆盖配置或修改跟随阈值。
@@ -87,15 +93,13 @@
 单宠物 nameplate 支持覆盖及热重载；主人走远时宠物脱战返回，返回途中不重新接战。
 补充模型驾驶座 Bukkit 输入同步与骑乘期间技能控制。两份龙配置的缩进问题与模型测试边界见本次更新说明。
 
-## 0.27.27 · MM 模型与骑乘等级
-
-新增骑乘解锁等级；调整模型回收、独立名牌跟随与模型驾驶座联动。[查看配置说明](docs/更新日志-2026-09-12-MM模型与骑乘等级.md)。
+`0.27.27-SNAPSHOT` 修复 MM 模型回收、名牌跟随和模型驾驶座联动，新增按宠物类型配置的骑乘解锁等级。默认 1 级保持旧版行为，配置见 [MM 模型与骑乘等级](docs/更新日志-2026-09-12-MM模型与骑乘等级.md)。
 
 `0.27.26-SNAPSHOT` 新增可选的独立背包贴图标题，按真实 1-6 行选择背景，默认关闭并保留普通标题。容量与物品存取逻辑保持原样，配置见 [背包贴图标题](docs/更新日志-2026-09-08-背包贴图标题.md)。
 
 LiPet 是一个面向群组服的 Bukkit 宠物插件框架，兼容 Paper/Folia 1.21.11、Paper/Folia 26.1.2 与 Paper/Folia 26.2。
 
-`0.27.24-SNAPSHOT` 新增死亡扣级惩罚：默认每次扣 1 级、最低 1 级，支持修改扣级数、等级下限和关闭。实际掉级清空当前级经验并扣回相应属性点，配置支持 `/lipet reload`；377 项测试及 Folia 死亡、重载、重启、复活验证通过。详见 [死亡扣级规则与升级注意事项](docs/更新日志-2026-09-06-死亡扣级惩罚.md)。
+`0.27.25-SNAPSHOT` 修复受伤宠物重载/成长刷新意外回血，以及死亡保存失败被收回成活宠的路径；退出保存失败补充日志。两套 API 各 383 项测试通过，Folia 隔离服定向验证。背包并发、重载原子性、崩溃恢复等仍列为待处理项，详见 [逐项排查报告](docs/逐项排查-2026-09-06-生命周期与死亡重试.md)。
 
 `0.27.23-SNAPSHOT` 完成一轮 Folia 专项排查，修复任务退休回调、跨区战斗/技能、捕捉回调、GUI 点击事务及跟随边界。两套 API 各 366 项测试通过，Folia 26.2 隔离服完成定向验证；同宠物背包并发编辑、重载快照和捕捉崩溃一致性等残余风险单独列出，未宣称全面兼容。详见 [Folia 专项排查报告](docs/Folia专项排查-2026-09-06.md)。
 
@@ -292,9 +296,30 @@ PlaceholderAPI 变量：
 %lipet_attribute_agility_name%
 %lipet_pet_count%
 %lipet_server_id%
+
+%lipet_capture_enabled%
+%lipet_capture_ball_count%
+%lipet_capture_ball_ids%
+%lipet_capture_ball_<id>_enabled%
+%lipet_capture_ball_<id>_name%
+%lipet_capture_ball_<id>_plain_name%
+%lipet_capture_ball_<id>_item_id%
+%lipet_capture_ball_<id>_item_namespace%
+%lipet_capture_ball_<id>_item_path%
+%lipet_capture_ball_<id>_is_craftengine%
+%lipet_capture_ball_<id>_base_chance%
+%lipet_capture_ball_<id>_base_chance_percent%
+%lipet_capture_ball_<id>_low_health_bonus%
+%lipet_capture_ball_<id>_low_health_bonus_percent%
+%lipet_capture_ball_<id>_maximum_chance%
+%lipet_capture_ball_<id>_maximum_chance_percent%
 ```
 
 `%lipet_active_state%` 返回可配置中文状态，需读取数据库原始状态键时使用 `%lipet_active_state_key%`。玩家没有召唤宠物时，数值变量返回 `0` 或 `0.0`，文本变量返回空文本。
+
+捕捉球变量中的 `<id>` 要替换成 `capture.yml -> balls` 下已启用的球 ID，例如 `%lipet_capture_ball_craftengine_example_item_id%`。`item_id` 会原样返回 `namespace:item_id`，可直接读取 CraftEngine 物品 ID；`is_craftengine` 返回 `true` / `false`。不带 `_percent` 的概率与配置相同，范围为 `0-1`；带 `_percent` 的变量返回 `0.0-100.0` 显示数值，不附带百分号。球不存在时，`enabled` 返回 `false`，其他球属性返回空文本。
+
+完整表格与 CE 配置案例见 [CraftEngine 捕捉球 PAPI 变量](docs/CE捕捉球PAPI变量.md)。
 
 Vault 通过 `LiPetApi#economy()` 暴露统一经济接口，供后续购买、复活和技能升级使用。仅安装 Vault 而未安装经济插件时，LiPet 会关闭经济挂钩但继续运行。
 
@@ -361,6 +386,6 @@ Paper 26.2 使用 PlaceholderAPI 时建议安装 [`2.12.3+`](https://github.com/
 mvn clean package
 ```
 
-输出：`target/LiPet-0.27.24-SNAPSHOT.jar`
+输出：`target/LiPet-0.27.25-SNAPSHOT.jar`
 
 每次迭代必须同步更新 `pom.xml` 版本。`plugin.yml` 会从 Maven 版本自动生成。

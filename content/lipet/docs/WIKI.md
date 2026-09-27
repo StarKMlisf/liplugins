@@ -1,5 +1,11 @@
 # LiPet Wiki
 
+## 0.29.12 CraftEngine 捕捉球 PAPI 变量
+
+新增捕捉开关、球列表及按球 ID 查询 CE 物品 ID、名称、命名空间、类型和三档捕捉概率的 PlaceholderAPI 变量；同时提供配置原值与显示百分比。不新增配置节点，也不覆盖已有捕捉球设置。
+
+详见 [0.29.12 更新说明](更新日志-2026-09-27-CE捕捉变量PAPI.md) 和 [完整变量表](CE捕捉球PAPI变量.md)。
+
 ## 0.29.11 监守者跟随与召唤名牌
 
 修复监守者受控移动推进间隔、宽体寻路边角及跳跃中断问题，保留原版 Brain 关闭和主人保护。召唤成功注册后才显示名牌，召回及失败后的延迟刷新不再重新创建名牌。不覆盖配置或修改跟随阈值。
@@ -87,10 +93,6 @@
 单宠物 nameplate 支持覆盖及热重载；主人走远时宠物脱战返回，返回途中不重新接战。
 补充模型驾驶座 Bukkit 输入同步与骑乘期间技能控制。两份龙配置的缩进问题与模型测试边界见本次更新说明。
 
-## 0.27.27 · MM 模型与骑乘等级
-
-新增骑乘解锁等级；调整模型回收、独立名牌跟随与模型驾驶座联动。[查看配置说明](更新日志-2026-09-12-MM模型与骑乘等级.md)。
-
 适用版本：`0.29.0-SNAPSHOT`
 
 适用服务端：
@@ -100,6 +102,10 @@
 - Paper / Folia `26.2`
 
 运行建议：Java 25。插件成品 Jar 使用 Java 21 字节码构建，便于跨版本运行。
+
+## 2026-09-12 · MM 模型与骑乘等级
+
+模型回收、独立名牌跟随与驾驶座识别已调整；新增 `defaults.behavior.riding-unlock-level`，单宠物可覆盖。详见 [配置和更新说明](更新日志-2026-09-12-MM模型与骑乘等级.md)。
 
 ## 2026-09-08 · 0.27.26 · 独立背包贴图标题
 
@@ -1498,9 +1504,30 @@ behavior:
 %lipet_attribute_agility_name%
 %lipet_pet_count%
 %lipet_server_id%
+
+%lipet_capture_enabled%
+%lipet_capture_ball_count%
+%lipet_capture_ball_ids%
+%lipet_capture_ball_<id>_enabled%
+%lipet_capture_ball_<id>_name%
+%lipet_capture_ball_<id>_plain_name%
+%lipet_capture_ball_<id>_item_id%
+%lipet_capture_ball_<id>_item_namespace%
+%lipet_capture_ball_<id>_item_path%
+%lipet_capture_ball_<id>_is_craftengine%
+%lipet_capture_ball_<id>_base_chance%
+%lipet_capture_ball_<id>_base_chance_percent%
+%lipet_capture_ball_<id>_low_health_bonus%
+%lipet_capture_ball_<id>_low_health_bonus_percent%
+%lipet_capture_ball_<id>_maximum_chance%
+%lipet_capture_ball_<id>_maximum_chance_percent%
 ```
 
 `active_state` 返回 `messages.yml` 中配置的中文状态；`active_state_key` 返回 `ACTIVE` 等原始键。四个 `attribute_*_name` 变量返回可配置中文属性名称。`active_speed` 包含基础速度、敏捷和速度技能加成，并最多保留三位小数。没有活动宠物时，数值变量稳定返回 `0` / `0.0`，文本变量返回空文本，不会把未解析变量留在计分板上。
+
+捕捉球变量中的 `<id>` 要替换成 `capture.yml -> balls` 下已启用的球 ID。例如 CraftEngine 案例可写 `%lipet_capture_ball_craftengine_example_item_id%`，返回 `yourpack:pet_capture_ball`；`%lipet_capture_ball_craftengine_example_is_craftengine%` 返回 `true`。`name` 保留 MiniMessage 标签，`plain_name` 返回纯文本。三项不带 `_percent` 的概率返回配置原值 `0-1`，带 `_percent` 的变量返回 `0.0-100.0` 且不附带 `%`，便于在 CE、HUD、计分板或菜单中自行排版。球不存在时，`enabled` 返回 `false`，其他球属性返回空文本。
+
+完整表格、CraftEngine 捕捉球配置和异常返回规则见 [CraftEngine 捕捉球 PAPI 变量](CE捕捉球PAPI变量.md)。
 
 PlaceholderAPI 是软依赖。未安装时 LiPet 会跳过 PAPI Hook，不影响主体功能。
 Paper 26.2 建议搭配 [PlaceholderAPI `2.12.3+`](https://github.com/PlaceholderAPI/PlaceholderAPI/releases/tag/2.12.3)；LiPet 不调用其版本专用内部接口。
