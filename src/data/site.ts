@@ -338,10 +338,10 @@ export const works: WorkEntry[] = [
     name: 'LiPet',
     catalogLabel: '宠物',
     kicker: '宠物养成、捕捉、骑乘与战斗',
-    summary: 'CraftEngine 捕捉球 PAPI 可按球 ID 读取物品 ID、名称、类型与捕捉概率；保留监守者持续跟随与追击、宽体绕障和跳跃修复、召唤成功后显示名牌，停服保存、残留攻击隔离与嘎枝主人保护、重启残留清理与归属提示修正、鱼类水中跟随与骑乘升降、原生宠物体型缩放与等级倍率，以及捕捉品质、性格与闪光。',
+    summary: '完整 PlaceholderAPI 变量覆盖活动宠物、等级经验、战斗属性、品质性格、宠物数量、服务器、CraftEngine 捕捉球和内置宠物币；宠物币余额异步预热并在交易及奖励后刷新。',
     description:
-      'LiPet 0.29.12 为 PlaceholderAPI 增加捕捉开关、球列表，以及按捕捉球 ID 查询 CraftEngine 完整物品 ID、名称、命名空间、物品路径、是否为 CE 物品和三档捕捉概率的变量；配置原值与显示百分比可分别读取，球 ID 支持下划线和短横线。不新增配置节点，不覆盖已有 capture.yml、CE 物品 ID、概率、名称或 Lore。保留 0.29.11 的监守者移动推进、宽体绕障、跳跃和召唤名牌修复，并继续包含停服保存、重启残留、鱼类骑乘、原生体型、WG 旗标、主人保护、追击绕障、主动索敌、品质性格闪光、仓库、详情、双商城、背包、等级模型与死亡扣级。',
-    version: '0.29.12-SNAPSHOT',
+      'LiPet 0.29.13 集中整理全部 PlaceholderAPI 变量，并新增内置宠物币余额、名称、格式化余额、常用简写及活动宠物判断。玩家登录时异步预热 SQLite 或 MySQL 余额，查询、交易和玩法奖励结算后刷新缓存，PAPI 回调不阻塞服务器线程；数据库热切换会清理旧缓存。不新增配置节点，不覆盖管理员现有设置。继续保留 CE 捕捉球变量、监守者跟随、停服保存、鱼类骑乘、原生体型、WG 旗标、主人保护、主动索敌、品质性格闪光、仓库、商城、背包与等级模型。',
+    version: '0.29.13-SNAPSHOT',
     status: '持续维护',
     platform: 'Paper / Folia',
     minecraft: '1.21.11 · 26.1.2 · 26.2',
@@ -350,6 +350,7 @@ export const works: WorkEntry[] = [
     priceCny: 68,
     dependencies: ['Vault / PlayerPoints（商城货币可选）', 'PlaceholderAPI（可选）', 'Residence（局部天气可选）', 'MythicMobs（自定义实体与等级技能可选）', 'ModelEngine / CraftEngine（按配置可选）', 'MySQL / Redis（跨服功能按需）'],
     features: [
+      '完整宠物 PAPI 与非阻塞内置宠物币余额、名称及格式化变量',
       'CraftEngine 捕捉球 PAPI 按球 ID 读取物品身份、名称与捕捉概率',
       '隔墙绕行、追击范围与卡住目标恢复',
       '主动索敌、友方过滤与跟随优先',

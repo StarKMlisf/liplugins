@@ -1,5 +1,11 @@
 # LiPet Wiki
 
+## 0.29.13 完整宠物 PAPI 与宠物币变量
+
+补齐并集中整理活动宠物、品质性格、成长属性、宠物数量、服务器、CraftEngine 捕捉球和内置宠物币变量。新增宠物币余额、名称、格式化余额及常用别名；余额在登录时异步预热，PAPI 读取不会阻塞服务器线程。
+
+详见 [完整 PlaceholderAPI 变量表](PlaceholderAPI变量.md) 和 [0.29.13 更新说明](更新日志-2026-09-28-完整PAPI与宠物币.md)。
+
 ## 0.29.12 CraftEngine 捕捉球 PAPI 变量
 
 新增捕捉开关、球列表及按球 ID 查询 CE 物品 ID、名称、命名空间、类型和三档捕捉概率的 PlaceholderAPI 变量；同时提供配置原值与显示百分比。不新增配置节点，也不覆盖已有捕捉球设置。
@@ -1467,6 +1473,8 @@ behavior:
 可用变量：
 
 ```text
+%lipet_active_exists%
+%lipet_has_active_pet%
 %lipet_active_name%
 %lipet_active_id%
 %lipet_active_owner_id%
@@ -1498,12 +1506,28 @@ behavior:
 %lipet_active_riding_speed%
 %lipet_active_resistance%
 %lipet_active_regeneration%
+%lipet_active_quality%
+%lipet_active_quality_id%
+%lipet_active_nature%
+%lipet_active_nature_id%
+%lipet_active_shiny%
+%lipet_active_growth_multiplier%
 %lipet_attribute_strength_name%
 %lipet_attribute_vitality_name%
 %lipet_attribute_defense_name%
 %lipet_attribute_agility_name%
 %lipet_pet_count%
 %lipet_server_id%
+
+%lipet_pet_coin_balance%
+%lipet_pet_coin_name%
+%lipet_pet_coin_formatted%
+%lipet_coin_balance%
+%lipet_coin_name%
+%lipet_coin_formatted%
+%lipet_coin%
+%lipet_coins%
+%lipet_balance%
 
 %lipet_capture_enabled%
 %lipet_capture_ball_count%
@@ -1525,9 +1549,11 @@ behavior:
 
 `active_state` 返回 `messages.yml` 中配置的中文状态；`active_state_key` 返回 `ACTIVE` 等原始键。四个 `attribute_*_name` 变量返回可配置中文属性名称。`active_speed` 包含基础速度、敏捷和速度技能加成，并最多保留三位小数。没有活动宠物时，数值变量稳定返回 `0` / `0.0`，文本变量返回空文本，不会把未解析变量留在计分板上。
 
+`pet_coin_balance` 返回两位小数的内置宠物币余额，`pet_coin_name` 返回管理员配置的名称，`pet_coin_formatted` 返回“余额 + 名称”。`coin_balance`、`coin`、`coins`、`balance` 是余额别名。登录会异步预热余额，PAPI 读取不等待 SQLite 或 MySQL。
+
 捕捉球变量中的 `<id>` 要替换成 `capture.yml -> balls` 下已启用的球 ID。例如 CraftEngine 案例可写 `%lipet_capture_ball_craftengine_example_item_id%`，返回 `yourpack:pet_capture_ball`；`%lipet_capture_ball_craftengine_example_is_craftengine%` 返回 `true`。`name` 保留 MiniMessage 标签，`plain_name` 返回纯文本。三项不带 `_percent` 的概率返回配置原值 `0-1`，带 `_percent` 的变量返回 `0.0-100.0` 且不附带 `%`，便于在 CE、HUD、计分板或菜单中自行排版。球不存在时，`enabled` 返回 `false`，其他球属性返回空文本。
 
-完整表格、CraftEngine 捕捉球配置和异常返回规则见 [CraftEngine 捕捉球 PAPI 变量](CE捕捉球PAPI变量.md)。
+全部变量与稳定返回规则见 [LiPet 完整 PlaceholderAPI 变量](PlaceholderAPI变量.md)；CraftEngine 捕捉球配置见 [CraftEngine 捕捉球 PAPI 变量](CE捕捉球PAPI变量.md)。
 
 PlaceholderAPI 是软依赖。未安装时 LiPet 会跳过 PAPI Hook，不影响主体功能。
 Paper 26.2 建议搭配 [PlaceholderAPI `2.12.3+`](https://github.com/PlaceholderAPI/PlaceholderAPI/releases/tag/2.12.3)；LiPet 不调用其版本专用内部接口。

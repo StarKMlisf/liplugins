@@ -1,5 +1,11 @@
 # LiPet
 
+## 0.29.13 完整宠物 PAPI 与宠物币变量
+
+补齐并集中整理活动宠物、品质性格、成长属性、宠物数量、服务器、CraftEngine 捕捉球和内置宠物币变量。新增宠物币余额、名称、格式化余额及常用别名；余额在登录时异步预热，PAPI 读取不会阻塞服务器线程。
+
+详见 [完整 PlaceholderAPI 变量表](docs/PlaceholderAPI变量.md) 和 [0.29.13 更新说明](docs/更新日志-2026-09-28-完整PAPI与宠物币.md)。
+
 ## 0.29.12 CraftEngine 捕捉球 PAPI 变量
 
 新增捕捉开关、球列表及按球 ID 查询 CE 物品 ID、名称、命名空间、类型和三档捕捉概率的 PlaceholderAPI 变量；同时提供配置原值与显示百分比。不新增配置节点，也不覆盖已有捕捉球设置。
@@ -259,6 +265,8 @@ LiPet 是一个面向群组服的 Bukkit 宠物插件框架，兼容 Paper/Folia
 PlaceholderAPI 变量：
 
 ```text
+%lipet_active_exists%
+%lipet_has_active_pet%
 %lipet_active_name%
 %lipet_active_id%
 %lipet_active_owner_id%
@@ -290,12 +298,28 @@ PlaceholderAPI 变量：
 %lipet_active_riding_speed%
 %lipet_active_resistance%
 %lipet_active_regeneration%
+%lipet_active_quality%
+%lipet_active_quality_id%
+%lipet_active_nature%
+%lipet_active_nature_id%
+%lipet_active_shiny%
+%lipet_active_growth_multiplier%
 %lipet_attribute_strength_name%
 %lipet_attribute_vitality_name%
 %lipet_attribute_defense_name%
 %lipet_attribute_agility_name%
 %lipet_pet_count%
 %lipet_server_id%
+
+%lipet_pet_coin_balance%
+%lipet_pet_coin_name%
+%lipet_pet_coin_formatted%
+%lipet_coin_balance%
+%lipet_coin_name%
+%lipet_coin_formatted%
+%lipet_coin%
+%lipet_coins%
+%lipet_balance%
 
 %lipet_capture_enabled%
 %lipet_capture_ball_count%
@@ -317,9 +341,11 @@ PlaceholderAPI 变量：
 
 `%lipet_active_state%` 返回可配置中文状态，需读取数据库原始状态键时使用 `%lipet_active_state_key%`。玩家没有召唤宠物时，数值变量返回 `0` 或 `0.0`，文本变量返回空文本。
 
+`%lipet_pet_coin_balance%` 返回两位小数的内置宠物币余额，`%lipet_pet_coin_name%` 返回 `config.yml -> currency.internal.display-name`，`%lipet_pet_coin_formatted%` 返回“余额 + 名称”。`coin_balance`、`coin`、`coins`、`balance` 是余额别名。玩家登录时会异步预热余额，PAPI 本身不会在服务器线程等待数据库。
+
 捕捉球变量中的 `<id>` 要替换成 `capture.yml -> balls` 下已启用的球 ID，例如 `%lipet_capture_ball_craftengine_example_item_id%`。`item_id` 会原样返回 `namespace:item_id`，可直接读取 CraftEngine 物品 ID；`is_craftengine` 返回 `true` / `false`。不带 `_percent` 的概率与配置相同，范围为 `0-1`；带 `_percent` 的变量返回 `0.0-100.0` 显示数值，不附带百分号。球不存在时，`enabled` 返回 `false`，其他球属性返回空文本。
 
-完整表格与 CE 配置案例见 [CraftEngine 捕捉球 PAPI 变量](docs/CE捕捉球PAPI变量.md)。
+全部宠物、宠物币与捕捉球变量见 [完整 PlaceholderAPI 变量表](docs/PlaceholderAPI变量.md)；CE 配置案例见 [CraftEngine 捕捉球 PAPI 变量](docs/CE捕捉球PAPI变量.md)。
 
 Vault 通过 `LiPetApi#economy()` 暴露统一经济接口，供后续购买、复活和技能升级使用。仅安装 Vault 而未安装经济插件时，LiPet 会关闭经济挂钩但继续运行。
 
