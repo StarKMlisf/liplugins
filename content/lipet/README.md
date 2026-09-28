@@ -444,6 +444,6 @@ Paper 26.2 使用 PlaceholderAPI 时建议安装 [`2.12.3+`](https://github.com/
 mvn clean package
 ```
 
-输出：`target/LiPet-0.27.25-SNAPSHOT.jar`
+输出：`target/LiPet-2.0.0.jar`
 
 每次迭代必须同步更新 `pom.xml` 版本。`plugin.yml` 会从 Maven 版本自动生成。
