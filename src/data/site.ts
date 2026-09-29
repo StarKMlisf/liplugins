@@ -338,10 +338,10 @@ export const works: WorkEntry[] = [
     name: 'LiPet',
     catalogLabel: '宠物',
     kicker: '宠物养成、捕捉、骑乘与战斗',
-    summary: '100 个自带特效的主动技能，每宠默认 3 槽，自动与手动施放共用 CD，支持 CE 与 ModelEngine 模型。',
+    summary: 'CE 配方产物可直接捕捉，退款保留原物品组件；内置 100 个带特效技能，每宠默认 3 槽、自动与手动共用 CD。',
     description:
-      'LiPet 2.0.0 新增独立的原生主动技能系统：10 个主题、10 类效果构成 100 项配置技能，每只宠物默认分配 3 个不同技能。战斗自动轮换，也可通过指令手动释放，共用独立 CD 与公共施法间隔。全部技能预置 RGB 粒子、六种动态轨迹与音效；可选原版或 CraftEngine 物品模型、ModelEngine 蓝图与动画。保留既有捕捉、成长、被动技能书、骑乘、背包、宠物币及区域保护功能。',
-    version: '2.0.0',
+      'LiPet 2.0.1 修复 CE 配方原物品捕捉，按唯一完整 ID 识别，退款保留原始名称、模型与组件，并提供可选合成示例。原生主动技能系统提供：10 个主题、10 类效果构成 100 项配置技能，每只宠物默认分配 3 个不同技能。战斗自动轮换，也可通过指令手动释放，共用独立 CD 与公共施法间隔。全部技能预置 RGB 粒子、六种动态轨迹与音效；可选原版或 CraftEngine 物品模型、ModelEngine 蓝图与动画。保留既有捕捉、成长、被动技能书、骑乘、背包、宠物币及区域保护功能。',
+    version: '2.0.1',
     status: '持续维护',
     platform: 'Paper / Folia',
     minecraft: '1.21.11 · 26.1.2 · 26.2',
@@ -350,6 +350,7 @@ export const works: WorkEntry[] = [
     priceCny: 68,
     dependencies: ['Vault / PlayerPoints（商城货币可选）', 'PlaceholderAPI（可选）', 'Residence（局部天气可选）', 'MythicMobs（自定义实体与等级技能可选）', 'ModelEngine / CraftEngine（按配置可选）', 'MySQL / Redis（跨服功能按需）'],
     features: [
+      'CE 配方原物品直接捕捉、完整 ID 校验与原物品退款，可选合成示例',
       '100 项原生主动技能、每宠默认 3 槽与自定义类型覆盖',
       '自动战斗施放与手动指令共用独立 CD、公共 CD 和 Tab 补全',
       '全部技能自带 RGB 粒子、六种动态轨迹和音效，默认无需模型插件',
