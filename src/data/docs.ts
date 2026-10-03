@@ -188,6 +188,7 @@ const liAnimalScaleDocs = defineDocs('lianimalscale', [
 ]);
 
 const liPetDocs = defineDocs('lipet', [
+  { file: 'docs/CE物品贴图.md', slug: 'ce-item-textures', title: 'CE 物品贴图', summary: '独立资源包 1.0.0：8 件 64×64 物品预览、完整 ID、普通球配方、配置合并与功能边界。', group: '管理员文档', order: -10 },
   { file: 'docs/更新日志-2026-10-03-持久化全链路审计.md', slug: 'changelog-2-2-2-persistence-audit', title: '2.2.2 持久化全链路审计', summary: '数据库关闭与重载、背包条件保存及恢复、未确认交易核对、旧会话保护与剩余边界。', group: '管理员文档', order: -9 },
   { file: 'docs/更新日志-2026-10-03-MySQL持久化修复.md', slug: 'changelog-2-2-1-mysql-persistence', title: '2.2.1 MySQL 持久化修复', summary: '修复被动技能书后连接事务遗留导致的保存未提交与重启丢宠，含真实 MySQL 复现和重启验证。', group: '管理员文档', order: -8 },
   { file: 'docs/更新日志-2026-09-30-ModelEngine动画技能.md', slug: 'changelog-2-2-modelengine-skills', title: '2.2.0 已有 ModelEngine 动画技能', summary: '新增 12 项模型技能，共 112 项；宠物已有动画、缩小场景特效与管理员配置保留。', group: '管理员文档', order: -7 },
@@ -246,7 +247,7 @@ const liPetDocs = defineDocs('lipet', [
   { file: 'docs/更新日志-2026-08-31-货币名称重载.md', slug: 'changelog-2026-08-31-currency-names', title: '0.27.6 货币名称配置与热重载', summary: '宠物币、金币、点券名称配置，成功重载后重开双商城生效，失败保留旧名和原有结算规则。', group: '文档总览', order: 2 },
   { file: 'docs/等级模型与捕捉球商店.md', slug: 'level-models-capture-shop', title: '等级模型、随机属性与捕捉球商店', summary: '1级a模型、2级b模型、四属性随机范围和普通/CE捕捉球商店案例。', group: '文档总览', order: 2 },
   { file: 'docs/更新日志-2026-08-30-等级模型与随机捕捉.md', slug: 'changelog-2026-08-30', title: '0.27.5 等级模型与随机捕捉更新', summary: 'MEG等级切换、捕捉属性持久化、捕捉球商品与验证记录。', group: '文档总览', order: 2 },
-  { file: 'docs/WIKI.md', slug: 'home', title: 'LiPet 完整 Wiki', summary: '2.2.2 持久化全链路修复、恢复台账与重启要求；112 技能、三槽配装、模型动画和 CE 配方捕捉教程。', group: '文档总览', order: 1 },
+  { file: 'docs/WIKI.md', slug: 'home', title: 'LiPet 完整 Wiki', summary: 'LiPet 2.2.2 持久化修复、112 技能和 CE 捕捉；可选 8 件 64×64 物品贴图、合并安装与使用说明。', group: '文档总览', order: 1 },
   { file: 'docs/PET_FEATURE_MATRIX.md', slug: 'feature-matrix', title: '功能矩阵', summary: '逐项核对宠物能力的实现范围、入口和当前状态。', group: '文档总览', order: 2 },
   { file: 'docs/更新日志-2026-08-29-CE捕捉球与食物案例.md', slug: 'changelog-2026-08-29-ce-capture-food-examples', title: '2026-08-29 CraftEngine 捕捉球与食物案例', summary: '默认关闭的 CE 捕捉球与公共宠物食物案例、启用开关、旧配置安全补全和真实运行验证。', group: '文档总览', order: 3 },
   { file: 'docs/更新日志-2026-08-29-全量宠物配置与MCPets兼容.md', slug: 'changelog-2026-08-29-full-pet-config-mcpets', title: '2026-08-29 全量宠物配置与 MCPets 兼容', summary: '全量原版宠物中文独立 YML、公共默认值与单宠差异、中文目录迁移及 MCPets 直接读取。', group: '文档总览', order: 4 },
@@ -402,7 +403,7 @@ export const docSets: DocSet[] = [
   { slug: 'lwe', name: 'LWE 小创世神', version: '0.1.0+build.15', summary: '轻量选区施工、材料消耗、LIEMC 自动补料、配置与故障排查。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lweDocs },
   { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev199-paper26', summary: '真实附魔、YML/API 扩展、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
   { slug: 'lititle', name: 'LiTitle', version: '0.1.93', summary: '称号、商店、仓库、聊天、昵称、存储与跨服部署文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lititleDocs },
-  { slug: 'lipet', name: 'LiPet', version: '2.2.2', summary: '持久化全链路修复、数据库变更重启要求、背包恢复和未确认交易核对；112 项特效技能、已有模型动画与 CE 配方捕捉。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
+  { slug: 'lipet', name: 'LiPet', version: '2.2.2', summary: 'LiPet 2.2.2 持久化修复与 112 项特效技能；独立 CE 贴图包 1.0.0 提供 8 件 64×64 物品、配方与配置合并说明。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
   { slug: 'lidungeon', name: 'LiDungeon', version: '2.0.1-zhcn-folia.9', summary: 'Paper/Folia 1.21.11 至 26.2 地牢副本系统，支持 Folia 离线世界导入与完整中文运维文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liDungeonDocs },
   { slug: 'liskin', name: 'LiSkin', version: '1.9.7', summary: 'CraftEngine 外观皮肤、顶部分类换装、沉浸旁观视角、常驻 NPC、商店、权限与跨服文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liSkinDocs },
   { slug: 'jisseechessgames', name: 'JisseeChessGames', version: '2.1.0', summary: '棋盘生成、五子棋、中国象棋、军棋、房间、持久化与验证文档。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: jisseeChessDocs },
