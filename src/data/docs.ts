@@ -95,6 +95,8 @@ const lirealMainDocs = defineDocs('lirealenchant', [
 
 const liemcDocs = defineDocs('liemc', [
   { file: 'Home.md', slug: 'home', title: 'LIEMC 完整 Wiki', summary: 'EMC 兑换、回收、解锁、收藏、跨服、命令、权限、配置与常见问题。', group: '文档总览', order: 1 },
+  { file: '更新日志-build109.md', slug: 'changelog-build109', title: 'build.109 更新说明', summary: '解锁 ID 统一去除首尾空格并转为小写，写入后刷新完整列表，跨服读取使用 3 秒短缓存。', group: '文档总览', order: 2 },
+  { file: '更新日志-build108.md', slug: 'changelog-build108', title: 'build.108 更新说明', summary: '未自定义的原版物品名称按客户端语言显示，CraftEngine 名称以每次创建的最新结果为准。', group: '文档总览', order: 2 },
   { file: '更新日志-build107.md', slug: 'changelog-build107', title: 'build.107 更新说明', summary: '按权限配置出售倍率、统一出售报价与安全结算，购买价格保持不变。', group: '文档总览', order: 2 },
   { file: '更新日志-build106.md', slug: 'changelog-build106', title: 'build.106 更新说明', summary: 'MySQL 8.0 数据库迁移兼容修复，以及全局商品 Lore 的空白分隔行与单项拆行。', group: '文档总览', order: 2 },
   { file: '玩家指南.md', slug: 'player', title: '玩家快速指南', summary: '从基础指令、解锁机制到经济来源与常见问题的玩家说明。', group: '玩家文档', order: 10 },
@@ -395,7 +397,7 @@ export const docSets: DocSet[] = [
     { file: '版本说明.md', slug: 'changelog', title: '版本说明', summary: '1.6.0 收录信息与升级提醒。', group: '文档总览', order: 2 },
   ]) },
   { slug: 'liskills', name: 'LiSkills', version: '1.13.0', summary: '15 职业技能、70 被动、生命魔力 HUD、配置、防刷、迁移与安全卸载指南。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: defineDocs('liskills', liSkillsDocDefinitions) },
-  { slug: 'liemc', name: 'LIEMC', version: '0.1.0+build.107', summary: 'EMC 经济、权限出售倍率、物品回收、解锁兑换、自定义 GUI、全局 Lore、CraftEngine 与跨服同步文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liemcDocs },
+  { slug: 'liemc', name: 'LIEMC', version: '0.1.0+build.109', summary: 'EMC 经济、历史解锁兼容、缓存一致性、客户端本地化原版名称、权限出售倍率、自定义 GUI、CraftEngine 与跨服同步文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liemcDocs },
   { slug: 'lwe', name: 'LWE 小创世神', version: '0.1.0+build.15', summary: '轻量选区施工、材料消耗、LIEMC 自动补料、配置与故障排查。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lweDocs },
   { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev199-paper26', summary: '真实附魔、YML/API 扩展、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
   { slug: 'lititle', name: 'LiTitle', version: '0.1.93', summary: '称号、商店、仓库、聊天、昵称、存储与跨服部署文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lititleDocs },
