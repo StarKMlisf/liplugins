@@ -1,6 +1,12 @@
 # LiPet 完整 PlaceholderAPI 变量
 
-适用版本：LiPet `0.29.13-SNAPSHOT`；建议使用 PlaceholderAPI `2.12.3+`。
+## 在 LiPet GUI 标题中使用（2.2.5 起）
+
+所有菜单及独立背包标题支持 `%lipet_变量名%`，也支持已安装的其他 PAPI 扩展变量；配置位于 `gui.yml`。PAPI 按打开菜单的玩家展开一次，再替换当前菜单的 LiPet `<变量>` 并解析 MiniMessage。
+
+`%lipet_active_*%` 始终代表查看者的活动宠物；查看仓库中的其他宠物时，标题若要显示选中的宠物，应使用 `<pet_name>` 等当前菜单内置变量。未知变量、未安装 PAPI 或解析异常时保留原文，菜单仍可打开。详细节点、背包变量与资源包字体示例见 [GUI 标题变量说明](更新日志-2026-10-05-GUI标题变量.md)。
+
+适用版本：LiPet `2.2.5`；建议使用 PlaceholderAPI `2.12.3+`。
 
 PlaceholderAPI 是可选软依赖。变量必须在具有玩家上下文的位置使用，完整写法为 `%lipet_变量名%`。
 
