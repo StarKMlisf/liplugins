@@ -1,5 +1,11 @@
 # LiPet Wiki
 
+## 2.3.0 MythicMobs 双向集成
+
+MM 技能现在可用 `@LipetOwner` 选择施法宠物的主人，以 `lipetExperience{amount=25} @self` 给宠物提交经验奖励，并通过 `<lipet.level>`、`<lipet.damage>`、`<lipet.max_health>`、四维属性与品质 ID 读取 LiPet 档案。未安装 MCPets 时同时提供 `@PetOwner` 和 `petExperience{exp=25}` 兼容名称。
+
+现有 `mythic-skills` 的等级解锁、trigger 和 power 保持原行为；MM 使用 `<skill.power>` 获取传入值。MM `damage` 默认还会自动乘一次 power，显式引用它时需设 `poweraffectsdamage=false` 避免重复。伤害数值不等于 `<pet.damagemodifier>` 倍率，其他 MCPets 专属机制仍需按包核对。详见 [双向集成指南](MythicMobs双向集成.md) 和 [2.3.0 更新说明](更新日志-2026-10-06-MythicMobs双向集成.md)。
+
 ## 2.2.5 GUI 标题支持 PlaceholderAPI 变量
 
 宠物主菜单、商城、仓库、信息、管理、放生确认及独立背包的标题，统一支持 PlaceholderAPI 的 `%变量%` 与原有 LiPet `<变量>`。例如管理菜单标题可写成 `<gold><pet_name></gold> · %player_name%`；PAPI 按打开菜单的玩家解析，查看他人宠物时也是查看者上下文。
@@ -994,9 +1000,9 @@ mythic-skills:
 
 - `skill` 是 MythicMobs 配置中的内部技能名，区分大小写。
 - `unlock-level` 是解锁等级，必须在 `1` 到该宠物的 `growth.maximum-level` 之间。
-- `chance` 范围为 `0.0-1.0`；`1.0` 表示每次符合触发条件都会尝试施放。
+- `chance` 必须大于 `0` 且不超过 `1`；`1.0` 表示每次符合触发条件都会尝试施放。
 - `cooldown-seconds` 是同一只宠物、同一项技能的独立冷却。
-- 最终 `power = power + max(0, 宠物等级 - unlock-level) × power-per-level`。例如本例 14 级时传入 MM 的 `power` 为 `1.2`。
+- 最终 `power = power + max(0, 宠物等级 - unlock-level) × power-per-level`。例如本例 14 级时传入 MM 的 `power` 为 `1.2`；MM 技能使用原生 `<skill.power>` 读取它。基础值须大于 0，每级增量须至少 0，到本类型最高等级的最终 power 不得超过 1000。
 - `trigger` 支持 `PET_ATTACK`、`PET_DEFEND`、`OWNER_ATTACK`、`OWNER_DEFEND`、`INTERACT`、`PASSIVE`、`INTERVAL`。
 - `PASSIVE` 与 `INTERVAL` 在宠物行为循环中按冷却触发，至少需要 `0.5` 秒冷却；有战斗目标时传递战斗目标，否则使用主人。
 - MM 技能会在施放前预占冷却，防止技能伤害再次进入同一触发链造成递归。
@@ -1006,6 +1012,10 @@ mythic-skills:
 - MM 5.x 的实例/静态 APIHelper 与 `float`/`double power` 变体均有反射兼容测试。
 
 旧文件升级时只会增加带中文注释且 `enabled: false` 的 `level-skill-example`，不会自动施放占位技能，也不会覆盖已有配置。修改后执行 `/lipet reload` 即可重新载入。
+
+### MythicMobs 读取 LiPet 宠物
+
+2.3.0 提供 `@LipetOwner`、`lipetExperience{amount=N}` 和 `<lipet.…>` 属性占位符；兼容名称是否注册取决于是否安装 MCPets。经验机制以目标宠物为接收者，属性占位符以施法宠物为上下文。完整语法、数值语义、异步保存边界和迁移示例见 [MythicMobs 双向集成](MythicMobs双向集成.md)。
 
 ### ModelEngine / MEG 模型
 
