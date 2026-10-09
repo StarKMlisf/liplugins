@@ -138,7 +138,7 @@ LiPet 已支持把含 `Id`、`MythicMob` 等核心字段的 MCPets 单宠物 YML
 - 未安装 MCPets 时可兼容 `@PetOwner` 与 `petExperience{exp=N}`；同服存在 MCPets 时使用 LiPet 专名。
 - `<pet.damagemodifier>` 是原插件的伤害倍率概念，不能等价替换成完整伤害数值；LiPet 不注册这一误导别名。按包的公式重新核对，以 `<lipet.damage>` 或原有 `<skill.power>` 表达。
 - 依赖 MCPets 的其他机制、条件、Signals、Skins、权限或行为，需分别转换或继续由其原插件执行。本次没有实现这些未支持的 MCPets 功能。
-- MM 自身事件启动的技能与 LiPet `mythic-skills` 的调用来源不同；LiPet 的自动攻击开关不等于禁用第三方 Mob 配置里的所有定时或事件技能。
+- MM 自身事件启动的技能与 LiPet `mythic-skills` 的调用来源不同；LiPet 的主动攻击开关不等于禁用第三方 Mob 配置里的所有定时或事件技能。
 
 ## 安装与修改
 
