@@ -1,5 +1,11 @@
 # LiPet
 
+## 2.3.1 模型骑乘主驾驶与换乘冲突修复
+
+模型宠物按 ModelEngine 的主驾驶关系上马，避免多个模型时误选副座位；旧模型座位拒绝下马时停止换乘，MM 直接上马也检查旧挂载关系。模型完全没有驾驶骨时继续使用原版骑乘，保留 2.3.0 的全部功能与既有配置。
+
+ModelEngine 虚拟座位没有 Bukkit `getVehicle()` 属于正常情况。修复范围、升级方式与运行验证进度见 [2.3.1 更新说明](docs/更新日志-2026-10-10-模型骑乘同步.md)；录像中的不同步表现仍需使用实际客户端与模型包复测。
+
 ## 2.3.0 MythicMobs 双向集成
 
 MM 技能现在可用 `@LipetOwner` 选择施法宠物的主人，以 `lipetExperience{amount=25} @self` 给宠物提交经验奖励，并通过 `<lipet.level>`、`<lipet.damage>`、`<lipet.max_health>`、四维属性与品质 ID 读取 LiPet 档案。未安装 MCPets 时同时提供 `@PetOwner` 和 `petExperience{exp=25}` 兼容名称。
