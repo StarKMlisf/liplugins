@@ -1,5 +1,9 @@
 # LiPet
 
+## 2.3.6 和平宠物世界
+
+在 `config.yml` 的 `peaceful-worlds` 中填写世界名，即可让指定世界内的宠物免伤、停止攻击和技能，同时保留跟随与骑乘。默认空列表，修改后 `/lipet reload` 生效。详见 [2.3.6 更新说明](docs/更新日志-2026-10-11-和平宠物世界.md)。
+
 ## 2.3.5 低座位下马净空
 
 修复 `model-seat.y: 0.5` 等低座位下马后脚部进入方块的问题。保留座位高度，按方块真实碰撞形状寻找下马净空，同时处理 Folia 已排队的座位更新与首次移动取消回退。无需覆盖配置或更新资源包。详见 [2.3.5 更新说明](docs/更新日志-2026-10-11-低座位下马净空.md)。
@@ -527,6 +531,6 @@ Paper 26.2 使用 PlaceholderAPI 时建议安装 [`2.12.3+`](https://github.com/
 mvn clean package
 ```
 
-输出：`target/LiPet-2.3.5.jar`
+输出：`target/LiPet-2.3.6.jar`
 
 每次迭代必须同步更新 `pom.xml` 版本。`plugin.yml` 会从 Maven 版本自动生成。
