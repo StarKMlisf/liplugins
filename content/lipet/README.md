@@ -1,5 +1,9 @@
 # LiPet
 
+## 2.3.7 Paper 26.3 适配
+
+新增 Paper 26.3 的明确验证支持，保留 Java 21 编译下限和已有配置；运行 Paper 26.3 使用 Java 25。模型骑乘、MM 技能、和平世界以及原版宠物存档回归通过。Folia 保持原兼容范围，本次不升级。详见 [2.3.7 更新说明](docs/更新日志-2026-10-11-Paper26.3适配.md)。
+
 ## 2.3.6 和平宠物世界
 
 在 `config.yml` 的 `peaceful-worlds` 中填写世界名，即可让指定世界内的宠物免伤、停止攻击和技能，同时保留跟随与骑乘。默认空列表，修改后 `/lipet reload` 生效。详见 [2.3.6 更新说明](docs/更新日志-2026-10-11-和平宠物世界.md)。
@@ -531,6 +535,6 @@ Paper 26.2 使用 PlaceholderAPI 时建议安装 [`2.12.3+`](https://github.com/
 mvn clean package
 ```
 
-输出：`target/LiPet-2.3.6.jar`
+输出：`target/LiPet-2.3.7.jar`
 
 每次迭代必须同步更新 `pom.xml` 版本。`plugin.yml` 会从 Maven 版本自动生成。
