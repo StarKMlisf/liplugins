@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import FeatureGallery from '@/components/FeatureGallery.astro';
 import { catalogSections, works } from '@/data/site';
 import { withBase } from '@/lib/paths';
 
@@ -53,6 +54,7 @@ const availabilityClass =
     </div>
   </header>
 
+  <FeatureGallery slug="playerplushiestudio" />
   <section class="section shell">
     <img class="plushie-wallpaper" src={withBase('/images/playerplushiestudio/wallpaper.png')} alt="玩家玩偶工坊品牌壁纸，展示方块玩偶工坊主题" width="1920" height="1080" />
     <div class="section-heading">

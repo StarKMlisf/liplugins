@@ -1,7 +1,10 @@
-export interface FeatureShot { file: string; title: string; width: number; height: number; format?: 'webp' | 'png'; }
-export interface FeatureGallery { slug: string; name: string; forum: string; date: string; shots: FeatureShot[]; }
+export interface FeatureShot { file: string; title: string; width: number; height: number; format?: 'webp' | 'png' | 'jpg'; }
+export interface FeatureGallery { slug: string; name: string; forum: string; date: string; shots: FeatureShot[]; software?: boolean; }
 // 仅登记已逐图核实的游戏实拍，保留拍摄日期与原帖来源。
 export const featureGalleries: FeatureGallery[] = [
+  { slug: 'playerplushiestudio', name: '玩家玩偶工坊', forum: 'https://www.minebbs.com/resources/playerplushiestudio-craftengine.18163/', date: '2026-10-14', software: true, shots: [
+    { file: 'preview', title: '玩家皮肤生成的玩偶模型实时预览（PlayerPlushieStudio 1.5.5）', width: 786, height: 607, format: 'jpg' },
+  ] },
   { slug: 'liskills', name: 'LiSkills', forum: 'https://www.minebbs.com/resources/liskills-hud.18160/', date: '2026-10-14', shots: [
     { file: 'menu', title: '技能面板与角色成长概况（LiSkills 1.20.1）', width: 1920, height: 1080, format: 'png' },
   ] },

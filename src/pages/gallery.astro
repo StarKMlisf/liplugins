@@ -7,7 +7,7 @@ import { featureGalleries } from '@/data/feature-gallery';
   <header class="section shell">
     <span class="eyebrow">LAOLI PLUGINS / IN GAME</span>
     <h1>在游戏里，它们是什么样？</h1>
-    <p>从实际菜单到玩法效果，浏览已收录的 {featureGalleries.length} 款插件、{featureGalleries.reduce((sum, entry) => sum + entry.shots.length, 0)} 张游戏实拍。</p>
+    <p>从实际菜单到玩法效果，浏览已收录的 {featureGalleries.length} 款作品、{featureGalleries.reduce((sum, entry) => sum + entry.shots.length, 0)} 张游戏与软件实拍。</p>
     <nav class="button-row" aria-label="选择插件">
       {featureGalleries.map(entry => <a class="button" href={`#gallery-${entry.slug}`}>{entry.name}</a>)}
     </nav>
