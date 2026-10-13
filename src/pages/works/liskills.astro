@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import FeatureGallery from '@/components/FeatureGallery.astro';
 import { works } from '@/data/site';
 import { withBase } from '@/lib/paths';
 
@@ -33,6 +34,7 @@ const work = works.find((entry) => entry.slug === 'liskills')!;
     </div>
   </header>
 
+  <FeatureGallery slug="liskills" />
   <section class="section shell">
     <div class="section-heading">
       <span class="eyebrow">Overview / 技能系统</span>

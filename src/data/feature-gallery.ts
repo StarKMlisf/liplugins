@@ -1,7 +1,19 @@
-export interface FeatureShot { file: string; title: string; width: number; height: number; }
+export interface FeatureShot { file: string; title: string; width: number; height: number; format?: 'webp' | 'png'; }
 export interface FeatureGallery { slug: string; name: string; forum: string; date: string; shots: FeatureShot[]; }
 // 仅登记已逐图核实的游戏实拍，保留拍摄日期与原帖来源。
 export const featureGalleries: FeatureGallery[] = [
+  { slug: 'liskills', name: 'LiSkills', forum: 'https://www.minebbs.com/resources/liskills-hud.18160/', date: '2026-10-14', shots: [
+    { file: 'menu', title: '技能面板与角色成长概况（LiSkills 1.20.1）', width: 1920, height: 1080, format: 'png' },
+  ] },
+  { slug: 'liseasons', name: 'LISeasons', forum: 'https://www.minebbs.com/resources/liseasons.16365/', date: '2026-10-14', shots: [
+    { file: 'calendar', title: '云梦泽季节手账 · 本月节气（LISeasons 1.0.87）', width: 1920, height: 1080, format: 'png' },
+  ] },
+  { slug: 'liemc', name: 'LIEMC', forum: 'https://www.minebbs.com/resources/liemc.17061/', date: '2026-10-14', shots: [
+    { file: 'shop', title: 'EMC 商店的物品目录与检索入口（build.109）', width: 1920, height: 1080, format: 'png' },
+  ] },
+  { slug: 'lipet', name: 'LiPet', forum: 'https://www.minebbs.com/resources/lipet.18156/', date: '2026-10-14', shots: [
+    { file: 'center', title: '宠物中心：商城、道具、我的宠物与每日奖励（LiPet 2.0.0）', width: 1920, height: 1080, format: 'png' },
+  ] },
   { slug: 'liskin', name: 'LiSkin', forum: 'https://www.minebbs.com/resources/liskin-craftengine.17535/', date: '2026-07-28', shots: [
     { file: 'menu', title: '综合菜单与主手适配筛选', width: 1920, height: 991 },
   ] },

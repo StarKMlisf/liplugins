@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import FeatureGallery from '@/components/FeatureGallery.astro';
 import SeasonMark from '@/components/SeasonMark.astro';
 import VoxelBlock from '@/components/VoxelBlock.astro';
 import { works } from '@/data/site';
@@ -44,6 +45,7 @@ const work = works.find((entry) => entry.slug === 'liseasons')!;
     </div>
   </section>
 
+  <FeatureGallery slug="liseasons" />
   <section class="section shell">
     <div class="section-heading">
       <span class="eyebrow">Overview / 它是什么</span>
