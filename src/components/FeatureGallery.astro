@@ -1,0 +1,31 @@
+---
+import { featureGalleries } from '@/data/feature-gallery';
+import { withBase } from '@/lib/paths';
+interface Props { slug: string; }
+const gallery = featureGalleries.find(entry => entry.slug === Astro.props.slug);
+---
+{gallery && <section class="section shell feature-gallery" id={`gallery-${gallery.slug}`}>
+  <div class="section-heading">
+    <span class="eyebrow">In game / 功能实拍</span>
+    <div><h2>{gallery.name} · 实际游戏界面</h2>
+      <p>历史实拍 · {gallery.date}。界面、数值和模型以实际安装版本与服务器配置为准。点击图片可查看原图。</p>
+      <a href={gallery.forum} target="_blank" rel="noopener noreferrer">查看 MineBBS 原帖 ↗</a>
+    </div>
+  </div>
+  <div class="shots">
+    {gallery.shots.map(shot => <figure>
+      <a href={withBase(`/images/features/${gallery.slug}/${shot.file}.webp`)} target="_blank" rel="noopener noreferrer" aria-label={`查看原图：${shot.title}`}>
+        <img src={withBase(`/images/features/${gallery.slug}/${shot.file}.webp`)} alt={`${gallery.name}：${shot.title}`} width={shot.width} height={shot.height} loading="lazy" decoding="async" />
+      </a>
+      <figcaption>{shot.title}</figcaption>
+    </figure>)}
+  </div>
+</section>}
+<style>
+  .shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+  figure { margin: 0; min-width: 0; }
+  figure a { display: flex; align-items: center; justify-content: center; aspect-ratio: 16/10; background: #101512; border-radius: 12px; overflow: hidden; }
+  img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  figcaption { padding: .8rem 0; font-weight: 600; }
+  @media (max-width: 700px) { .shots { grid-template-columns: 1fr; } }
+</style>

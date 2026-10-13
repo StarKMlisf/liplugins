@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import FeatureGallery from '@/components/FeatureGallery.astro';
 import { catalogSections, works, type WorkEntry } from '@/data/site';
 import { withBase } from '@/lib/paths';
 
@@ -63,6 +64,7 @@ const availabilityClass =
       </div>
     </div>
   </header>
+  <FeatureGallery slug={work.slug} />
 
   <section class="section shell">
     <div class="section-heading">

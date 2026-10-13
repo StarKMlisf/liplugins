@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import FeatureGallery from '@/components/FeatureGallery.astro';
 import VoxelBlock from '@/components/VoxelBlock.astro';
 import WorkEmblem from '@/components/WorkEmblem.astro';
 import { works } from '@/data/site';
@@ -33,6 +34,7 @@ const work = works.find((entry) => entry.slug === 'lirealenchant')!;
       </div>
     </div>
   </header>
+  <FeatureGallery slug={work.slug} />
 
   <section class="inventory-ribbon" aria-label="LiRealEnchant2 核心系统物品栏">
     <div class="shell inventory-ribbon__inner">
