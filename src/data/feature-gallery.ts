@@ -16,6 +16,12 @@ export const featureGalleries: FeatureGallery[] = [
   ] },
   { slug: 'lipet', name: 'LiPet', forum: 'https://www.minebbs.com/resources/lipet.18156/', date: '2026-10-14', shots: [
     { file: 'center', title: '宠物中心：商城、道具、我的宠物与每日奖励（LiPet 2.0.0）', width: 1920, height: 1080, format: 'png' },
+    { file: 'panda', title: '召唤熊猫伙伴“小团子”与主人名牌（原版生物外观）', width: 1920, height: 1080, format: 'png' },
+    { file: 'shop', title: '宠物商城：不同种类伙伴的购买入口', width: 1920, height: 1080, format: 'png' },
+    { file: 'warehouse', title: '我的宠物：已拥有伙伴的召唤与管理入口', width: 1920, height: 1080, format: 'png' },
+    { file: 'growth', title: '成长属性：力量、体质、防御与敏捷', width: 1920, height: 1080, format: 'png' },
+    { file: 'items', title: '道具商店：当前服务器配置的宠物道具目录', width: 1920, height: 1080, format: 'png' },
+    { file: 'skills', title: '三槽主动技能：林海震荡、树皮守护、根须弹震与冷却信息', width: 1920, height: 1080, format: 'png' },
   ] },
   { slug: 'liskin', name: 'LiSkin', forum: 'https://www.minebbs.com/resources/liskin-craftengine.17535/', date: '2026-07-28', shots: [
     { file: 'menu', title: '综合菜单与主手适配筛选', width: 1920, height: 991 },
