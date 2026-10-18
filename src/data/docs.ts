@@ -188,6 +188,7 @@ const liAnimalScaleDocs = defineDocs('lianimalscale', [
 ]);
 
 const liPetDocs = defineDocs('lipet', [
+  { file: 'docs/更新日志-2026-10-19-菜单详情与成长分离.md', slug: 'changelog-2-3-9-menu-details', title: '2.3.9 菜单详情与成长分离', summary: '修复两个管理按钮打开同页，保留 CE 成长布局。', group: '管理员文档', order: -24 },
   { file: 'docs/更新日志-2026-10-12-原生属性培养.md', slug: 'changelog-2-3-8-native-training', title: '2.3.8 原生属性培养', summary: '带权限和档案版本校验的原生属性加点接口。', group: '管理员文档', order: -23 },
   { file: 'docs/更新日志-2026-10-11-Paper26.3适配.md', slug: 'changelog-2-3-7-paper-26-3', title: '2.3.7 Paper 26.3 适配', summary: 'Paper 26.3 模型、技能与持久化回归通过；Folia 保持现有兼容范围。', group: '管理员文档', order: -22 },
   { file: 'docs/更新日志-2026-10-11-和平宠物世界.md', slug: 'changelog-2-3-6-peaceful-worlds', title: '2.3.6 和平宠物世界', summary: '世界名单可重载，宠物免伤并停止战斗和技能，保留跟随与骑乘。', group: '管理员文档', order: -21 },
@@ -260,7 +261,7 @@ const liPetDocs = defineDocs('lipet', [
   { file: 'docs/更新日志-2026-08-31-货币名称重载.md', slug: 'changelog-2026-08-31-currency-names', title: '0.27.6 货币名称配置与热重载', summary: '宠物币、金币、点券名称配置，成功重载后重开双商城生效，失败保留旧名和原有结算规则。', group: '文档总览', order: 2 },
   { file: 'docs/等级模型与捕捉球商店.md', slug: 'level-models-capture-shop', title: '等级模型、随机属性与捕捉球商店', summary: '1级a模型、2级b模型、四属性随机范围和普通/CE捕捉球商店案例。', group: '文档总览', order: 2 },
   { file: 'docs/更新日志-2026-08-30-等级模型与随机捕捉.md', slug: 'changelog-2026-08-30', title: '0.27.5 等级模型与随机捕捉更新', summary: 'MEG等级切换、捕捉属性持久化、捕捉球商品与验证记录。', group: '文档总览', order: 2 },
-  { file: 'docs/WIKI.md', slug: 'home', title: 'LiPet 完整 Wiki', summary: 'LiPet 2.3.8 新增原生属性培养接口，保留 Paper 26.3 与模型骑乘支持。', group: '文档总览', order: 1 },
+  { file: 'docs/WIKI.md', slug: 'home', title: 'LiPet 完整 Wiki', summary: 'LiPet 2.3.9 分离宠物信息和成长加点，保留 CE 成长配置。', group: '文档总览', order: 1 },
   { file: 'docs/PET_FEATURE_MATRIX.md', slug: 'feature-matrix', title: '功能矩阵', summary: '逐项核对宠物能力的实现范围、入口和当前状态。', group: '文档总览', order: 2 },
   { file: 'docs/更新日志-2026-08-29-CE捕捉球与食物案例.md', slug: 'changelog-2026-08-29-ce-capture-food-examples', title: '2026-08-29 CraftEngine 捕捉球与食物案例', summary: '默认关闭的 CE 捕捉球与公共宠物食物案例、启用开关、旧配置安全补全和真实运行验证。', group: '文档总览', order: 3 },
   { file: 'docs/更新日志-2026-08-29-全量宠物配置与MCPets兼容.md', slug: 'changelog-2026-08-29-full-pet-config-mcpets', title: '2026-08-29 全量宠物配置与 MCPets 兼容', summary: '全量原版宠物中文独立 YML、公共默认值与单宠差异、中文目录迁移及 MCPets 直接读取。', group: '文档总览', order: 4 },
@@ -282,7 +283,7 @@ const liPetDocs = defineDocs('lipet', [
   { file: 'docs/更新日志-2026-08-28-UI.md', slug: 'changelog-2026-08-28-ui', title: '2026-08-28 UI 更新', summary: '全部菜单点击音效、功能按钮多槽位复制和旧配置安全迁移。', group: '文档总览', order: 20 },
   { file: 'docs/更新日志-2026-08-28.md', slug: 'changelog-2026-08-28', title: '2026-08-28 管理与召唤更新', summary: 'give/take、离线与全服批处理、Tab 补全及领地保护内安全召唤。', group: '文档总览', order: 21 },
   { file: 'docs/更新日志-2026-08-27.md', slug: 'changelog-2026-08-27', title: '2026-08-27 更新', summary: '指定玩家单宠管理、商城总开关、热重载、升级步骤和兼容验证。', group: '文档总览', order: 22 },
-  { file: 'docs/更新日志.md', slug: 'changelog', title: '更新日志总览', summary: '2.3.8 原生属性培养、2.3.7 Paper 26.3 适配及完整历史版本。', group: '文档总览', order: 23 },
+  { file: 'docs/更新日志.md', slug: 'changelog', title: '更新日志总览', summary: '2.3.9 菜单详情与成长分离及完整历史版本。', group: '文档总览', order: 23 },
   { file: 'docs/玩家入门.md', slug: 'player', title: '玩家入门', summary: '创建、召唤、收回、改名、骑乘宠物并使用完整 /lipet 指令。', group: '玩家文档', order: 10 },
   { file: 'docs/成长与喂养.md', slug: 'growth-feeding', title: '成长、属性与喂养', summary: '0.27.24 死亡扣级、经验和属性点规则，以及加点与战斗成长。', group: '玩家文档', order: 11 },
   { file: 'docs/捕捉与商城.md', slug: 'capture-shop', title: '捕捉、宠物商城与道具商城', summary: '捕捉幼体锁龄、道具退款、捕捉仪式、宠物币奖励和三种商城货币。', group: '玩家文档', order: 12 },
@@ -416,7 +417,7 @@ export const docSets: DocSet[] = [
   { slug: 'lwe', name: 'LWE 小创世神', version: '0.1.0+build.15', summary: '轻量选区施工、材料消耗、LIEMC 自动补料、配置与故障排查。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lweDocs },
   { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev199-paper26', summary: '真实附魔、YML/API 扩展、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
   { slug: 'lititle', name: 'LiTitle', version: '0.1.93', summary: '称号、商店、仓库、聊天、昵称、存储与跨服部署文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lititleDocs },
-  { slug: 'lipet', name: 'LiPet', version: '2.3.8', summary: 'Paper 26.3 适配，模型骑乘、和平世界和宠物存档回归通过；Folia 范围保持不变。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
+  { slug: 'lipet', name: 'LiPet', version: '2.3.9', summary: 'Paper 26.3 适配，模型骑乘、和平世界和宠物存档回归通过；Folia 范围保持不变。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
   { slug: 'lidungeon', name: 'LiDungeon', version: '2.0.1-zhcn-folia.9', summary: 'Paper/Folia 1.21.11 至 26.2 地牢副本系统，支持 Folia 离线世界导入与完整中文运维文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liDungeonDocs },
   { slug: 'liskin', name: 'LiSkin', version: '1.9.7', summary: 'CraftEngine 外观皮肤、顶部分类换装、沉浸旁观视角、常驻 NPC、商店、权限与跨服文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liSkinDocs },
   { slug: 'jisseechessgames', name: 'JisseeChessGames', version: '2.1.0', summary: '棋盘生成、五子棋、中国象棋、军棋、房间、持久化与验证文档。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: jisseeChessDocs },
