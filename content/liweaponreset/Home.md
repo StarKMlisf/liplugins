@@ -1,5 +1,7 @@
 # 武器数值回归
 
+> 当前发布：1.0.7。Paper / Folia 26.3 适配、测试范围和升级限制见 [26.3 兼容说明](./26.3兼容说明.md)。
+
 LiWeaponReset 1.0.3 用于处理卸载 PlayerIntensify 后仍保留在武器上的攻击属性。它是独立插件，不是 LiEnhance 强化插件，也不要求 CraftEngine 前置。
 
 ## 默认行为

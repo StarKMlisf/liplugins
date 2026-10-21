@@ -285,7 +285,7 @@ const liPetDocs = defineDocs('lipet', [
   { file: 'docs/更新日志-2026-08-28-UI.md', slug: 'changelog-2026-08-28-ui', title: '2026-08-28 UI 更新', summary: '全部菜单点击音效、功能按钮多槽位复制和旧配置安全迁移。', group: '文档总览', order: 20 },
   { file: 'docs/更新日志-2026-08-28.md', slug: 'changelog-2026-08-28', title: '2026-08-28 管理与召唤更新', summary: 'give/take、离线与全服批处理、Tab 补全及领地保护内安全召唤。', group: '文档总览', order: 21 },
   { file: 'docs/更新日志-2026-08-27.md', slug: 'changelog-2026-08-27', title: '2026-08-27 更新', summary: '指定玩家单宠管理、商城总开关、热重载、升级步骤和兼容验证。', group: '文档总览', order: 22 },
-  { file: 'docs/更新日志.md', slug: 'changelog', title: '更新日志总览', summary: '2.3.11 闪光捕捉提示及完整历史版本。', group: '文档总览', order: 23 },
+  { file: 'docs/更新日志.md', slug: 'changelog', title: '更新日志总览', summary: '2.3.12 Paper / Folia 26.3 适配及完整历史版本。', group: '文档总览', order: 23 },
   { file: 'docs/玩家入门.md', slug: 'player', title: '玩家入门', summary: '创建、召唤、收回、改名、骑乘宠物并使用完整 /lipet 指令。', group: '玩家文档', order: 10 },
   { file: 'docs/成长与喂养.md', slug: 'growth-feeding', title: '成长、属性与喂养', summary: '0.27.24 死亡扣级、经验和属性点规则，以及加点与战斗成长。', group: '玩家文档', order: 11 },
   { file: 'docs/捕捉与商城.md', slug: 'capture-shop', title: '捕捉、宠物商城与道具商城', summary: '捕捉幼体锁龄、道具退款、捕捉仪式、宠物币奖励和三种商城货币。', group: '玩家文档', order: 12 },
@@ -400,7 +400,7 @@ const lirealEnchantDocs = fs.readdirSync(enchantDirectory)
   });
 
 export const docSets: DocSet[] = [
-  { slug: 'liweaponreset', name: 'LiWeaponReset 武器回归', version: '1.0.3', summary: '米饭强化残留属性自动回归、备份撤销与安全边界。', icon: 'redstone', groups: ['文档总览', '管理员文档'], docs: defineDocs('liweaponreset', [
+  { slug: 'liweaponreset', name: 'LiWeaponReset 武器回归', version: '1.0.7', summary: '米饭强化残留属性自动回归、备份撤销与安全边界。', icon: 'redstone', groups: ['文档总览', '管理员文档'], docs: defineDocs('liweaponreset', [
     { file: 'Home.md', slug: 'home', title: '武器数值回归', summary: '主手自动恢复材质原版攻击属性，先备份再修改。', group: '文档总览', order: 1 },
     { file: '安装与自动恢复.md', slug: 'install', title: '安装与自动恢复', summary: '运行环境、自动检测条件和部署检查。', group: '管理员文档', order: 10 },
     { file: '指令与撤销.md', slug: 'commands', title: '指令与备份撤销', summary: '手动预览、权限、精确撤销与持久化豁免。', group: '管理员文档', order: 20 },
@@ -414,22 +414,27 @@ export const docSets: DocSet[] = [
     { file: '兼容与排错.md', slug: 'troubleshooting', title: '兼容与排错', summary: 'Windows 运行要求与皮肤模型故障排查。', group: '管理员文档', order: 30 },
     { file: '版本说明.md', slug: 'changelog', title: '版本说明', summary: '1.6.0 收录信息与升级提醒。', group: '文档总览', order: 2 },
   ]) },
-  { slug: 'liskills', name: 'LiSkills', version: '1.13.0', summary: '15 职业技能、70 被动、生命魔力 HUD、配置、防刷、迁移与安全卸载指南。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: defineDocs('liskills', liSkillsDocDefinitions) },
-  { slug: 'liemc', name: 'LIEMC', version: '0.1.0+build.109', summary: 'EMC 经济、历史解锁兼容、缓存一致性、客户端本地化原版名称、权限出售倍率、自定义 GUI、CraftEngine 与跨服同步文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liemcDocs },
-  { slug: 'lwe', name: 'LWE 小创世神', version: '0.1.0+build.15', summary: '轻量选区施工、材料消耗、LIEMC 自动补料、配置与故障排查。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lweDocs },
-  { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev199-paper26', summary: '真实附魔、YML/API 扩展、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
-  { slug: 'lititle', name: 'LiTitle', version: '0.1.93', summary: '称号、商店、仓库、聊天、昵称、存储与跨服部署文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lititleDocs },
-  { slug: 'lipet', name: 'LiPet', version: '2.3.11', summary: 'Paper 26.3 适配，模型骑乘、和平世界和宠物存档回归通过；Folia 范围保持不变。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
-  { slug: 'lidungeon', name: 'LiDungeon', version: '2.0.1-zhcn-folia.9', summary: 'Paper/Folia 1.21.11 至 26.2 地牢副本系统，支持 Folia 离线世界导入与完整中文运维文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liDungeonDocs },
-  { slug: 'liskin', name: 'LiSkin', version: '1.9.7', summary: 'CraftEngine 外观皮肤、顶部分类换装、沉浸旁观视角、常驻 NPC、商店、权限与跨服文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liSkinDocs },
-  { slug: 'jisseechessgames', name: 'JisseeChessGames', version: '2.1.0', summary: '棋盘生成、五子棋、中国象棋、军棋、房间、持久化与验证文档。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: jisseeChessDocs },
-  { slug: 'liseasons', name: 'LISeasons', version: '1.0.81', summary: '四季、节气、持续灾害、动态粒子音景、流星奖励箱与 Folia 兼容文档。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },
-  { slug: 'enderdragon', name: 'EnderDragon', version: '26.1.14', summary: '末影龙接管、召唤、复活、奖励、配置、变量与故障排查文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: enderDragonDocs },
-  { slug: 'blockcraft', name: 'BlockCraft', version: '1.0.13', summary: '八基座祭坛合成、物品来源挂钩、费用与成功率、粒子与音效、故障排查与命令说明。', icon: 'redstone', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: blockCraftDocs },
-  { slug: 'lianimalscale', name: 'LiAnimalScale', version: '1.1.0', summary: '动物缩放、命令权限、配置、Folia 兼容、热加载与验证文档。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liAnimalScaleDocs },
-  { slug: 'lichqian', name: 'LichQian', version: '1.1.0', summary: '抽签玩法、时间配置、文本、GUI、变量、资源包与构建文档。', icon: 'redstone', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: lichQianDocs },
-  { slug: 'lishop', name: 'liShop', version: '1.9.0', summary: 'GUI 商店、动态价格、交易所、编辑器、经济、数据库与集群文档。', icon: 'ice', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liShopDocs },
+  { slug: 'liskills', name: 'LiSkills', version: '1.20.2', summary: '15 职业技能、70 被动、生命魔力 HUD、配置、防刷、迁移与安全卸载指南。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: defineDocs('liskills', liSkillsDocDefinitions) },
+  { slug: 'liemc', name: 'LIEMC', version: '0.1.0+build.110', summary: 'EMC 经济、历史解锁兼容、缓存一致性、客户端本地化原版名称、权限出售倍率、自定义 GUI、CraftEngine 与跨服同步文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liemcDocs },
+  { slug: 'lwe', name: 'LWE 小创世神', version: '0.1.0+build.16', summary: '轻量选区施工、材料消耗、LIEMC 自动补料、配置与故障排查。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lweDocs },
+  { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev218-paper26', summary: '真实附魔、YML/API 扩展、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
+  { slug: 'lititle', name: 'LiTitle', version: '0.1.105', summary: '称号、商店、仓库、聊天、昵称、存储与跨服部署文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lititleDocs },
+  { slug: 'lipet', name: 'LiPet', version: '2.3.12', summary: 'Paper 26.3 适配，模型骑乘、和平世界和宠物存档回归通过；新增 Folia 26.3 build 5 隔离服加载验证。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
+  { slug: 'lidungeon', name: 'LiDungeon', version: '2.0.1-zhcn-folia.10', summary: 'Paper/Folia 26.3 地牢副本系统，支持 Folia 离线世界导入与完整中文运维文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liDungeonDocs },
+  { slug: 'liskin', name: 'LiSkin', version: '1.12.2', summary: 'CraftEngine 外观皮肤、顶部分类换装、沉浸旁观视角、常驻 NPC、商店、权限与跨服文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liSkinDocs },
+  { slug: 'jisseechessgames', name: 'JisseeChessGames', version: '2.3.4', summary: '棋盘生成、五子棋、中国象棋、军棋、房间、持久化与验证文档。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: jisseeChessDocs },
+  { slug: 'liseasons', name: 'LISeasons', version: '2.1.2', summary: '四季、节气、持续灾害、动态粒子音景、流星奖励箱与 Folia 兼容文档。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },
+  { slug: 'enderdragon', name: 'EnderDragon', version: '26.3.0', summary: '末影龙接管、召唤、复活、奖励、配置、变量与故障排查文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: enderDragonDocs },
+  { slug: 'blockcraft', name: 'BlockCraft', version: '1.0.16', summary: '八基座祭坛合成、物品来源挂钩、费用与成功率、粒子与音效、故障排查与命令说明。', icon: 'redstone', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: blockCraftDocs },
+  { slug: 'lianimalscale', name: 'LiAnimalScale', version: '1.1.2', summary: '动物缩放、命令权限、配置、Folia 兼容、热加载与验证文档。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liAnimalScaleDocs },
+  { slug: 'lichqian', name: 'LichQian', version: '1.1.3', summary: '抽签玩法、时间配置、文本、GUI、变量、资源包与构建文档。', icon: 'redstone', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: lichQianDocs },
+  { slug: 'lishop', name: 'liShop', version: '1.9.3', summary: 'GUI 商店、动态价格、交易所、编辑器、经济、数据库与集群文档。', icon: 'ice', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liShopDocs },
 ];
+
+for (const docSet of docSets) {
+  if (docSet.slug === 'playerplushiestudio') continue;
+  docSet.docs.unshift({ project: docSet.slug, file: '26.3兼容说明.md', slug: 'compatibility-26-3', title: '26.3 适配与验证', summary: 'Paper / Folia 构建、前置、验证范围与升级说明。', group: '文档总览', order: 0 });
+}
 
 export const allDocs = docSets.flatMap((docSet) => docSet.docs);
 

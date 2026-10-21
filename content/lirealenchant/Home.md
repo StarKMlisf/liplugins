@@ -1,5 +1,7 @@
 # LiRealEnchant2 Wiki
 
+> 当前发布：2.0.0-dev218-paper26。Paper / Folia 26.3 适配、测试范围和升级限制见 [26.3 兼容说明](./26.3兼容说明.md)。
+
 **当前版本：2.0.0-dev199-paper26**<br>
 **基准服务端：Paper 26.1.2 / Java 25**
 

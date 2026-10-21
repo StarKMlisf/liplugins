@@ -1,5 +1,7 @@
 # LiDungeon 完整 Wiki
 
+> 当前发布：2.0.1-zhcn-folia.10。Paper / Folia 26.3 适配、测试范围和升级限制见 [26.3 兼容说明](./26.3兼容说明.md)。
+
 LiDungeon 是 MythicDungeons 2.0.1 的全中文 Paper/Folia 兼容版。当前发布版本为 `2.0.1-zhcn-folia.9`，对外唯一地牢主指令为 `/lidungeon`，适配 Minecraft 1.21.11 与 26.2。
 
 这套 Wiki 按实际插件源码、默认配置和当前成品 Jar 编写。旧文档中的 `/md`、`/mythicdungeons`、`/md join <地牢>` 等写法不要再用于玩家公告或管理教程。
