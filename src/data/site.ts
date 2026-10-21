@@ -341,8 +341,8 @@ export const works: WorkEntry[] = [
     catalogLabel: '宠物',
     kicker: '宠物养成、捕捉、骑乘与战斗',
     summary: '支持 Paper / Folia 26.3，保留模型骑乘、MM 技能、和平世界和原版宠物存档功能。',
-    description: 'LiPet 2.3.12 为成功捕获的闪光宠物增加专属聊天与屏幕标题，召唤后添加发光药水；开关和提示可配置，保留原有概率与宠物数据。',
-    version: '2.3.12',
+    description: 'LiPet 2.3.13 修复低血量末影人在召唤初始化期间被雨水或入水伤害杀死；成功召唤后解除临时保护，无需新增配置。',
+    version: '2.3.13',
     status: '持续维护',
     platform: 'Paper / Folia',
     minecraft: 'Paper 26.3 · Folia 26.3（测试版）',
@@ -591,3 +591,4 @@ export const catalogSections: CatalogSection[] = [
     works: selectWorks(['lishop']),
   },
 ];
+
