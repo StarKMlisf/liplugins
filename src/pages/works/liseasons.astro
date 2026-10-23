@@ -47,6 +47,11 @@ const work = works.find((entry) => entry.slug === 'liseasons')!;
 
   <FeatureGallery slug="liseasons" />
   <section class="section shell">
+    <div class="section-heading"><span class="eyebrow">2.3.0 / 四季生活</span><div><h2>把饮水加入日常生存。</h2><p>独立的 0～100 水分按季节、炎热环境和冲刺变化。普通水瓶、牛奶、蜂蜜、汤与西瓜可补水，低水分提示并限制冲刺，缺水伤害默认关闭。</p></div></div>
+    <div class="feature-list"><div><strong>持久化与消费保护</strong><span>遵守消费事件取消，不额外扣物品或生成空瓶；重连、跨世界与重载保留水分，离线不扣水。</span></div><div><strong>手账与中文配置</strong><span>生活手账随身饮水、/seasons thirst、管理员设置、PAPI 变量与 season-thirst.yml，无需新增资源包或模组。</span></div><div><strong>四季玩法扩展</strong><span>包含适季农业与温室、住房保温烘干、预报预警、季节渔获、动物生态、环境声景、图鉴与小活动。</span></div><div><strong>本版验证范围</strong><span>417 项自动测试；Paper 26.1.2、Paper 26.2、Folia 26.2 各 134 项隔离服检查。实际客户端视觉、音量与手感尚未验收。</span></div></div>
+    <div class="button-row" style="margin-top: 1.5rem;"><a class="button" href={withBase('/docs/liseasons/changelog/')}>阅读 2.3.0 更新与验证</a></div>
+  </section>
+  <section class="section shell">
     <div class="section-heading">
       <span class="eyebrow">Overview / 它是什么</span>
       <div>
@@ -106,9 +111,9 @@ const work = works.find((entry) => entry.slug === 'liseasons')!;
         <div><h2>先确认版本，<br />再进入正式世界。</h2><p>LISeasons 的染色协议由 PacketEvents 处理；安装前应按文档核对服务端核心与 PacketEvents 版本。</p></div>
       </div>
       <div class="directory-grid">
-        <div class="directory-card"><span class="directory-card__group">必须前置</span><h2>PacketEvents 2.13.0+</h2><p>缺失或版本过低时群系染色无法初始化；ProtocolLib 不再需要。</p></div>
-        <div class="directory-card"><span class="directory-card__group">支持核心</span><h2>Paper / Folia</h2><p>当前 2.1.2 已完成 Paper / Folia 26.3 隔离服加载；26.3 使用 PacketEvents 2.14.0，Folia 为测试版。</p></div>
-        <div class="directory-card"><span class="directory-card__group">Java</span><h2>Java 21</h2><p>插件字节码和构建配置使用 Java 21。</p></div>
+        <div class="directory-card"><span class="directory-card__group">必须前置</span><h2>匹配核心的 PacketEvents</h2><p>季节染色需要 PacketEvents；按对应服务端版本准备兼容构建。</p></div>
+        <div class="directory-card"><span class="directory-card__group">支持核心</span><h2>Paper / Folia</h2><p>2.3.0 实测 Paper 26.1.2 build 70、Paper 26.2 build 111 与 Folia 26.2 build 5；本版新增玩法未在 26.3 重新验收。</p></div>
+        <div class="directory-card"><span class="directory-card__group">Java</span><h2>Java 25</h2><p>当前 26.x 实测环境使用 Java 25；按对应核心准备运行环境。</p></div>
         <div class="directory-card"><span class="directory-card__group">可选联动</span><h2>PAPI · Crops · Dominion · Residence</h2><p>1.0.71 修复 Folia 秋季树叶边界与目标区域调度；同时保留流星粒子兼容、Residence 冰雪权限和台阶楼梯安全积雪。</p></div>
       </div>
     </div>

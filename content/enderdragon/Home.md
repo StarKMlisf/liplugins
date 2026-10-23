@@ -1,10 +1,10 @@
 # EnderDragon 插件 Wiki
 
-> 当前发布：26.3.0。Paper / Folia 26.3 适配、测试范围和升级限制见 [26.3 兼容说明](./26.3兼容说明.md)。
+> 当前发布：26.3.1。实测 Paper 26.2 · Folia 26.2（ALPHA），Java 25。新增功能与准确验证范围见 [更新日志](更新日志.md)；[旧版 26.3 记录](26.3兼容说明.md)仅作为历史参考。
 
 ## 基础介绍
 
-EnderDragon 是一个用于接管、增强和管理末影龙玩法的 Bukkit/Paper 插件，当前版本适配 Paper / Purpur `26.1.2`。
+EnderDragon 是一个用于接管、增强和管理末影龙玩法的 Bukkit/Paper 插件，当前构建的复活修复已在 Paper / Folia `26.2` 验证；`api-version: 26.1.2` 为声明值，不代表本轮直接验证过 26.1.2。
 
 插件核心目标：
 

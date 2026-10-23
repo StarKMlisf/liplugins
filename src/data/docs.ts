@@ -32,7 +32,7 @@ const defineDocs = (project: string, definitions: DocDefinition[]): DocEntry[] =
   definitions.map((definition) => ({ project, ...definition }));
 
 const liseasonsDocs = defineDocs('liseasons', [
-  { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: '1.0.81 流星真实奖励箱、同批奖励安全回退、空箱清理与世界存档持久化。', group: '文档总览', order: 2 },
+  { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: '2.3.0 水分饮水、四季生活扩展与三种核心环境实际验证。', group: '文档总览', order: 2 },
   { file: '自然灾害与龙卷风.md', slug: 'natural-disasters', title: '自然灾害与龙卷风', summary: '十三种持续灾害、移动云雾龙卷风、无损模型、避险与中文配置。', group: '管理员文档', order: 28 },
   { file: 'Home.md', slug: 'home', title: 'LISeasons', summary: 'LISeasons 的使用、配置、维护和扩展指南。', group: '文档总览', order: 1 },
   { file: '玩家文档.md', slug: 'player', title: '玩家文档 · 总览', summary: '从查询季节、打开手账到应对冷暖与流星雨，快速开始 LISeasons 生存。', group: '玩家文档', order: 10 },
@@ -122,6 +122,7 @@ const lweDocs = defineDocs('lwe', [
 ]);
 
 const enderDragonDocs = defineDocs('enderdragon', [
+  { file: '更新日志.md', slug: 'changelog', title: '更新日志与验证', summary: '26.3.1 复活阶段监控、召唤来源控制与 Paper / Folia 26.2 实测。', group: '文档总览', order: 2 },
   { file: 'Home.md', slug: 'home', title: 'EnderDragon 完整 Wiki', summary: '末影龙接管、召唤、奖励、指令、权限、变量、配置、自动复活与排错。', group: '文档总览', order: 1 },
   { file: '玩家指南.md', slug: 'player', title: '玩家指南', summary: '查看龙状态、参与战斗、理解奖励与可用召唤方式。', group: '玩家文档', order: 10 },
   { file: '召唤与自动复活.md', slug: 'summoning-revival', title: '召唤与自动复活', summary: '水晶、指令、倒计时和单龙独立复活规则。', group: '玩家文档', order: 11 },
@@ -433,8 +434,8 @@ export const docSets: DocSet[] = [
   { slug: 'lidungeon', name: 'LiDungeon', version: '2.0.1-zhcn-folia.10', summary: 'Paper/Folia 26.3 地牢副本系统，支持 Folia 离线世界导入与完整中文运维文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liDungeonDocs },
   { slug: 'liskin', name: 'LiSkin', version: '1.12.2', summary: 'CraftEngine 外观皮肤、顶部分类换装、沉浸旁观视角、常驻 NPC、商店、权限与跨服文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liSkinDocs },
   { slug: 'jisseechessgames', name: 'JisseeChessGames', version: '2.3.4', summary: '棋盘生成、五子棋、中国象棋、军棋、房间、持久化与验证文档。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: jisseeChessDocs },
-  { slug: 'liseasons', name: 'LISeasons', version: '2.1.2', summary: '四季、节气、持续灾害、动态粒子音景、流星奖励箱与 Folia 兼容文档。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },
-  { slug: 'enderdragon', name: 'EnderDragon', version: '26.3.0', summary: '末影龙接管、召唤、复活、奖励、配置、变量与故障排查文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: enderDragonDocs },
+  { slug: 'liseasons', name: 'LISeasons', version: '2.3.0', summary: '2.3.0 水分饮水、四季生活、灾害与实测 Paper 26.1.2/26.2、Folia 26.2 说明。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },
+  { slug: 'enderdragon', name: 'EnderDragon', version: '26.3.1', summary: '26.3.1 复活流程修复、召唤来源控制、奖励与 Paper/Folia 26.2 验证说明。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: enderDragonDocs },
   { slug: 'blockcraft', name: 'BlockCraft', version: '1.0.16', summary: '八基座祭坛合成、物品来源挂钩、费用与成功率、粒子与音效、故障排查与命令说明。', icon: 'redstone', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: blockCraftDocs },
   { slug: 'lianimalscale', name: 'LiAnimalScale', version: '1.1.2', summary: '动物缩放、命令权限、配置、Folia 兼容、热加载与验证文档。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liAnimalScaleDocs },
   { slug: 'lichqian', name: 'LichQian', version: '1.1.3', summary: '抽签玩法、时间配置、文本、GUI、变量、资源包与构建文档。', icon: 'redstone', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: lichQianDocs },
@@ -443,7 +444,7 @@ export const docSets: DocSet[] = [
 
 for (const docSet of docSets) {
   if (['playerplushiestudio', 'litechtree'].includes(docSet.slug)) continue;
-  docSet.docs.unshift({ project: docSet.slug, file: '26.3兼容说明.md', slug: 'compatibility-26-3', title: '26.3 适配与验证', summary: 'Paper / Folia 构建、前置、验证范围与升级说明。', group: '文档总览', order: 0 });
+  docSet.docs.unshift({ project: docSet.slug, file: '26.3兼容说明.md', slug: 'compatibility-26-3', title: ['enderdragon', 'liseasons'].includes(docSet.slug) ? '历史版本 · 26.3 验证' : '26.3 适配与验证', summary: ['enderdragon', 'liseasons'].includes(docSet.slug) ? '旧构建的 26.3 加载记录，不代表当前新增玩法已在 26.3 重测。' : 'Paper / Folia 构建、前置、验证范围与升级说明。', group: '文档总览', order: 0 });
 }
 
 export const allDocs = docSets.flatMap((docSet) => docSet.docs);
