@@ -10,7 +10,7 @@
 
 安装包包含插件 Jar、默认配置、配套布局、独立资源包、CE 独立内容包、资源生成工具和使用教程。升级时保留管理员自定义配置与玩家存档，按安装文档逐项更新。
 
-[MineBBS（审核中）](https://www.minebbs.com/resources/litechtree-dialog-ce-paper-folia.18689/)：论坛资源已提交，仍在审核中，尚未公开。插件与资源包统一通过上方官方 QQ 群免费获取。
+[MineBBS（审核中）](https://www.minebbs.com/resources/litechtree-dialog-ce-paper-folia.18690/)：论坛资源已提交，仍在审核中，尚未公开。插件与资源包统一通过上方官方 QQ 群免费获取。
 
 ## 从零开始
 
