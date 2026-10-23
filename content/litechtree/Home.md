@@ -4,11 +4,13 @@
 
 默认内容以原版物品为主；每个节点预留 CraftEngine 配方权限，可把自己服务器的装备和配方接入研究路线。插件不自动修改原版或 CE 配方。
 
-## 免费安装包
+## 免费获取
 
-[下载 LiTechTree 1.3.1 插件与资源包](/liplugins/downloads/litechtree/LiTechTree-1.3.1-install.zip) · [SHA256 校验](/liplugins/downloads/litechtree/LiTechTree-1.3.1-install.zip.sha256)
+[加入官方 QQ 群，免费获取插件与资源包](https://qm.qq.com/q/rIQjW0QdQ)
 
 安装包包含插件 Jar、默认配置、配套布局、独立资源包、CE 独立内容包、资源生成工具和使用教程。升级时保留管理员自定义配置与玩家存档，按安装文档逐项更新。
+
+[MineBBS（审核中）](https://www.minebbs.com/resources/litechtree-dialog-ce-paper-folia.18689/)：论坛资源已提交，仍在审核中，尚未公开。插件与资源包统一通过上方官方 QQ 群免费获取。
 
 ## 从零开始
 

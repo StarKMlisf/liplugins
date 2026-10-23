@@ -44,8 +44,8 @@ const availabilityClass =
           </div>
           <h1>{work.name}</h1>
           <p class="work-hero__lead">{work.summary}</p>
-          {work.downloads && <div class="button-row" style="margin-top: 2rem;">
-            {work.downloads.map((download) => <a class="button" href={withBase(download.href)} download>{download.label}</a>)}
+          {work.acquisition && <div class="button-row" style="margin-top: 2rem;">
+            <a class="button" href={work.acquisition.href} target="_blank" rel="noopener noreferrer">{work.acquisition.label} ↗</a>
             <a class="button button--primary" href={withBase(`/docs/${work.slug}/home/`)}>阅读完整 Wiki</a>
           </div>}
         </div>

@@ -1,8 +1,8 @@
 export interface FeatureShot { file: string; title: string; width: number; height: number; format?: 'webp' | 'png' | 'jpg'; }
-export interface FeatureGallery { slug: string; name: string; forum?: string; date: string; shots: FeatureShot[]; software?: boolean; }
+export interface FeatureGallery { slug: string; name: string; forum?: string; forumPendingReview?: boolean; date: string; shots: FeatureShot[]; software?: boolean; }
 // 仅登记已逐图核实的游戏实拍，保留拍摄日期与原帖来源。
 export const featureGalleries: FeatureGallery[] = [
-  { slug: 'litechtree', name: 'LiTechTree', date: '2026-10-24', shots: [
+  { slug: 'litechtree', name: 'LiTechTree', forum: 'https://www.minebbs.com/resources/litechtree-dialog-ce-paper-folia.18689/', forumPendingReview: true, date: '2026-10-24', shots: [
     { file: 'compact', title: '紧凑版第一章：研究基础工艺后获得 80 点（1.3.1）', width: 1280, height: 900, format: 'png' },
     { file: 'requirements', title: '节点悬浮说明：材料持有检查、费用和首次研究奖励', width: 1280, height: 900, format: 'png' },
     { file: 'mastery', title: '第十二章 · 世界工匠：终局分支与前置连线', width: 1280, height: 900, format: 'png' },

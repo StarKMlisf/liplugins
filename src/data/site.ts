@@ -25,7 +25,7 @@ export interface WorkEntry {
   priceCny?: number;
   originalPriceCny?: number;
   dependencies: string[];
-  downloads?: { label: string; href: string }[];
+  acquisition?: { label: string; href: string };
   features: string[];
   artwork?: {
     src: string;
@@ -40,7 +40,7 @@ export const works: WorkEntry[] = [
     description: 'LiTechTree 1.3.1 为 Paper / Folia 26.2 提供完整生存研究路线。材料与等级只检查、不消耗，研究点、前置和首次奖励按节点配置；默认从 0 点即可推进。紧凑界面比标准面板减少约 36% 面积，玩家无需功能模组，但须应用配套字体资源包。',
     version: '1.3.1', status: '持续维护', platform: 'Paper / Folia', minecraft: 'Paper 26.2 · Folia 26.2（ALPHA）', java: 'Java 25', availability: '免费',
     dependencies: ['配套字体资源包（必需）', 'CraftEngine（配方权限、CE 材料与合包可选）', 'MiniMessage（运行库自动下载）'],
-    downloads: [{ label: '下载 1.3.1 插件与资源包', href: '/downloads/litechtree/LiTechTree-1.3.1-install.zip' }, { label: 'SHA256 校验', href: '/downloads/litechtree/LiTechTree-1.3.1-install.zip.sha256' }],
+    acquisition: { label: '进群免费获取插件与资源包', href: 'https://qm.qq.com/q/rIQjW0QdQ' },
     artwork: { src: '/images/features/litechtree/compact.png', alt: 'LiTechTree 1.3.1 紧凑科技树真实游戏截图' },
     features: ['12 章、97 个原版生存科技与跨章前置', '原生 Dialog 物品节点、依赖连线、悬浮说明与确认研究', '原版 / CE 材料、等级、准入权限与进度条件', '研究点扣费与首次奖励原子保存，重复研究不重复领奖', '紧凑 / 标准预设、中文文案、尺寸、颜色和连线自定义', 'CE 配方权限由解锁状态控制，含 OP 未解锁保护', '旧默认配置先备份升级，自定义配置和玩家数据保留', '39 项单元测试与 Paper / Folia 各 1290 项业务检查'],
   },
