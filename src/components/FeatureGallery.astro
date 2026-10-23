@@ -9,7 +9,7 @@ const gallery = featureGalleries.find(entry => entry.slug === Astro.props.slug);
     <span class="eyebrow">{gallery.software ? 'In app / 软件实拍' : 'In game / 功能实拍'}</span>
     <div><h2>{gallery.name} · {gallery.software ? '实际软件界面' : '实际游戏界面'}</h2>
       <p>拍摄日期 · {gallery.date}。界面、数值和模型以实际安装版本与服务器配置为准。点击图片可查看原图。</p>
-      <a href={gallery.forum} target="_blank" rel="noopener noreferrer">查看 MineBBS 原帖 ↗</a>
+      {gallery.forum && <a href={gallery.forum} target="_blank" rel="noopener noreferrer">查看 MineBBS 原帖 ↗</a>}
     </div>
   </div>
   <div class="shots">

@@ -402,6 +402,14 @@ const lirealEnchantDocs = fs.readdirSync(enchantDirectory)
   });
 
 export const docSets: DocSet[] = [
+  { slug: 'litechtree', name: 'LiTechTree 科技树', version: '1.3.1', summary: '12 章 97 科技、紧凑图形 Dialog、研究条件与奖励、CE 配方权限和自定义升级教程。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档'], docs: defineDocs('litechtree', [
+    { file: 'Home.md', slug: 'home', title: 'LiTechTree 图形科技树', summary: '原版生存完整路线与原生 Dialog 界面。', group: '文档总览', order: 1 },
+    { file: '更新日志.md', slug: 'changelog', title: '更新日志与验证', summary: '1.3.1 完整路线、缩小界面、自定义与实际验证。', group: '文档总览', order: 2 },
+    { file: '默认生存路线与自定义.md', slug: 'survival-route', title: '完整生存路线与 97 节点参考', summary: '从工作台到世界工匠，章节、材料、费用、奖励、权限和自定义示例。', group: '玩家文档', order: 10 },
+    { file: '安装升级与命令.md', slug: 'install', title: '安装、升级与命令', summary: '26.2 运行要求、资源包安装、配置保护、玩家与管理命令。', group: '管理员文档', order: 20 },
+    { file: '界面自定义与资源包.md', slug: 'custom-ui', title: '界面自定义与资源包', summary: '切换紧凑预设、调整按钮与文案，重建尺寸、颜色和节点布局。', group: '管理员文档', order: 21 },
+    { file: '配置与CE配方.md', slug: 'configuration', title: '配置与 CE 配方权限', summary: '条件、首次奖励、权限挂钩、存档规则与常见问题。', group: '管理员文档', order: 22 },
+  ]) },
   { slug: 'liweaponreset', name: 'LiWeaponReset 武器回归', version: '1.0.7', summary: '米饭强化残留属性自动回归、备份撤销与安全边界。', icon: 'redstone', groups: ['文档总览', '管理员文档'], docs: defineDocs('liweaponreset', [
     { file: 'Home.md', slug: 'home', title: '武器数值回归', summary: '主手自动恢复材质原版攻击属性，先备份再修改。', group: '文档总览', order: 1 },
     { file: '安装与自动恢复.md', slug: 'install', title: '安装与自动恢复', summary: '运行环境、自动检测条件和部署检查。', group: '管理员文档', order: 10 },
@@ -434,7 +442,7 @@ export const docSets: DocSet[] = [
 ];
 
 for (const docSet of docSets) {
-  if (docSet.slug === 'playerplushiestudio') continue;
+  if (['playerplushiestudio', 'litechtree'].includes(docSet.slug)) continue;
   docSet.docs.unshift({ project: docSet.slug, file: '26.3兼容说明.md', slug: 'compatibility-26-3', title: '26.3 适配与验证', summary: 'Paper / Folia 构建、前置、验证范围与升级说明。', group: '文档总览', order: 0 });
 }
 

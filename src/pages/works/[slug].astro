@@ -44,6 +44,10 @@ const availabilityClass =
           </div>
           <h1>{work.name}</h1>
           <p class="work-hero__lead">{work.summary}</p>
+          {work.downloads && <div class="button-row" style="margin-top: 2rem;">
+            {work.downloads.map((download) => <a class="button" href={withBase(download.href)} download>{download.label}</a>)}
+            <a class="button button--primary" href={withBase(`/docs/${work.slug}/home/`)}>阅读完整 Wiki</a>
+          </div>}
         </div>
         <div class:list={['work-emblem', 'work-emblem--catalog', work.availability === '付费' && 'work-emblem--gold']} aria-label={`${work.name}，${availabilityLabel}`}>
           <span class="work-emblem__code">LAOLI PLUGINS</span>
