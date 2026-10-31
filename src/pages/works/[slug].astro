@@ -47,7 +47,9 @@ const availabilityClass =
           {work.acquisition && <div class="button-row" style="margin-top: 2rem;">
             <a class="button" href={work.acquisition.href} target="_blank" rel="noopener noreferrer">{work.acquisition.label} ↗</a>
             <a class="button button--primary" href={withBase(`/docs/${work.slug}/home/`)}>阅读完整 Wiki</a>
+            {work.forum && <a class="button" href={work.forum.href} target="_blank" rel="noopener noreferrer">{work.forum.label} ↗</a>}
           </div>}
+          {work.forum && <p>{work.forum.notice}</p>}
         </div>
         <div class:list={['work-emblem', 'work-emblem--catalog', work.availability === '付费' && 'work-emblem--gold']} aria-label={`${work.name}，${availabilityLabel}`}>
           <span class="work-emblem__code">LAOLI PLUGINS</span>

@@ -26,6 +26,7 @@ export interface WorkEntry {
   originalPriceCny?: number;
   dependencies: string[];
   acquisition?: { label: string; href: string };
+  forum?: { label: string; href: string; notice: string };
   features: string[];
   artwork?: {
     src: string;
@@ -41,6 +42,7 @@ export const works: WorkEntry[] = [
     version: '1.1.1', status: '持续维护', platform: 'Bukkit / Paper', minecraft: '实测 Paper 26.2 build 134', java: 'Java 25（Paper 26.2）', availability: '免费',
     dependencies: ['Vault + 经济插件（金币功能）', 'PlaceholderAPI（可选）', 'MythicMobs（自定义袭击怪物可选）', 'MiniMessage / 数据库驱动（运行时下载）'],
     acquisition: { label: '进群免费获取插件', href: 'https://qm.qq.com/q/rIQjW0QdQ' },
+    forum: { label: 'MineBBS 资源帖（待审核）', href: 'https://www.minebbs.com/resources/litown-paper.18784/', notice: 'MineBBS 内容正在审核中，当前仅作者可见；免费获取请使用 QQ 群入口。' },
     features: ['小镇创建、成员职位、离线申请审核与个人贡献', '任务、袭击、申请和红包分页，边界与空态自动处理', '击杀 / 采集 / 探索任务及满背包奖励掉落', '波次袭击校验、参与成员限制与停止实体清理', '金库、共享仓库、红包精确到分与重复领取保护', '贡献商店分页、状态提示、确认兑换与容量复核', 'MiniMessage 渐变与 RGB、菜单槽位及显示自定义', '已有配置安全补缺，支持 YAML / SQLite / MySQL'],
   },
   {
