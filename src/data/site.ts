@@ -7,7 +7,7 @@ export const siteMeta = {
 };
 
 export type WorkStatus = '持续维护' | '开发中' | '归档';
-export type WorkAvailability = '免费' | '付费' | '暂不发售' | '进群咨询';
+export type WorkAvailability = '免费' | '付费' | '暂不发售';
 
 export interface WorkEntry {
   slug: string;
@@ -38,9 +38,9 @@ export const works: WorkEntry[] = [
     slug: 'litown', name: 'LiTown', catalogLabel: '小镇', kicker: '云梦泽小镇经营与协作玩法',
     summary: '小镇成员、委托任务、波次袭击、金库仓库与镇民红包；1.1.1 补齐五类菜单分页并修复任务奖励、袭击结算和红包精度。',
     description: 'LiTown 1.1.1 提供中文可配置菜单、职位权限、贡献商店、和平积分竞赛与 YAML / SQLite / MySQL 存储。任务、袭击、入镇选择、申请审核和红包支持分页，操作后返回原页；已有配置和玩家数据保留。Paper 26.2 隔离服通过 521 项业务断言，具体验证范围见安装文档。',
-    version: '1.1.1', status: '持续维护', platform: 'Bukkit / Paper', minecraft: '实测 Paper 26.2 build 134', java: 'Java 25（Paper 26.2）', availability: '进群咨询',
+    version: '1.1.1', status: '持续维护', platform: 'Bukkit / Paper', minecraft: '实测 Paper 26.2 build 134', java: 'Java 25（Paper 26.2）', availability: '免费',
     dependencies: ['Vault + 经济插件（金币功能）', 'PlaceholderAPI（可选）', 'MythicMobs（自定义袭击怪物可选）', 'MiniMessage / 数据库驱动（运行时下载）'],
-    acquisition: { label: '进群咨询与获取', href: 'https://qm.qq.com/q/rIQjW0QdQ' },
+    acquisition: { label: '进群免费获取插件', href: 'https://qm.qq.com/q/rIQjW0QdQ' },
     features: ['小镇创建、成员职位、离线申请审核与个人贡献', '任务、袭击、申请和红包分页，边界与空态自动处理', '击杀 / 采集 / 探索任务及满背包奖励掉落', '波次袭击校验、参与成员限制与停止实体清理', '金库、共享仓库、红包精确到分与重复领取保护', '贡献商店分页、状态提示、确认兑换与容量复核', 'MiniMessage 渐变与 RGB、菜单槽位及显示自定义', '已有配置安全补缺，支持 YAML / SQLite / MySQL'],
   },
   {
@@ -583,7 +583,7 @@ export const works: WorkEntry[] = [
 ];
 
 export interface CatalogSection {
-  id: 'paid' | 'free' | 'developing' | 'inquiry';
+  id: 'paid' | 'free' | 'developing';
   number: number;
   title: string;
   description: string;
@@ -607,7 +607,7 @@ export const catalogSections: CatalogSection[] = [
     number: 2,
     title: '免费插件与工具',
     description: '可免费获取的玩法插件与桌面工具，提供使用和管理文档。',
-    works: selectWorks(['litechtree', 'liweaponreset', 'playerplushiestudio', 'liskills', 'liseasons', 'enderdragon', 'lwe', 'lianimalscale', 'lichqian', 'lidungeon']),
+    works: selectWorks(['litown', 'litechtree', 'liweaponreset', 'playerplushiestudio', 'liskills', 'liseasons', 'enderdragon', 'lwe', 'lianimalscale', 'lichqian', 'lidungeon']),
   },
   {
     id: 'developing',
@@ -615,12 +615,5 @@ export const catalogSections: CatalogSection[] = [
     title: '开发中 / 暂不发售',
     description: '功能与文档可供了解，但当前版本尚未开放购买。',
     works: selectWorks(['lishop']),
-  },
-  {
-    id: 'inquiry',
-    number: 4,
-    title: '进群咨询',
-    description: '先查看功能与文档，获取、授权与支持方式请在官方 QQ 群咨询。',
-    works: selectWorks(['litown']),
   },
 ];
