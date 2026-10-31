@@ -36,9 +36,9 @@ export interface WorkEntry {
 
 export const works: WorkEntry[] = [
   {
-    slug: 'litown', name: 'LiTown', catalogLabel: '小镇', kicker: '云梦泽小镇经营与协作玩法',
-    summary: '小镇成员、委托任务、波次袭击、金库仓库与镇民红包；1.1.1 补齐五类菜单分页并修复任务奖励、袭击结算和红包精度。',
-    description: 'LiTown 1.1.1 提供中文可配置菜单、职位权限、贡献商店、和平积分竞赛与 YAML / SQLite / MySQL 存储。任务、袭击、入镇选择、申请审核和红包支持分页，操作后返回原页；已有配置和玩家数据保留。Paper 26.2 隔离服通过 521 项业务断言，具体验证范围见安装文档。',
+    slug: 'litown', name: 'LiTown 小镇公会', catalogLabel: '小镇公会', kicker: '小镇 / 公会经营与协作系统',
+    summary: '小镇 / 公会经营与协作系统，包含成员、委托任务、波次袭击、金库仓库与红包；1.1.1 补齐五类菜单分页并修复任务奖励、袭击结算和红包精度。',
+    description: 'LiTown 小镇公会 1.1.1 提供中文可配置菜单、职位权限、贡献商店、和平积分竞赛与 YAML / SQLite / MySQL 存储。任务、袭击、入镇选择、申请审核和红包支持分页，操作后返回原页；已有配置和玩家数据保留。Paper 26.2 隔离服通过 521 项业务断言，具体验证范围见安装文档。',
     version: '1.1.1', status: '持续维护', platform: 'Bukkit / Paper', minecraft: '实测 Paper 26.2 build 134', java: 'Java 25（Paper 26.2）', availability: '免费',
     dependencies: ['Vault + 经济插件（金币功能）', 'PlaceholderAPI（可选）', 'MythicMobs（自定义袭击怪物可选）', 'MiniMessage / 数据库驱动（运行时下载）'],
     acquisition: { label: '进群免费获取插件', href: 'https://qm.qq.com/q/rIQjW0QdQ' },

@@ -404,8 +404,8 @@ const lirealEnchantDocs = fs.readdirSync(enchantDirectory)
   });
 
 export const docSets: DocSet[] = [
-  { slug: 'litown', name: 'LiTown 云梦泽小镇', version: '1.1.1', summary: '小镇经营、任务袭击、申请红包分页、菜单配置、安装升级与实际验证范围。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档'], docs: defineDocs('litown', [
-    { file: 'Home.md', slug: 'home', title: 'LiTown 云梦泽小镇', summary: '1.1.1 功能、菜单分页、获取方式与完整文档入口。', group: '文档总览', order: 1 },
+  { slug: 'litown', name: 'LiTown 小镇公会', version: '1.1.1', summary: '小镇 / 公会经营与协作系统：任务袭击、申请红包分页、菜单配置、安装升级与实际验证范围。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档'], docs: defineDocs('litown', [
+    { file: 'Home.md', slug: 'home', title: 'LiTown 小镇公会', summary: '1.1.1 功能、菜单分页、获取方式与完整文档入口。', group: '文档总览', order: 1 },
     { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: '1.1.1 五类列表分页与业务修复，1.1.0 贡献商店和文本优化。', group: '文档总览', order: 2 },
     { file: '玩法总览.md', slug: 'player', title: '玩法与玩家命令', summary: '小镇成员、任务、袭击、金库、仓库、红包与和平积分竞赛。', group: '玩家文档', order: 10 },
     { file: '菜单与分页.md', slug: 'menus', title: '菜单与分页', summary: '菜单布局、分页命令、导航配置、商店确认与按钮反馈。', group: '玩家文档', order: 11 },

@@ -10,7 +10,7 @@ GitHub Pages：<https://starkmlisf.github.io/liplugins/>
 
 当前收录：
 
-- LiTown 1.1.1：小镇经营、任务与袭击、申请与红包分页、配置及安装升级文档。
+- LiTown 小镇公会 1.1.1：小镇 / 公会经营与协作系统，包含任务与袭击、申请与红包分页、配置及安装升级文档。
 
 - LiSkills：15 职业技能、HUD、Paper/Folia 兼容、配置与安全卸载说明。
 - LISeasons：四季、节气、体温、世界规则、流星雨与运维文档。
