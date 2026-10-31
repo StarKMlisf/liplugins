@@ -404,6 +404,18 @@ const lirealEnchantDocs = fs.readdirSync(enchantDirectory)
   });
 
 export const docSets: DocSet[] = [
+  { slug: 'litown', name: 'LiTown 云梦泽小镇', version: '1.1.1', summary: '小镇经营、任务袭击、申请红包分页、菜单配置、安装升级与实际验证范围。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档'], docs: defineDocs('litown', [
+    { file: 'Home.md', slug: 'home', title: 'LiTown 云梦泽小镇', summary: '1.1.1 功能、菜单分页、获取方式与完整文档入口。', group: '文档总览', order: 1 },
+    { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: '1.1.1 五类列表分页与业务修复，1.1.0 贡献商店和文本优化。', group: '文档总览', order: 2 },
+    { file: '玩法总览.md', slug: 'player', title: '玩法与玩家命令', summary: '小镇成员、任务、袭击、金库、仓库、红包与和平积分竞赛。', group: '玩家文档', order: 10 },
+    { file: '菜单与分页.md', slug: 'menus', title: '菜单与分页', summary: '菜单布局、分页命令、导航配置、商店确认与按钮反馈。', group: '玩家文档', order: 11 },
+    { file: '安装与升级.md', slug: 'install', title: '安装与升级', summary: 'Paper 26.2、依赖与配置保护、旧版迁移和本次验证范围。', group: '管理员文档', order: 20 },
+    { file: '命令权限与变量.md', slug: 'commands-permissions', title: '管理命令、权限与变量', summary: '管理员指令、小镇职位权限及 PlaceholderAPI 变量。', group: '管理员文档', order: 21 },
+    { file: '配置文件.md', slug: 'configuration', title: '配置文件参考', summary: '小镇等级、物资贡献、成就、金库与功能配置入口。', group: '管理员文档', order: 22 },
+    { file: '任务配置.md', slug: 'quests', title: '委托任务配置', summary: '任务类型、目标、奖励、日常周常与提交设置。', group: '管理员文档', order: 23 },
+    { file: '袭击配置.md', slug: 'raids', title: '小镇袭击配置', summary: '原版实体、MythicMobs、Boss 波次、冷却和奖励。', group: '管理员文档', order: 24 },
+    { file: '存储与排错.md', slug: 'storage-troubleshooting', title: '存储与故障排查', summary: 'YAML / SQLite / MySQL 迁移、备份、重载与常见问题。', group: '管理员文档', order: 25 },
+  ]) },
   { slug: 'litechtree', name: 'LiTechTree 科技树', version: '1.3.1', summary: '12 章 97 科技、紧凑图形 Dialog、研究条件与奖励、CE 配方权限和自定义升级教程。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档'], docs: defineDocs('litechtree', [
     { file: 'Home.md', slug: 'home', title: 'LiTechTree 图形科技树', summary: '原版生存完整路线与原生 Dialog 界面。', group: '文档总览', order: 1 },
     { file: '更新日志.md', slug: 'changelog', title: '更新日志与验证', summary: '1.3.1 完整路线、缩小界面、自定义与实际验证。', group: '文档总览', order: 2 },
@@ -444,7 +456,7 @@ export const docSets: DocSet[] = [
 ];
 
 for (const docSet of docSets) {
-  if (['playerplushiestudio', 'litechtree'].includes(docSet.slug)) continue;
+  if (['playerplushiestudio', 'litechtree', 'litown'].includes(docSet.slug)) continue;
   docSet.docs.unshift({ project: docSet.slug, file: '26.3兼容说明.md', slug: 'compatibility-26-3', title: ['enderdragon', 'liseasons'].includes(docSet.slug) ? '历史版本 · 26.3 验证' : '26.3 适配与验证', summary: ['enderdragon', 'liseasons'].includes(docSet.slug) ? '旧构建的 26.3 加载记录，不代表当前新增玩法已在 26.3 重测。' : 'Paper / Folia 构建、前置、验证范围与升级说明。', group: '文档总览', order: 0 });
 }
 
