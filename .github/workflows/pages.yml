@@ -2,7 +2,7 @@ name: Deploy LaoLi Plugins Docs
 
 on:
   push:
-    branches: [navigation-main]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
