@@ -1,0 +1,131 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import FeatureGallery from '@/components/FeatureGallery.astro';
+import SeasonMark from '@/components/SeasonMark.astro';
+import VoxelBlock from '@/components/VoxelBlock.astro';
+import { works } from '@/data/site';
+import { withBase } from '@/lib/paths';
+
+const work = works.find((entry) => entry.slug === 'liseasons')!;
+---
+
+<BaseLayout title="LISeasons" description={work.summary}>
+  <header class="work-hero">
+    <div class="shell">
+      <div class="work-hero__top">
+        <div>
+          <span class="eyebrow">Work 01 / Seasons & climate</span>
+          <h1>LISeasons</h1>
+          <p class="work-hero__lead">{work.summary}</p>
+          <div class="button-row" style="margin-top: 2rem;">
+            <a class="button button--primary" href={withBase('/docs/liseasons/home/')}>开始阅读文档</a>
+            <a class="button" href="https://github.com/StarKMlisf/LiSeasons" target="_blank" rel="noreferrer">查看 GitHub <span>↗</span></a>
+          </div>
+        </div>
+        <SeasonMark size="large" label />
+      </div>
+      <div class="work-facts">
+        <div class="work-fact"><span>Version</span><strong>{work.version}</strong></div>
+        <div class="work-fact"><span>Status</span><strong>{work.status}</strong></div>
+        <div class="work-fact"><span>Platform</span><strong>{work.platform}</strong></div>
+        <div class="work-fact"><span>Minecraft</span><strong>{work.minecraft}</strong></div>
+        <div class="work-fact"><span>Runtime</span><strong>{work.java}</strong></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="inventory-ribbon" aria-label="LISeasons 核心系统物品栏">
+    <div class="shell inventory-ribbon__inner">
+      <div class="inventory-slot"><VoxelBlock type="grass" size="medium" /><span>四季节气</span><kbd>1</kbd></div>
+      <div class="inventory-slot"><VoxelBlock type="leaf" size="medium" /><span>群系染色</span><kbd>2</kbd></div>
+      <div class="inventory-slot"><VoxelBlock type="ice" size="medium" /><span>冬冻春融</span><kbd>3</kbd></div>
+      <div class="inventory-slot"><VoxelBlock type="redstone" size="medium" /><span>温度与增益条</span><kbd>4</kbd></div>
+      <div class="inventory-slot"><VoxelBlock type="meteor" size="medium" /><span>流星事件</span><kbd>5</kbd></div>
+      <div class="inventory-slot"><VoxelBlock type="book" size="medium" /><span>日历文档</span><kbd>6</kbd></div>
+    </div>
+  </section>
+
+  <FeatureGallery slug="liseasons" />
+  <section class="section shell">
+    <div class="section-heading"><span class="eyebrow">2.3.0 / 四季生活</span><div><h2>把饮水加入日常生存。</h2><p>独立的 0～100 水分按季节、炎热环境和冲刺变化。普通水瓶、牛奶、蜂蜜、汤与西瓜可补水，低水分提示并限制冲刺，缺水伤害默认关闭。</p></div></div>
+    <div class="feature-list"><div><strong>持久化与消费保护</strong><span>遵守消费事件取消，不额外扣物品或生成空瓶；重连、跨世界与重载保留水分，离线不扣水。</span></div><div><strong>手账与中文配置</strong><span>生活手账随身饮水、/seasons thirst、管理员设置、PAPI 变量与 season-thirst.yml，无需新增资源包或模组。</span></div><div><strong>四季玩法扩展</strong><span>包含适季农业与温室、住房保温烘干、预报预警、季节渔获、动物生态、环境声景、图鉴与小活动。</span></div><div><strong>本版验证范围</strong><span>417 项自动测试；Paper 26.1.2、Paper 26.2、Folia 26.2 各 134 项隔离服检查。实际客户端视觉、音量与手感尚未验收。</span></div></div>
+    <div class="button-row" style="margin-top: 1.5rem;"><a class="button" href={withBase('/docs/liseasons/changelog/')}>阅读 2.3.0 更新与验证</a></div>
+  </section>
+  <section class="section shell">
+    <div class="section-heading">
+      <span class="eyebrow">Overview / 它是什么</span>
+      <div>
+        <h2>一套会进入世界状态的四季系统。</h2>
+        <p>LISeasons 把日期、二十四节气、气候和服务器玩法放在同一条时间线上。季节变化不只出现在记分板：群系颜色、冰雪、作物、天气、温度、节日和特殊事件都会参与其中。</p>
+      </div>
+    </div>
+
+    <div class="feature-chapter">
+      <div><span class="feature-chapter__number">01 / TIME</span><h2>让时间有层次</h2></div>
+      <div class="feature-chapter__body">
+        <p>支持现实同步、游戏天数和自定义推进三种日历模式。四季之上还有二十四节气，服主可以按世界节奏选择日期来源，玩家则通过指令、占位符和六页日历 GUI 理解当前时间。</p>
+        <div class="feature-list">
+          <div><strong>三种日历模式</strong><span>现实日期、游戏时间或自定义自动推进。</span></div>
+          <div><strong>二十四节气</strong><span>比四季更细的时间节点与展示内容。</span></div>
+          <div><strong>六页日历 GUI</strong><span>总览、季节、节气、温度、事件与帮助。</span></div>
+          <div><strong>PlaceholderAPI</strong><span>把季节信息接入 TAB、聊天与其他界面。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-chapter">
+      <div><span class="feature-chapter__number">02 / WORLD</span><h2>让世界真的换季</h2></div>
+      <div class="feature-chapter__body">
+        <p>季节调色通过 PacketEvents 为每位玩家发送独立的客户端群系视图，不调用 setBiome、refreshChunk 或 NMS，也不会把季节目标群系保存进世界。配合冬季结冰、春季融化、作物和天气规则，让不同季节在生存世界里呈现可辨认的状态。</p>
+        <div class="feature-list">
+          <div><strong>季节群系染色</strong><span>春绿、夏盛、秋暖、冬冷的整体自然色调。</span></div>
+          <div><strong>冬冻春融</strong><span>按预算渐进处理冰雪，遵守 Residence 领地权限与原版积雪支撑规则。</span></div>
+          <div><strong>作物与天气</strong><span>按季节控制生长倍率、降水与世界反馈。</span></div>
+          <div><strong>温度生存与自然灾害</strong><span>持续热浪、寒潮、暴风雪与雷暴先预警再生效；极端体感累计造成中暑、灼伤和冻伤，可配置致死。BossBar 保留季节 Buff 展示。</span></div>
+        </div>
+        <div class="notice" style="margin-top: 1.5rem;">
+          <strong>群系颜色只存在于客户端视图</strong>
+          <p>服务器、原版机制与其他插件读取的仍是真实群系；冬冻春融和秋季真实叶块替换属于独立的世界方块规则，应按需要单独配置和备份。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-chapter">
+      <div><span class="feature-chapter__number">03 / EVENTS</span><h2>让季节拥有故事</h2></div>
+      <div class="feature-chapter__body">
+        <p>25 种季节事件与十三种持续灾害为服务器日常加入变化。1.0.80 在大型原生粒子基础上增加动态层次：移动龙卷风的螺旋进气与阵风起伏、雷暴的暗云蓄电与间歇连闪、火流星的分叉火星与燃尽烟尾，以及蘑菇云的冲击环、翻卷和冷却灰烟。定向音景按距离衰减、整场限频，细节共享原有预算；不需要专用资源包，也不叠加旧模型。创造模式手动触发可安全预览，不伤害、不卷吸。地形不破坏，视觉放大不扩大伤害范围，陨石奖励独立结算。模组图片仅作为形态参考，真人视觉和受力仍需进服验收；其余可选模型资产保留。</p>
+        <div class="feature-list">
+          <div><strong>25 种季节事件</strong><span>十三种持续灾害，云雾龙卷风支持移动与贴地；不卷走宠物或掉落物。</span></div>
+          <div><strong>Folia 兼容流星雨</strong><span>所有流星粒子路径补齐运行时数据，高空轨迹、尾焰、模型及暗飞行。</span></div>
+          <div><strong>1.0.81 流星奖励箱</strong><span>原奖励池装入真实箱子并随世界保存，取空自动清理；领地或不安全位置回退同批散落物品，不额外发奖。</span></div>
+          <div><strong>现实日期节日</strong><span>默认节日、自定义消息和服务器庆祝内容。</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--bordered">
+    <div class="shell">
+      <div class="section-heading">
+        <span class="eyebrow">Environment / 运行环境</span>
+        <div><h2>先确认版本，<br />再进入正式世界。</h2><p>LISeasons 的染色协议由 PacketEvents 处理；安装前应按文档核对服务端核心与 PacketEvents 版本。</p></div>
+      </div>
+      <div class="directory-grid">
+        <div class="directory-card"><span class="directory-card__group">必须前置</span><h2>匹配核心的 PacketEvents</h2><p>季节染色需要 PacketEvents；按对应服务端版本准备兼容构建。</p></div>
+        <div class="directory-card"><span class="directory-card__group">支持核心</span><h2>Paper / Folia</h2><p>2.3.0 实测 Paper 26.1.2 build 70、Paper 26.2 build 111 与 Folia 26.2 build 5；本版新增玩法未在 26.3 重新验收。</p></div>
+        <div class="directory-card"><span class="directory-card__group">Java</span><h2>Java 25</h2><p>当前 26.x 实测环境使用 Java 25；按对应核心准备运行环境。</p></div>
+        <div class="directory-card"><span class="directory-card__group">可选联动</span><h2>PAPI · Crops · Dominion · Residence</h2><p>1.0.71 修复 Folia 秋季树叶边界与目标区域调度；同时保留流星粒子兼容、Residence 冰雪权限和台阶楼梯安全积雪。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="cta-band__inner shell">
+      <h2>从安装开始，<br />把第一年四季交给世界。</h2>
+      <div class="button-row">
+        <a class="button button--primary" href={withBase('/docs/liseasons/install/')}>查看安装指南</a>
+        <a class="button" href={withBase('/docs/liseasons/configuration/')}>配置参考</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

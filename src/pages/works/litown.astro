@@ -1,0 +1,150 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { works } from '@/data/site';
+import { withBase } from '@/lib/paths';
+
+const work = works.find((entry) => entry.slug === 'litown')!;
+const chapters = [
+  {
+    icon: '🏡', title: '建立属于你们的小镇',
+    body: '从取一个名字、邀请第一位伙伴开始。成员可以提交入镇申请，即使申请人离线，有权限的管理成员也能在线审核；职位权限让邀请、仓库、任务和袭击各有分工。公告、聊天频道和小镇传送点，把分散的冒险者聚在一起。',
+  },
+  {
+    icon: '📜', title: '把委托变成共同的目标',
+    body: '击杀、采集和探索三类委托，配合个人任务与共享小镇任务安排冒险目标。共享击杀进度可由镇民共同积累，采集和探索由提交者完成交付；服主还可开启每日与周常开放任务池，为成员准备持续参与的日常。',
+  },
+  {
+    icon: '🛡️', title: '一起守住小镇据点',
+    body: '怪物围绕小镇传送点分波出现，清完当前波次后再迎接下一波。服主可安排首领、掉落和 MythicMobs 怪物；附近本镇成员的 BossBar 实时显示第几波、共几波、还剩多少怪物，让每一场防守都有清楚的进度。',
+  },
+  {
+    icon: '📦', title: '让物资成为大家的储备',
+    body: '将采集到的材料提交为物资贡献，把常用物品放进共享仓库，或向小镇金库捐入资金。金库默认只捐不取，服主可按职位开放取款；仓库容量、禁放规则与贡献数值也能配置，让资源按自己的规则管理。',
+  },
+  {
+    icon: '🌱', title: '让付出看得见，也用得上',
+    body: '成员的累计贡献与可用贡献分别记录，达到门槛后可自动晋升职位。贡献商店可设置小镇等级要求，提供物品与命令奖励；商品状态、兑换确认和分页菜单，让成长与兑换衔接起来。',
+  },
+  {
+    icon: '🎉', title: '给小镇留下日常与故事',
+    body: '给镇民发一个随机红包，看看成员贡献排行，或向其他小镇发起一场限时 PvP 积分竞赛，击败对方镇民即可得分。配合成就、公告、聊天和友伤设置，让合作之外也有日常互动；竞赛不涉及领地争夺或方块破坏。',
+  },
+];
+const customization = [
+  { title: '玩法与奖励', body: '调整小镇等级、任务池、袭击波次、首领、贡献商品和奖励，安排适合服务器的成长节奏。' },
+  { title: '职位与资源', body: '配置成员分工、自动晋升、金库规则、仓库禁放物品，以及红包和竞赛参数。' },
+  { title: '中文菜单与文本', body: '调整标题、图标、Lore、按钮槽位和内容区，支持 MiniMessage 渐变、RGB 与旧版颜色。' },
+  { title: '数据与升级', body: '小镇主体数据可选 YAML、SQLite 或 MySQL；仓库、红包、成就使用各自的本地数据文件。新增配置与中文注释自动补齐，保留已有自定义值和玩家数据。' },
+];
+---
+
+<BaseLayout title={work.name} description={work.summary}>
+  <header class="work-hero">
+    <div class="shell">
+      <div class="work-hero__top">
+        <div>
+          <div class="work-hero__labels"><span class="eyebrow">Town & guild / 小镇公会</span><span class="tag tag--free">免费 · 进群获取</span></div>
+          <h1 class="town-title">LiTown <span>· 小镇公会</span></h1>
+          <p class="work-hero__lead">把各自的冒险，变成一座小镇的故事。</p>
+          <div class="button-row" style="margin-top: 2rem;">
+            <a class="button button--primary" href={withBase('/docs/litown/home/')}>阅读完整 Wiki</a>
+            <a class="button" href={work.acquisition!.href} target="_blank" rel="noopener noreferrer">进群免费获取 ↗</a>
+            {work.forum && <a class="button" href={work.forum.href} target="_blank" rel="noopener noreferrer">{work.forum.label} ↗</a>}
+          </div>
+          {work.forum && <p class="town-forum-note">{work.forum.notice}</p>}
+        </div>
+        <div class="work-emblem work-emblem--catalog" aria-label="LiTown 小镇公会，免费">
+          <span class="work-emblem__code">LAOLI PLUGINS</span>
+          <strong>LiTown</strong>
+          <span class="work-emblem__price">小镇公会 · 免费</span>
+        </div>
+      </div>
+      <div class="work-facts">
+        <div class="work-fact"><span>Version</span><strong>{work.version}</strong></div>
+        <div class="work-fact"><span>Status</span><strong>{work.status}</strong></div>
+        <div class="work-fact"><span>Platform</span><strong>{work.platform}</strong></div>
+        <div class="work-fact"><span>Minecraft</span><strong>Paper 26.2</strong></div>
+        <div class="work-fact"><span>Runtime</span><strong>Java 25</strong></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section shell" id="overview">
+    <div class="section-heading">
+      <span class="eyebrow">Overview / 插件介绍</span>
+      <div>
+        <h2>从几个伙伴，<br />到一座共同成长的小镇。</h2>
+        <p>LiTown 把成员管理、委托任务、袭击防守与资源共享放进同一套中文菜单。适合希望在生存或 RPG 服务器里加入公会日常的服主：玩家有一起完成的目标，也有积累贡献、兑换奖励和参与活动的空间。</p>
+      </div>
+    </div>
+    <div class="town-play-grid">
+      {chapters.map((chapter, index) => (
+        <article class="town-play-card">
+          <span class="eyebrow">0{index + 1} / PLAY</span>
+          <h3><span aria-hidden="true">{chapter.icon}</span> {chapter.title}</h3>
+          <p>{chapter.body}</p>
+        </article>
+      ))}
+    </div>
+    <p class="town-note">任务、袭击、入镇选择、申请审核、红包与贡献商店支持翻页；小镇和成员总览可以排序，常用操作后会回到原页。</p>
+  </section>
+
+  <section class="section section--bordered">
+    <div class="shell">
+      <div class="section-heading">
+        <span class="eyebrow">Customize / 服主定制</span>
+        <div><h2>服主可以怎样定制？</h2><p>保留一套连贯的小镇玩法，再按自己的世界观、经济和活动节奏调整。</p></div>
+      </div>
+      <div class="feature-list">
+        {customization.map((item) => <div><strong>{item.title}</strong><span>{item.body}</span></div>)}
+      </div>
+      <div class="button-row" style="margin-top: 1.5rem;"><a class="button" href={withBase('/docs/litown/configuration/')}>查看配置参考</a><a class="button" href={withBase('/docs/litown/menus/')}>查看菜单与分页</a></div>
+    </div>
+  </section>
+
+  <section class="section shell" id="environment">
+    <div class="section-heading">
+      <span class="eyebrow">Environment / 部署前阅读</span>
+      <div><h2>按需要准备环境与联动。</h2><p>本页介绍对应 LiTown 1.1.2。安装、升级步骤和具体验证范围统一放在文档中，方便部署前核对。</p></div>
+    </div>
+    <div class="directory-grid">
+      <div class="directory-card"><span class="directory-card__group">运行环境</span><h3>Paper 26.2 · Java 25</h3><p>基于 Bukkit 标准 API。Folia 26.2 已完成袭击专项验证；其他功能仍需按本服环境确认。</p></div>
+      <div class="directory-card"><span class="directory-card__group">金币功能</span><h3>Vault + 经济插件</h3><p>启用金币扣费、金库和红包玩法时准备经济前置，按服务器规则配置金额与权限。</p></div>
+      <div class="directory-card"><span class="directory-card__group">可选联动</span><h3>PlaceholderAPI · MythicMobs</h3><p>输出小镇变量，或在袭击中使用自定义怪物与首领；按玩法需要选择安装。</p></div>
+      <div class="directory-card"><span class="directory-card__group">安装与升级</span><h3>中文配置 · 数据保留</h3><p>运行库按需下载。换新版 Jar 前完整停服并备份数据，保留已有配置，完整启动后核对加载版本。</p></div>
+    </div>
+    <div class="button-row" style="margin-top: 1.5rem;"><a class="button" href={withBase('/docs/litown/install/')}>安装与升级指南</a><a class="button" href={withBase('/docs/litown/changelog/')}>更新日志与验证范围</a></div>
+    <details class="town-details">
+      <summary>常用命令与 1.1.2 更新</summary>
+      <p><code>/litown gui</code> 打开菜单；<code>/litown create &lt;名称&gt;</code> 创建小镇；<code>/litown sethome</code> 设置据点；<code>/litown home</code> 返回小镇。</p>
+      <p>1.1.2 新增袭击 BossBar，并修复卡波、停止后续刷和重复结算。35 项单元测试、Paper 26.2 隔离服 82 项检查及自编译 Folia 26.2 袭击专项 93 项检查通过；玩家与 BossBar 收件人为模拟对象，未做真人客户端视觉及真实 Vault / MythicMobs 验收。</p>
+    </details>
+  </section>
+
+  <section class="cta-band">
+    <div class="cta-band__inner shell">
+      <div><h2>和伙伴一起，<br />从第一座小镇开始。</h2><p>LiTown 免费，进群获取。LI系列插件 QQ 群：1104616515。</p></div>
+      <div class="button-row"><a class="button button--primary" href={work.acquisition!.href} target="_blank" rel="noopener noreferrer">进群免费获取 ↗</a><a class="button" href={withBase('/docs/litown/home/')}>从 Wiki 开始</a></div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .town-title { font-size: clamp(3.5rem, 7vw, 6.8rem); line-height: 1.05; }
+  .town-title span { display: block; margin-top: .35em; font-size: .62em; letter-spacing: -.035em; }
+  .town-play-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+  .town-play-card { padding: 2rem; border: 1px solid var(--line); }
+  .town-play-card h3 { margin: 1rem 0; font-size: clamp(1.4rem, 2.1vw, 1.9rem); line-height: 1.4; }
+  .town-play-card p, .town-note { color: var(--ink-soft); line-height: 1.9; }
+  .town-play-card p { margin: 0; }
+  .town-note { margin: 2rem 0 0; }
+  .town-forum-note { max-width: 650px; margin: 1rem 0 0; color: var(--ink-soft); font-size: .85rem; line-height: 1.8; }
+  .directory-card h3 { font-size: 1.4rem; line-height: 1.5; }
+  .town-details { margin-top: 2rem; padding: 1.5rem; border: 1px solid var(--line); }
+  .town-details summary { cursor: pointer; font-weight: 700; }
+  .town-details p { color: var(--ink-soft); line-height: 1.9; }
+  @media (max-width: 700px) {
+    .town-play-grid { grid-template-columns: 1fr; }
+    .town-play-card { padding: 1.5rem; }
+  }
+</style>

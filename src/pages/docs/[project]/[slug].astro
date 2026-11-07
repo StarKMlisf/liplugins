@@ -1,0 +1,36 @@
+---
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import { docSets, type DocEntry, type DocSet } from '@/data/docs';
+import { renderWikiDocument } from '@/lib/wiki';
+
+export function getStaticPaths() {
+  return docSets.flatMap((docSet) => docSet.docs.map((doc) => ({
+    params: { project: docSet.slug, slug: doc.slug },
+    props: { doc, docSet },
+  })));
+}
+
+interface Props { doc: DocEntry; docSet: DocSet; }
+const { doc, docSet } = Astro.props;
+const sequence = doc.sidebar === false
+  ? docSet.docs.filter((item) => item.sidebar === false)
+  : docSet.docs.filter((item) => item.sidebar !== false);
+const index = sequence.findIndex((item) => item.slug === doc.slug);
+const previous = index > 0 ? sequence[index - 1] : undefined;
+const next = index < sequence.length - 1 ? sequence[index + 1] : undefined;
+const { html, headings } = renderWikiDocument(doc);
+---
+
+<DocsLayout
+  title={doc.title}
+  description={doc.summary}
+  docSet={docSet}
+  activeSlug={doc.slug}
+  group={doc.group}
+  headings={headings}
+  previous={previous && { title: previous.title, slug: previous.slug }}
+  next={next && { title: next.title, slug: next.slug }}
+>
+  <Fragment set:html={html} />
+</DocsLayout>
+

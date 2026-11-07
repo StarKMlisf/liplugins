@@ -1,0 +1,50 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="QQ 群" description="加入公开社区，参与讨论、获取公告并分享使用反馈。">
+  <header class="page-heading">
+    <div class="page-heading__grid shell">
+      <div>
+        <span class="eyebrow">Community / QQ 群</span>
+        <h1>加入公开社区。</h1>
+      </div>
+      <p>参与讨论、获取公告并分享使用反馈。</p>
+    </div>
+  </header>
+
+  <section class="section shell" aria-labelledby="community-title">
+    <div class="community-invite">
+      <div>
+        <span class="eyebrow">公开 QQ 群</span>
+        <h2 id="community-title">牢李插件交流群</h2>
+        <p>插件公告、使用讨论和反馈都在这里。</p>
+      </div>
+      <a class="button button--primary" href="https://qm.qq.com/q/rIQjW0QdQ" target="_blank" rel="noreferrer">加入 QQ 群 ↗</a>
+    </div>
+  </section>
+
+  <section class="section section--bordered" aria-labelledby="members-title">
+    <div class="shell">
+      <header class="community-heading">
+        <div>
+          <span class="eyebrow">Members / 人员</span>
+          <h2 id="members-title">群内人员</h2>
+        </div>
+      </header>
+
+      <div class="community-members">
+        <article class="community-member">
+          <span class="community-member__number">01 / AUTHOR</span>
+          <h3>牢李</h3>
+          <p>作者</p>
+        </article>
+        <article class="community-member">
+          <span class="community-member__number">02 / ADMIN</span>
+          <h3>归云</h3>
+          <p>管理</p>
+        </article>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

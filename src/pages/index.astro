@@ -1,0 +1,96 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { works } from '@/data/site';
+import { allDocs } from '@/data/docs';
+import { withBase } from '@/lib/paths';
+
+const workBySlug = new Map(works.map((work) => [work.slug, work]));
+const featuredWorks = ['blockcraft', 'liseasons', 'liemc']
+  .map((slug) => workBySlug.get(slug))
+  .filter((work): work is (typeof works)[number] => Boolean(work));
+const maintainedWorks = works.filter((work) => work.status === '持续维护');
+
+const availabilityLabel = (work: (typeof works)[number]) =>
+  work.availability === '付费'
+    ? work.originalPriceCny
+      ? `优惠 ¥${work.priceCny} / 原价 ¥${work.originalPriceCny}`
+      : `¥${work.priceCny}`
+    : work.availability;
+---
+
+<BaseLayout bodyClass="editorial-home">
+  <section class="editorial-intro shell" aria-labelledby="home-title">
+    <div class="editorial-intro__copy">
+      <span class="editorial-kicker">Minecraft 服务器插件</span>
+      <h1 id="home-title">牢李插件</h1>
+      <p>
+        这里收录我正在维护的插件和对应的中文说明。版本、兼容范围、价格与依赖都会直接写明，
+        可以先看功能和文档，再判断是否适合你的服务器。
+      </p>
+      <div class="editorial-intro__links">
+        <a href={withBase('/works/')}>查看全部作品</a>
+      </div>
+    </div>
+
+    <dl class="editorial-intro__facts" aria-label="网站内容概况">
+      <div><dt>{works.length}</dt><dd>款插件与工具</dd></div>
+      <div><dt>{maintainedWorks.length}</dt><dd>款持续维护</dd></div>
+      <div><dt>{allDocs.length}</dt><dd>篇中文文档</dd></div>
+    </dl>
+  </section>
+
+  <section class="editorial-section shell" aria-labelledby="recent-title">
+    <header class="editorial-section__heading">
+      <div>
+        <span class="editorial-kicker">最近维护</span>
+        <h2 id="recent-title">三个常用项目</h2>
+      </div>
+      <a class="editorial-text-link" href={withBase('/works/')}>全部作品</a>
+    </header>
+
+    <div class="editorial-featured">
+      {featuredWorks.map((work) => (
+        <article class="editorial-featured__item">
+          <a class="editorial-featured__visual" href={withBase(`/works/${work.slug}/`)} aria-label={`查看 ${work.name}`}>
+            {work.artwork ? (
+              <img src={withBase(work.artwork.src)} alt={work.artwork.alt} width="1600" height="1000" loading="lazy" decoding="async" />
+            ) : (
+              <span>{work.catalogLabel}</span>
+            )}
+          </a>
+          <p class="editorial-featured__meta">{work.catalogLabel} · {work.status} · {availabilityLabel(work)}</p>
+          <h3><a href={withBase(`/works/${work.slug}/`)}>{work.name}</a></h3>
+          <p>{work.summary}</p>
+          <div class="editorial-featured__links">
+            <a href={withBase(`/works/${work.slug}/`)}>功能介绍</a>
+            <a href={withBase(`/docs/${work.slug}/home/`)}>使用文档</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="editorial-section editorial-section--catalog">
+    <div class="shell">
+      <header class="editorial-section__heading editorial-section__heading--compact">
+        <div>
+          <span class="editorial-kicker">项目索引</span>
+          <h2>全部插件</h2>
+        </div>
+        <p>按当前公开状态排列，点击项目名称可查看版本、兼容范围和完整功能。</p>
+      </header>
+
+      <div class="editorial-index">
+        {works.map((work, index) => (
+          <a class="editorial-index__row" href={withBase(`/works/${work.slug}/`)}>
+            <span class="editorial-index__number">{String(index + 1).padStart(2, '0')}</span>
+            <span class="editorial-index__name"><strong>{work.name}</strong><small>{work.kicker}</small></span>
+            <span class="editorial-index__status">{availabilityLabel(work)}</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

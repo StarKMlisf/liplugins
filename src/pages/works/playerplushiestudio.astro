@@ -1,0 +1,109 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import FeatureGallery from '@/components/FeatureGallery.astro';
+import { catalogSections, works } from '@/data/site';
+import { withBase } from '@/lib/paths';
+
+const work = works.find((entry) => entry.slug === 'playerplushiestudio')!;
+const catalogSection = catalogSections.find((section) => section.works.some((entry) => entry.slug === work.slug));
+const catalogIndex = catalogSection?.works.findIndex((entry) => entry.slug === work.slug) ?? 0;
+const workNumber = catalogSection ? `${catalogSection.number}-${catalogIndex + 1}` : String(works.findIndex((entry) => entry.slug === work.slug) + 1).padStart(2, '0');
+const availabilityLabel =
+  work.availability === '付费'
+    ? work.originalPriceCny
+      ? `付费插件 · 优惠 ¥${work.priceCny} · 原价 ¥${work.originalPriceCny}`
+      : `付费插件 · ¥${work.priceCny}`
+    : work.availability;
+const availabilityClass =
+  work.availability === '付费'
+    ? 'tag--paid'
+    : work.availability === '免费'
+      ? 'tag--free'
+      : 'tag--unavailable';
+---
+
+<BaseLayout title={work.name} description={work.summary}>
+  <header class="work-hero">
+    <div class="shell">
+      <div class="work-hero__top">
+        <div>
+          <div class="work-hero__labels">
+            <span class="eyebrow">Work {workNumber} / [{work.catalogLabel}] Desktop tool</span>
+            <span class:list={['tag', availabilityClass]}>{availabilityLabel}</span>
+          </div>
+          <h1><img class="plushie-logo" src={withBase('/images/playerplushiestudio/logo.png')} alt="玩家玩偶工坊 Logo" width="80" height="80" />{work.name}</h1>
+          <p class="work-hero__lead">{work.summary}</p>
+        </div>
+        <div class:list={['work-emblem', 'work-emblem--catalog', work.availability === '付费' && 'work-emblem--gold']} aria-label={`${work.name}，${availabilityLabel}`}>
+          <span class="work-emblem__code">LAOLI PLUGINS</span>
+          <strong>{work.name}</strong>
+          <span class="work-emblem__price">
+            {work.availability === '付费' ? (
+              work.originalPriceCny ? <><span>¥{work.priceCny}</span><del>¥{work.originalPriceCny}</del></> : `¥${work.priceCny}`
+            ) : work.availability}
+          </span>
+        </div>
+      </div>
+      <div class="work-facts">
+        <div class="work-fact"><span>Version</span><strong>{work.version}</strong></div>
+        <div class="work-fact"><span>Status</span><strong>{work.status}</strong></div>
+        <div class="work-fact"><span>Platform</span><strong>{work.platform}</strong></div>
+        <div class="work-fact"><span>Minecraft</span><strong>{work.minecraft}</strong></div>
+        <div class="work-fact"><span>Runtime</span><strong>{work.java}</strong></div>
+      </div>
+    </div>
+  </header>
+
+  <FeatureGallery slug="playerplushiestudio" />
+  <section class="section shell">
+    <img class="plushie-wallpaper" src={withBase('/images/playerplushiestudio/wallpaper.png')} alt="玩家玩偶工坊品牌壁纸，展示方块玩偶工坊主题" width="1920" height="1080" />
+    <div class="section-heading">
+      <span class="eyebrow">Overview / 工具介绍</span>
+      <div>
+        <h2>{work.kicker}</h2>
+        <p>{work.description}</p>
+      </div>
+    </div>
+
+    <div class="feature-chapter">
+      <div><span class="feature-chapter__number">01 / FEATURES</span><h2>核心功能</h2></div>
+      <div class="feature-chapter__body">
+        <div class="feature-list">
+          {work.features.map((feature) => (
+            <div><strong>{feature}</strong></div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--bordered">
+    <div class="shell">
+      <div class="section-heading">
+        <span class="eyebrow">Environment / 运行环境</span>
+        <div><h2>安装前先确认版本与前置。</h2><p>兼容范围以当前作品说明为准，正式服更新前建议先在测试环境验证配置和数据。</p></div>
+      </div>
+      <div class="directory-grid">
+        <div class="directory-card"><span class="directory-card__group">运行平台</span><h2>{work.platform}</h2><p>Minecraft {work.minecraft}</p></div>
+        <div class="directory-card"><span class="directory-card__group">运行环境</span><h2>{work.java}</h2><p>桌面成品无需另装 Python；生成内容需由服务器中的 CraftEngine 加载。</p></div>
+        <div class="directory-card"><span class="directory-card__group">发布状态</span><h2>{availabilityLabel}</h2><p>{work.availability === '暂不发售' ? '当前版本仍在完善，不提供购买。' : '具体授权、交付与支持方式以获取时说明为准。'}</p></div>
+        <div class="directory-card"><span class="directory-card__group">依赖与联动</span><h2>{work.dependencies.length} 项说明</h2><p>{work.dependencies.join(' · ')}</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="cta-band__inner shell">
+      <h2>{work.availability === '暂不发售' ? '关注后续更新，\n等待正式开放。' : '先了解功能，\n再决定是否适合服务器。'}</h2>
+      <div class="button-row">
+        <a class="button button--primary" href={withBase(`/docs/${work.slug}/home/`)}>阅读完整文档</a>
+        <a class="button" href={withBase('/works/')}>返回作品目录</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .plushie-logo { display: inline-block; width: 1.2em; height: 1.2em; object-fit: contain; vertical-align: middle; margin-right: 0.25em; }
+  .plushie-wallpaper { display: block; width: 100%; height: auto; border-radius: 12px; margin-bottom: 3rem; }
+</style>

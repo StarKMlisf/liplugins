@@ -1,0 +1,474 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { liSkillsDocDefinitions } from './liskills-docs';
+
+export type DocGroup = '文档总览' | '玩家文档' | '管理员文档' | '开发者文档' | '附魔详情';
+
+export interface DocEntry {
+  project: string;
+  file: string;
+  slug: string;
+  title: string;
+  summary: string;
+  group: DocGroup;
+  order: number;
+  sidebar?: boolean;
+}
+
+export interface DocSet {
+  slug: string;
+  name: string;
+  version: string;
+  summary: string;
+  icon: 'grass' | 'leaf' | 'ice' | 'meteor' | 'book' | 'redstone' | 'gold' | 'amethyst';
+  groups: DocGroup[];
+  docs: DocEntry[];
+}
+
+type DocDefinition = Omit<DocEntry, 'project'>;
+
+const defineDocs = (project: string, definitions: DocDefinition[]): DocEntry[] =>
+  definitions.map((definition) => ({ project, ...definition }));
+
+const liseasonsDocs = defineDocs('liseasons', [
+  { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: '2.3.0 水分饮水、四季生活扩展与三种核心环境实际验证。', group: '文档总览', order: 2 },
+  { file: '自然灾害与龙卷风.md', slug: 'natural-disasters', title: '自然灾害与龙卷风', summary: '十三种持续灾害、移动云雾龙卷风、无损模型、避险与中文配置。', group: '管理员文档', order: 28 },
+  { file: 'Home.md', slug: 'home', title: 'LISeasons', summary: 'LISeasons 的使用、配置、维护和扩展指南。', group: '文档总览', order: 1 },
+  { file: '玩家文档.md', slug: 'player', title: '玩家文档 · 总览', summary: '从查询季节、打开手账到应对冷暖与流星雨，快速开始 LISeasons 生存。', group: '玩家文档', order: 10 },
+  { file: '玩家-四季与节气.md', slug: 'player-seasons', title: '看懂四季与节气', summary: '看懂日期、换季、群系颜色、冰雪、露天作物和二十四节气。', group: '玩家文档', order: 11 },
+  { file: '玩家-体温生存.md', slug: 'player-temperature', title: '体温生存指南', summary: '读取体温与潮湿提示，并用环境、装备、物品和食物应对冷热。', group: '玩家文档', order: 12 },
+  { file: '玩家-季节事件.md', slug: 'player-events', title: '季节事件与流星雨', summary: '了解 25 种默认事件、十三种灾害避险、高空流星和陨星奖励。', group: '玩家文档', order: 13 },
+  { file: '玩家-日历与节日.md', slug: 'player-calendar', title: '日历与节日', summary: '使用六页季节手账，并分清世界日历、现实节日与到来提醒。', group: '玩家文档', order: 14 },
+  { file: '玩家指令.md', slug: 'player-commands', title: '常用指令', summary: '普通玩家可用的日期、日历、事件与节日查询指令。', group: '玩家文档', order: 15 },
+  { file: '管理员文档.md', slug: 'admin', title: '管理员文档 · 总览', summary: '面向服主与运维人员的 LISeasons 部署、配置、备份、性能和排障入口。', group: '管理员文档', order: 20 },
+  { file: '功能清单.md', slug: 'features', title: '功能清单', summary: '按日历、世界、玩家、事件、界面和运维分类当前能力。', group: '管理员文档', order: 21 },
+  { file: '安装与升级.md', slug: 'install', title: '安装与升级', summary: '前置依赖、首次安装、升级、重载与完整重启。', group: '管理员文档', order: 22 },
+  { file: '日期-季节与二十四节气.md', slug: 'calendar-and-seasons', title: '日期、季节与二十四节气', summary: '三种日期模式、状态存储、节气表以及自动与手动状态。', group: '管理员文档', order: 23 },
+  { file: '季节效果与世界规则.md', slug: 'world-rules', title: '季节效果与世界规则', summary: '作物、天气、视觉、生物以及冬冻春融。', group: '管理员文档', order: 24 },
+  { file: '体温系统.md', slug: 'temperature', title: '体温系统', summary: '体温公式、潮湿、环境、装备、物品、HUD 与极端温度效果。', group: '管理员文档', order: 25 },
+  { file: 'NMS季节染色.md', slug: 'nms-biome-color', title: 'NMS 季节染色', summary: '版本适配、批量群系更新、预算、持久化与降级。', group: '管理员文档', order: 26 },
+  { file: '季节事件与流星雨.md', slug: 'events-and-meteors', title: '季节事件与流星雨', summary: '事件触发器、流星奖励箱、持久化、领地回退与奖励配置。', group: '管理员文档', order: 27 },
+  { file: '节日系统.md', slug: 'festivals', title: '节日系统', summary: '现实日期、节日配置、提醒行为与当前实现边界。', group: '管理员文档', order: 28 },
+  { file: '日历GUI.md', slug: 'calendar-gui', title: '日历 GUI', summary: '六页菜单、字符布局、图标、动作和占位符。', group: '管理员文档', order: 29 },
+  { file: '配置文件参考.md', slug: 'configuration', title: '配置文件参考', summary: '所有配置文件与主要节点的集中速查。', group: '管理员文档', order: 30 },
+  { file: '指令-权限与占位符.md', slug: 'commands-permissions-placeholders', title: '指令、权限与占位符', summary: '管理员指令、权限节点和 PlaceholderAPI 完整参考。', group: '管理员文档', order: 31 },
+  { file: '性能优化与故障排查.md', slug: 'performance-and-troubleshooting', title: '性能优化与故障排查', summary: '高在线调优、异步线程错误和常见故障检查。', group: '管理员文档', order: 32 },
+  { file: '附属插件API.md', slug: 'api', title: '附属插件 API', summary: '通过 Bukkit ServicesManager 读取只读季节快照。', group: '开发者文档', order: 40 },
+  { file: '开发构建与版本兼容.md', slug: 'development-and-compatibility', title: '开发构建与版本兼容', summary: '构建方式、NMS 版本矩阵、验证和发布信息。', group: '开发者文档', order: 41 },
+]);
+
+const lititleDocs = defineDocs('lititle', [
+  { file: 'Home.md', slug: 'home', title: 'LiTitle 文档首页', summary: '从玩家使用到群组服部署，完整了解称号、聊天、昵称与跨服系统。', group: '文档总览', order: 1 },
+  { file: '玩家入门.md', slug: 'player', title: '玩家入门', summary: '打开商店和仓库、佩戴称号、查看目标进度并设置昵称。', group: '玩家文档', order: 10 },
+  { file: '称号商店与仓库.md', slug: 'titles-shop', title: '称号商店与仓库', summary: '购买、领取、佩戴、卸下称号，以及称号有效期和经济类型。', group: '玩家文档', order: 11 },
+  { file: '自动称号与进阶.md', slug: 'automatic-titles', title: '自动称号与进阶', summary: '理解统计目标、击杀、进度、余额、物品提交和称号进阶。', group: '玩家文档', order: 12 },
+  { file: '称号卷轴.md', slug: 'scrolls', title: '称号卷轴', summary: '发放、绑定、交易与右键解锁规则，以及卷轴配置入口。', group: '玩家文档', order: 13 },
+  { file: '聊天频道与昵称.md', slug: 'chat-nicknames', title: '聊天频道与昵称', summary: '本服、全服、管理和私聊频道，以及中文昵称和彩色英文昵称。', group: '玩家文档', order: 14 },
+  { file: '安装与升级.md', slug: 'install', title: '安装与升级', summary: '依赖、核心范围、首次启动、升级备份与重载方式。', group: '管理员文档', order: 20 },
+  { file: '配置文件参考.md', slug: 'configuration', title: '配置文件参考', summary: '核心、聊天、语言、称号、卷轴和各类 GUI 配置文件速查。', group: '管理员文档', order: 21 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令、权限与占位符', summary: '玩家与管理员命令、权限节点和 PlaceholderAPI 变量。', group: '管理员文档', order: 22 },
+  { file: '存储与跨服.md', slug: 'storage-network', title: '存储与跨服', summary: 'SQLite、MySQL、Redis、Velocity 与多子服配置一致性。', group: '管理员文档', order: 23 },
+  { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '排查称号显示、昵称、聊天颜色、跨服同步和升级配置问题。', group: '管理员文档', order: 24 },
+]);
+
+const lirealMainDocs = defineDocs('lirealenchant', [
+  { file: 'Home.md', slug: 'home', title: 'LiRealEnchant2 Wiki', summary: '真实附魔的能力总览、快速导航与实服验证基线。', group: '文档总览', order: 1 },
+  { file: '玩家入门.md', slug: 'player', title: '玩家入门', summary: '认识真实附魔、打开图鉴，并完成获取、应用与祛魔流程。', group: '玩家文档', order: 10 },
+  { file: '附魔图鉴.md', slug: 'enchantments', title: '附魔图鉴', summary: '122 个真实附魔、385 个等级的总表与独立详情入口。', group: '玩家文档', order: 11 },
+  { file: '附魔获取与冲突.md', slug: 'acquisition-conflicts', title: '附魔获取与冲突', summary: '附魔台、战利品、村民交易、冲突组与来源开关。', group: '玩家文档', order: 12 },
+  { file: '附魔槽与铁砧.md', slug: 'slots-anvil', title: '附魔槽与铁砧', summary: '附魔槽、扩槽器、铁砧应用、经验费用与冲突保护。', group: '玩家文档', order: 13 },
+  { file: '祛魔系统.md', slug: 'disenchant', title: '祛魔、抽魔与净咒', summary: '移除普通附魔、抽取真实附魔书和处理诅咒的完整规则。', group: '玩家文档', order: 14 },
+  { file: '粒子与技能表现.md', slug: 'particles-skills', title: '粒子与技能表现', summary: '主动技能、被动技能、粒子、声音与客户端可见反馈。', group: '玩家文档', order: 15 },
+  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: 'Paper 26.1.2、Java 25 的安装、更新与错误构建识别。', group: '管理员文档', order: 20 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '玩家菜单、管理员发放、重载、测试和权限节点。', group: '管理员文档', order: 21 },
+  { file: '配置说明.md', slug: 'configuration', title: '配置说明', summary: '来源、槽位、铁砧、祛魔、表现与兼容配置说明。', group: '管理员文档', order: 22 },
+  { file: '管理员测试与排错.md', slug: 'testing-troubleshooting', title: '管理员测试与排错', summary: '部署前检查、测试命令、日志判断与常见故障定位。', group: '管理员文档', order: 23 },
+  { file: 'YML自定义附魔.md', slug: 'yaml-custom-enchantments', title: 'YML 自定义附魔', summary: '使用变量、条件、六类触发器和安全动作白名单创建真实附魔。', group: '管理员文档', order: 24 },
+  { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '关于真实注册、附魔来源、铁砧、Lore 和兼容性的集中解答。', group: '管理员文档', order: 25 },
+  { file: '更新日志-dev196.md', slug: 'changelog-dev196', title: 'dev196 更新说明', summary: 'dev196 文档与默认说明更新，以及 dev195 机制验证基线。', group: '管理员文档', order: 30 },
+  { file: '更新日志-dev197.md', slug: 'changelog-dev197', title: 'dev197 更新说明', summary: 'dev197 获取路径、槽位、适用性和矛附魔更新。', group: '管理员文档', order: 31 },
+  { file: '更新日志-dev198.md', slug: 'changelog-dev198', title: 'dev198 更新说明', summary: 'dev198 自定义附魔 API、领地保护与行为测试更新。', group: '管理员文档', order: 32 },
+  { file: '更新日志-dev199.md', slug: 'changelog-dev199', title: 'dev199 更新说明', summary: 'dev199 纯 YML 附魔机制、变量、条件与安全动作更新。', group: '管理员文档', order: 33 },
+  { file: 'API自定义附魔.md', slug: 'api-custom-enchantments', title: 'API 自定义附魔', summary: '通过 API v1 扩展复杂事件、第三方插件联动和自定义 Java 行为。', group: '开发者文档', order: 40 },
+]);
+
+const liemcDocs = defineDocs('liemc', [
+  { file: 'Home.md', slug: 'home', title: 'LIEMC 完整 Wiki', summary: 'EMC 兑换、回收、解锁、收藏、跨服、命令、权限、配置与常见问题。', group: '文档总览', order: 1 },
+  { file: '更新日志-build109.md', slug: 'changelog-build109', title: 'build.109 更新说明', summary: '解锁 ID 统一去除首尾空格并转为小写，写入后刷新完整列表，跨服读取使用 3 秒短缓存。', group: '文档总览', order: 2 },
+  { file: '更新日志-build108.md', slug: 'changelog-build108', title: 'build.108 更新说明', summary: '未自定义的原版物品名称按客户端语言显示，CraftEngine 名称以每次创建的最新结果为准。', group: '文档总览', order: 2 },
+  { file: '更新日志-build107.md', slug: 'changelog-build107', title: 'build.107 更新说明', summary: '按权限配置出售倍率、统一出售报价与安全结算，购买价格保持不变。', group: '文档总览', order: 2 },
+  { file: '更新日志-build106.md', slug: 'changelog-build106', title: 'build.106 更新说明', summary: 'MySQL 8.0 数据库迁移兼容修复，以及全局商品 Lore 的空白分隔行与单项拆行。', group: '文档总览', order: 2 },
+  { file: '玩家指南.md', slug: 'player', title: '玩家快速指南', summary: '从基础指令、解锁机制到经济来源与常见问题的玩家说明。', group: '玩家文档', order: 10 },
+  { file: '功能清单.md', slug: 'features', title: '功能清单', summary: '集中查看兑换、回收、解锁、搜索、收藏、自动补充和跨服能力。', group: '玩家文档', order: 11 },
+  { file: '兑换与回收.md', slug: 'conversion-economy', title: '兑换、回收与 EMC 经济', summary: '理解物品价值、转换菜单、一键出售、余额与玩家转账流程。', group: '玩家文档', order: 12 },
+  { file: '解锁搜索与自动补充.md', slug: 'unlock-search-refill', title: '解锁、搜索、收藏与自动补充', summary: '先获得再解锁的成长规则，以及搜索、收藏和建筑补货功能。', group: '玩家文档', order: 13 },
+  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: '运行环境、首次安装、依赖选择、升级备份与验证步骤。', group: '管理员文档', order: 20 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '玩家和管理员命令、权限节点与常用操作示例。', group: '管理员文档', order: 21 },
+  { file: '配置说明.md', slug: 'configuration', title: '配置说明', summary: '存储、经济来源、解锁规则、全局商品 Lore、商店物品和变量配置参考。', group: '管理员文档', order: 22 },
+  { file: '出售权限倍率.md', slug: 'sale-pricing', title: '出售权限折扣与倍率', summary: '设置普通、VIP、SVIP 出售价，理解规则优先级、权限授权、金额精度和跨服配置。', group: '管理员文档', order: 22.5 },
+  { file: '自定义GUI教程.md', slug: 'custom-gui', title: '自定义 GUI 完整教程', summary: '配置四套菜单、槽位、渐变、动态变量、自定义按钮、模型、迁移与排错。', group: '管理员文档', order: 23 },
+  { file: '存储与跨服.md', slug: 'storage-network', title: '存储与跨服', summary: 'SQLite、MySQL、共享数据、跨服上架与配置一致性。', group: '管理员文档', order: 24 },
+  { file: '测试与故障排查.md', slug: 'testing-troubleshooting', title: '测试与故障排查', summary: '上线前检查、兑换测试、数据库判断与常见故障定位。', group: '管理员文档', order: 25 },
+  { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '解答无法兑换、同步失败、收藏、下架和经济依赖问题。', group: '管理员文档', order: 26 },
+]);
+
+const lweDocs = defineDocs('lwe', [
+  { file: 'Home.md', slug: 'home', title: 'LWE 小创世神完整文档', summary: '轻量选区施工、材料消耗、LIEMC 自动补料、安装与兼容边界。', group: '文档总览', order: 1 },
+  { file: '玩家指南.md', slug: 'player', title: '玩家快速指南', summary: '设定选区并使用填充、覆盖、清液、清空及任务控制。', group: '玩家文档', order: 10 },
+  { file: 'EMC联动与自动补充.md', slug: 'emc-auto-refill', title: 'EMC 联动与自动补充', summary: '材料查找顺序、自动补料开关、计费方式与失败条件。', group: '玩家文档', order: 11 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '全部玩家和管理员命令、参数补全与权限节点。', group: '管理员文档', order: 20 },
+  { file: '安装配置与排错.md', slug: 'install-configuration-troubleshooting', title: '安装、配置与故障排查', summary: '版本要求、完整配置、升级步骤、Folia 边界与常见问题。', group: '管理员文档', order: 21 },
+]);
+
+const enderDragonDocs = defineDocs('enderdragon', [
+  { file: '更新日志.md', slug: 'changelog', title: '更新日志与验证', summary: '26.3.1 复活阶段监控、召唤来源控制与 Paper / Folia 26.2 实测。', group: '文档总览', order: 2 },
+  { file: 'Home.md', slug: 'home', title: 'EnderDragon 完整 Wiki', summary: '末影龙接管、召唤、奖励、指令、权限、变量、配置、自动复活与排错。', group: '文档总览', order: 1 },
+  { file: '玩家指南.md', slug: 'player', title: '玩家指南', summary: '查看龙状态、参与战斗、理解奖励与可用召唤方式。', group: '玩家文档', order: 10 },
+  { file: '召唤与自动复活.md', slug: 'summoning-revival', title: '召唤与自动复活', summary: '水晶、指令、倒计时和单龙独立复活规则。', group: '玩家文档', order: 11 },
+  { file: '战斗与奖励.md', slug: 'rewards', title: '战斗、伤害与奖励', summary: '伤害记录、参与判定、排名奖励、物品池与命令奖励。', group: '玩家文档', order: 12 },
+  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: '运行环境、首次启动、配置升级和完整重启流程。', group: '管理员文档', order: 20 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '召唤、状态、倒计时、奖励编辑和管理权限速查。', group: '管理员文档', order: 21 },
+  { file: '配置说明.md', slug: 'configuration', title: '配置说明', summary: '主配置、龙配置、奖励、GUI、数据和复活文件结构。', group: '管理员文档', order: 22 },
+  { file: '变量说明.md', slug: 'placeholders', title: 'PlaceholderAPI 变量', summary: '龙状态、是否可复活、单龙倒计时与格式化时间变量。', group: '管理员文档', order: 23 },
+  { file: '测试与故障排查.md', slug: 'testing-troubleshooting', title: '测试与故障排查', summary: '召唤、击杀、奖励、自动复活和配置加载的验证流程。', group: '管理员文档', order: 24 },
+  { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '集中解答重复召唤、奖励发放、龙 ID、重载和跨世界问题。', group: '管理员文档', order: 25 },
+  { file: '项目说明.md', slug: 'project', title: '项目与源码说明', summary: '项目定位、公开仓库说明、统计信息与授权提示。', group: '开发者文档', order: 40 },
+]);
+
+const blockCraftDocs = defineDocs('blockcraft', [
+  { file: 'Home.md', slug: 'home', title: 'BlockCraft 完整文档', summary: '八基座祭坛合成、NORMAL/ADVANCED 模式、物品挂钩、费用、粒子、音效和常见故障排查。', group: '文档总览', order: 1 },
+  { file: 'Quick-Start.md', slug: 'quick-start', title: '五分钟快速开始', summary: '搭建祭坛、放置配方材料、启动合成和领取产物。', group: '玩家文档', order: 10 },
+  { file: 'Item-Interaction.md', slug: 'item-interaction', title: '物品放置与领取', summary: '整组放置、潜行取回、悬浮显示、环绕材料与成品领取规则。', group: '玩家文档', order: 11 },
+  { file: 'Preview-GUI.md', slug: 'preview-gui', title: '配方预览 GUI', summary: '使用指令预览配方，并自定义菜单布局、图标与说明文字。', group: '玩家文档', order: 12 },
+  { file: 'Installation.md', slug: 'install', title: '安装与更新', summary: 'Paper/Folia、Java、前置插件、配置文件生成、配方与结构更新流程。', group: '管理员文档', order: 20 },
+  { file: 'Compatibility.md', slug: 'compatibility', title: '兼容性说明', summary: 'Paper 26.2、Folia 1.21.11、Java 25、外部前置与当前边界。', group: '管理员文档', order: 21 },
+  { file: 'Multiblock-Structures.md', slug: 'multiblock-structures', title: '多方块结构', summary: '核心、八基座、CraftEngine 方块、支持方块、旋转与结构专用特效。', group: '管理员文档', order: 22 },
+  { file: 'Recipe-Configuration.md', slug: 'recipe-configuration', title: '配方配置', summary: 'NORMAL/ADVANCED、多文件配方、中心物、基座材料、环绕材料与附魔继承。', group: '管理员文档', order: 23 },
+  { file: 'Item-Sources.md', slug: 'item-sources', title: '物品来源与前置挂钩', summary: '原版、MMOItems、CraftEngine 与 CustomFishing 物品识别和生成。', group: '管理员文档', order: 24 },
+  { file: 'Economy-and-Success.md', slug: 'economy-and-success', title: '经济、成功率与失败', summary: '免费、金币、点券、玩家等级、成功概率和失败消耗规则。', group: '管理员文档', order: 25 },
+  { file: 'Effects-Displays-and-Sounds.md', slug: 'effects-displays-sounds', title: '展示、粒子与音效', summary: '悬浮旋转、显示高度大小、四种粒子轨迹、粒子寿命和音效。', group: '管理员文档', order: 26 },
+  { file: 'Commands-and-Permissions.md', slug: 'commands-permissions', title: '指令与权限', summary: '玩家与管理员指令、权限节点和 Tab 补全速查。', group: '管理员文档', order: 27 },
+  { file: 'Configuration-Reference.md', slug: 'configuration-reference', title: '配置文件索引', summary: 'config、messages、structures、preview、recipes 与数据文件完整索引。', group: '管理员文档', order: 28 },
+  { file: 'Troubleshooting.md', slug: 'troubleshooting', title: '故障排查', summary: '结构、配方、物品挂钩、费用、粒子、显示和 Folia 常见问题。', group: '管理员文档', order: 29 },
+  { file: 'Developer-API.md', slug: 'developer-api', title: '开发者 API', summary: '只读祭坛查询 API、Bukkit 合成事件与扩展接入示例。', group: '开发者文档', order: 40 },
+]);
+
+const liShopDocs = defineDocs('lishop', [
+  { file: 'README.md', slug: 'home', title: 'liShop Wiki 首页', summary: '文档索引、核心功能、文件结构与兼容范围总览。', group: '文档总览', order: 1 },
+  { file: 'Complete-Guide.md', slug: 'complete-guide', title: '完整使用手册', summary: '从安装、建店、交易到数据库、性能和故障排查的一站式手册。', group: '文档总览', order: 2 },
+  { file: 'Forum-Introduction.md', slug: 'features', title: '功能介绍', summary: '面向服主的功能亮点、运行环境、指令、权限与适用场景。', group: '文档总览', order: 3 },
+  { file: 'Normal-Shop.md', slug: 'normal-shop', title: '普通商店', summary: '菜单、商品、分页、购买回收、库存、限额与编辑规则。', group: '玩家文档', order: 10 },
+  { file: 'Crop-Shops.md', slug: 'crop-shops', title: '农作物商店', summary: '种子、每日收购、农作物道具与自定义价格配置。', group: '玩家文档', order: 11 },
+  { file: 'Daily-Random-Shop.md', slug: 'daily-random-shop', title: '每日随机商店', summary: '商品池、刷新、权重、数据保存与游戏内编辑。', group: '玩家文档', order: 12 },
+  { file: 'Bundle-Mall.md', slug: 'bundle-mall', title: '礼包商城', summary: '礼包内容、双货币、限购与全服广播。', group: '玩家文档', order: 13 },
+  { file: 'Player-Exchange.md', slug: 'player-exchange', title: '玩家交易所', summary: '上架、购买、分页、均价、过期领取箱与数据保存。', group: '玩家文档', order: 14 },
+  { file: 'Installation.md', slug: 'install', title: '安装与更新', summary: '前置依赖、首次安装、更新流程、当前产物与注意事项。', group: '管理员文档', order: 20 },
+  { file: 'Commands-And-Permissions.md', slug: 'commands-permissions', title: '指令与权限', summary: '玩家和管理指令、权限节点与 Tab 补全。', group: '管理员文档', order: 21 },
+  { file: 'Configuration.md', slug: 'configuration', title: '主配置说明', summary: '菜单、交易、经济、数据、编辑器、限额与动态价格节点。', group: '管理员文档', order: 22 },
+  { file: 'In-Game-Editor.md', slug: 'editor', title: '游戏内编辑器', summary: '普通商店和每日商店的可视化编辑、步长与库存规则。', group: '管理员文档', order: 23 },
+  { file: 'Dynamic-Pricing-And-Anti-Hoarding.md', slug: 'dynamic-pricing', title: '动态价格与防囤货', summary: '购买回收限额、价格波动、基础价值和数据保存。', group: '管理员文档', order: 24 },
+  { file: 'Economy-And-Dependencies.md', slug: 'economy-dependencies', title: '经济与依赖', summary: 'Vault、内置余额、PlaceholderAPI、MiniMessage 与依赖策略。', group: '管理员文档', order: 25 },
+  { file: 'Advanced-Architecture.md', slug: 'advanced-architecture', title: '高级架构配置', summary: '存储、JDBC、数据迁移、分布式锁、NPC、变量与物品源。', group: '管理员文档', order: 26 },
+  { file: 'MySQL-Cluster.md', slug: 'mysql-cluster', title: 'MySQL 多服互通', summary: '共享数据、表结构、并发规则与旧版本迁移。', group: '管理员文档', order: 27 },
+  { file: 'FAQ.md', slug: 'faq', title: '常见问题', summary: '集中排查经济、商品、库存、数据库、NPC 与变量问题。', group: '管理员文档', order: 28 },
+]);
+
+const liAnimalScaleDocs = defineDocs('lianimalscale', [
+  { file: 'Home.md', slug: 'home', title: 'LiAnimalScale 完整 Wiki', summary: '安装、实体倍率、指令、权限、完整配置、Folia 兼容与技术验证。', group: '文档总览', order: 1 },
+  { file: '快速开始.md', slug: 'quick-start', title: '快速开始', summary: '默认行为、常用指令、安装步骤、热加载与构建入口。', group: '玩家文档', order: 10 },
+  { file: '玩家指南.md', slug: 'player', title: '玩家与管理操作', summary: '瞄准动物、设置倍率、查询、恢复和批量操作。', group: '玩家文档', order: 11 },
+  { file: '倍率规则.md', slug: 'scaling-rules', title: '倍率与自动缩放规则', summary: '原生 SCALE 属性、倍率范围、白名单黑名单和已加载实体处理。', group: '玩家文档', order: 12 },
+  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: '兼容范围、首次安装、升级、热加载边界和验证。', group: '管理员文档', order: 20 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '单体与批量缩放指令、权限节点和 Tab 补全。', group: '管理员文档', order: 21 },
+  { file: '配置说明.md', slug: 'configuration', title: '配置说明', summary: '距离、最小最大倍率、默认倍率和自动缩放节点。', group: '管理员文档', order: 22 },
+  { file: '兼容与线程.md', slug: 'compatibility', title: 'Paper、Folia 与热加载', summary: 'Bukkit 原生属性、区域线程调度、插件停用与重新启用。', group: '管理员文档', order: 23 },
+  { file: '故障排查.md', slug: 'troubleshooting', title: '故障排查', summary: '目标选择、倍率不生效、旧实体残留和插件加载问题。', group: '管理员文档', order: 24 },
+  { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '持久化、怪物玩家支持、关闭自动缩放和配置重载说明。', group: '管理员文档', order: 25 },
+  { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: 'LiAnimalScale 各版本的功能和兼容性变更。', group: '管理员文档', order: 26 },
+]);
+
+const liPetDocs = defineDocs('lipet', [
+  { file: 'docs/更新日志-2026-10-27-仓库分页与跟随待命.md', slug: 'changelog-2-3-15-warehouse-follow', title: '2.3.15 仓库分页与跟随待命', summary: '仓库超出一页可继续翻页，宠物跟随到位后停止闲逛。', group: '管理员文档', order: -30 },
+  { file: 'docs/更新日志-2026-10-23-MM占位符接口更新.md', slug: 'changelog-2-3-14-mythic-placeholders', title: '2.3.14 MythicMobs 占位符接口更新', summary: '消除旧 MM 属性占位符 API 弃用警告，保留已有技能配置。', group: '管理员文档', order: -29 },
+  { file: 'docs/更新日志-2026-10-22-末影人召唤雨水保护.md', slug: 'changelog-2-3-13-enderman-spawn', title: '2.3.13 末影人召唤雨水保护', summary: '低血量末影人召唤初始化期间的雨水与入水伤害保护。', group: '管理员文档', order: -28 },
+  { file: 'docs/更新日志-2026-10-20-闪光捕捉提示.md', slug: 'changelog-2-3-11-shiny-feedback', title: '2.3.11 闪光捕捉提示', summary: '闪光捕获聊天与标题提示、召唤发光药水及配置开关。', group: '管理员文档', order: -26 },
+  { file: 'docs/更新日志-2026-10-19-仓库独立宠物图标.md', slug: 'changelog-2-3-10-warehouse-icons', title: '2.3.10 仓库独立宠物图标', summary: '按宠物类型设置原版或 CE 图标，保留默认回退与仓库操作。', group: '管理员文档', order: -25 },
+  { file: 'docs/更新日志-2026-10-19-菜单详情与成长分离.md', slug: 'changelog-2-3-9-menu-details', title: '2.3.9 菜单详情与成长分离', summary: '修复两个管理按钮打开同页，保留 CE 成长布局。', group: '管理员文档', order: -24 },
+  { file: 'docs/更新日志-2026-10-12-原生属性培养.md', slug: 'changelog-2-3-8-native-training', title: '2.3.8 原生属性培养', summary: '带权限和档案版本校验的原生属性加点接口。', group: '管理员文档', order: -23 },
+  { file: 'docs/更新日志-2026-10-11-Paper26.3适配.md', slug: 'changelog-2-3-7-paper-26-3', title: '2.3.7 Paper 26.3 适配', summary: 'Paper 26.3 模型、技能与持久化回归通过；Folia 保持现有兼容范围。', group: '管理员文档', order: -22 },
+  { file: 'docs/更新日志-2026-10-11-和平宠物世界.md', slug: 'changelog-2-3-6-peaceful-worlds', title: '2.3.6 和平宠物世界', summary: '世界名单可重载，宠物免伤并停止战斗和技能，保留跟随与骑乘。', group: '管理员文档', order: -21 },
+  { file: 'docs/更新日志-2026-10-11-低座位下马净空.md', slug: 'changelog-2-3-5-dismount-clearance', title: '2.3.5 低座位下马净空', summary: '低座位下马按方块碰撞寻找净空，避免脚部卡入地面，保留座位高度。', group: '管理员文档', order: -20 },
+  { file: 'docs/更新日志-2026-10-11-模型下马位置同步.md', slug: 'changelog-2-3-4-dismount-position', title: '2.3.4 模型下马位置同步', summary: '修正下马后的移动基准，避免首次移动被取消时玩家退回上马位置。', group: '管理员文档', order: -19 },
+  { file: 'docs/更新日志-2026-10-10-模型运行时座位.md', slug: 'changelog-2-3-3-runtime-seat', title: '2.3.3 模型运行时驾驶座', summary: '无驾驶骨模型补充虚拟座位，单宠坐标与父骨配置，保留原模型及已有驾驶座。', group: '管理员文档', order: -18 },
+  { file: 'docs/更新日志-2026-10-10-主动攻击名称统一.md', slug: 'changelog-2-3-2-proactive-attack', title: '2.3.2 主动攻击名称统一', summary: '按钮与提示名称统一，精确迁移旧默认文案，保留自定义及原有数据和行为。', group: '管理员文档', order: -17 },
+  { file: 'docs/更新日志-2026-10-10-模型骑乘同步.md', slug: 'changelog-2-3-1-model-riding', title: '2.3.1 模型骑乘修复', summary: '模型主驾驶选择、下马取消与旧挂载冲突保护，升级方法及实际验证范围。', group: '管理员文档', order: -16 },
+  { file: 'docs/更新日志-2026-10-06-MythicMobs双向集成.md', slug: 'changelog-2-3-0-mythic-bridge', title: '2.3.0 MythicMobs 双向集成', summary: 'MM 主人目标、宠物经验、属性读取与真实验证范围，保持既有 power。', group: '管理员文档', order: -15 },
+  { file: 'docs/MythicMobs双向集成.md', slug: 'mythicmobs-bridge', title: 'MythicMobs 双向集成', summary: 'PetOwner、lipetExperience、lipet 属性与 skill.power 写法，以及 MCPets 包迁移边界。', group: '管理员文档', order: -14 },
+  { file: 'docs/更新日志-2026-10-05-GUI标题变量.md', slug: 'changelog-2-2-5-gui-title', title: '2.2.5 GUI 标题变量', summary: '所有菜单和背包标题支持 PAPI 自定义变量、内置变量、字体贴图与升级说明。', group: '管理员文档', order: -13 },
+  { file: 'docs/更新日志-2026-10-05-宠物自动攻击开关.md', slug: 'changelog-2-2-4-auto-attack', title: '2.2.4 宠物主动攻击开关', summary: '每宠保存主动攻击设置、关闭后继续跟随、管理员限制与升级说明。', group: '管理员文档', order: -12 },
+  { file: 'docs/更新日志-2026-10-04-捕捉品质提示.md', slug: 'changelog-2-2-3-capture-quality', title: '2.2.3 捕捉品质提示', summary: '捕捉成功显示实际已保存品质、8 个消息占位符、旧默认精确迁移与自定义文本保留。', group: '管理员文档', order: -11 },
+  { file: 'docs/CE物品贴图.md', slug: 'ce-item-textures', title: 'CE 物品贴图', summary: '独立资源包 1.0.0：8 件 64×64 物品预览、完整 ID、普通球配方、配置合并与功能边界。', group: '管理员文档', order: -10 },
+  { file: 'docs/更新日志-2026-10-03-持久化全链路审计.md', slug: 'changelog-2-2-2-persistence-audit', title: '2.2.2 持久化全链路审计', summary: '数据库关闭与重载、背包条件保存及恢复、未确认交易核对、旧会话保护与剩余边界。', group: '管理员文档', order: -9 },
+  { file: 'docs/更新日志-2026-10-03-MySQL持久化修复.md', slug: 'changelog-2-2-1-mysql-persistence', title: '2.2.1 MySQL 持久化修复', summary: '修复被动技能书后连接事务遗留导致的保存未提交与重启丢宠，含真实 MySQL 复现和重启验证。', group: '管理员文档', order: -8 },
+  { file: 'docs/更新日志-2026-09-30-ModelEngine动画技能.md', slug: 'changelog-2-2-modelengine-skills', title: '2.2.0 已有 ModelEngine 动画技能', summary: '新增 12 项模型技能，共 112 项；宠物已有动画、缩小场景特效与管理员配置保留。', group: '管理员文档', order: -7 },
+  { file: 'docs/更新日志-2026-09-30-原版生物特性技能.md', slug: 'changelog-2-1-species-skills', title: '2.1.0 原版生物特性技能', summary: '100 项技能按物种分配，史莱姆真实闪避与旧配置安全迁移。', group: '管理员文档', order: -6 },
+  { file: 'docs/更新日志-2026-09-29-CE原物品捕捉.md', slug: 'changelog-2-0-1-ce-capture', title: '2.0.1 CE 原物品捕捉', summary: 'CE 配方产物直接识别、原物品退款和升级说明。', group: '管理员文档', order: -5 },
+  { file: 'docs/CE配方捕捉球.md', slug: 'ce-recipe-capture', title: 'CE 配方捕捉球', summary: '无需 LiPet 指令发放，按 CE 完整 ID 使用配方产物捕捉，附可选示例。', group: '管理员文档', order: -4 },
+  { file: 'docs/更新日志-2026-09-29-2.0宠物技能.md', slug: 'changelog-2-0-pet-skills', title: '2.0.0 百种宠物技能', summary: '100 个自带特效的主动技能、每宠三槽、自动与手动施放、冷却及升级说明。', group: '管理员文档', order: -3 },
+  { file: 'docs/宠物技能目录-2.0.md', slug: 'active-skills-catalog', title: '112 技能与物种配装', summary: '100 项物种技能与 12 项已有模型动画技能，完整效果、CD、88 物种三槽及可选配装。', group: '玩家文档', order: -2 },
+  { file: 'docs/技能模型特效-2.0.md', slug: 'skill-model-effects', title: '技能模型与动画配置', summary: 'EFFECT 临时场景与 PET 现有宠物动画、真实模型 ID、播放倍率、保留配置及安全回收。', group: '管理员文档', order: -1 },
+  { file: 'docs/更新日志-2026-09-28-AI深度优化.md', slug: 'changelog-2026-09-28-ai-deep-optimization', title: '0.30.1 AI 深度优化与验证', summary: '寻路采样去重、动态障碍复核、索敌节流、前后对照及逐物种回归。', group: '管理员文档', order: 0 },
+  { file: 'docs/更新日志-2026-09-28-全物种AI与攻击.md', slug: 'changelog-2026-09-28-species-ai', title: '0.30.0 全物种 AI 与攻击分型', summary: '受控导航、攻击分型、真实投射物、地形保护与公共/独立宠物配置。', group: '管理员文档', order: 0 },
+  { file: 'docs/AI逐物种测试-2026-09-28.md', slug: 'ai-species-tests-2026-09-28', title: '全物种 AI 测试记录', summary: '逐物种跟随、主动索敌、隔墙绕障、坐下停战、远距召回、移动助战与安全测试。', group: '管理员文档', order: 0 },
+  { file: 'docs/更新日志-2026-09-28-宠物信息食物展示优化.md', slug: 'changelog-2026-09-28-pet-info-food-display', title: '0.29.16 宠物信息食物展示优化', summary: '统一 show-in-pet-info、兼容旧节点、空列表自动隐藏与可配置 MiniMessage 排版。', group: '管理员文档', order: 0 },
+  { file: 'docs/更新日志-2026-09-28-食物显示开关.md', slug: 'changelog-2026-09-28-food-display', title: '0.29.15 宠物食物信息显示开关', summary: '信息界面食物介绍整行开关、单项 show-in-pet-info、旧配置安全补全与喂养行为隔离。', group: '管理员文档', order: 0 },
+  { file: 'docs/更新日志-2026-09-28-监守者与凋灵AI.md', slug: 'changelog-2026-09-28-warden-wither-ai', title: '0.29.14 监守者与凋灵 AI 修复', summary: '监守者专属攻击动作与无路径追随兜底，凋灵三头目标接管、随机投射物抑制和受控飞行。', group: '管理员文档', order: 0 },
+  { file: 'docs/更新日志-2026-09-28-完整PAPI与宠物币.md', slug: 'changelog-2026-09-28-complete-papi-pet-coins', title: '0.29.13 完整 PAPI 与宠物币变量', summary: '补齐宠物币余额、名称、格式化文本、活动宠物判断，并为异步数据库余额增加非阻塞缓存。', group: '管理员文档', order: 0 },
+  { file: 'docs/PlaceholderAPI变量.md', slug: 'placeholderapi', title: '完整 PlaceholderAPI 变量', summary: '活动宠物、等级、属性、品质性格、宠物币、服务器和 CE 捕捉球的完整变量表。', group: '管理员文档', order: 1 },
+  { file: 'docs/更新日志-2026-09-27-CE捕捉变量PAPI.md', slug: 'changelog-2026-09-27-ce-capture-papi', title: '0.29.12 CraftEngine 捕捉球 PAPI 变量', summary: '按捕捉球 ID 读取 CE 物品身份、名称与三档概率，同时提供配置原值和显示百分比。', group: '管理员文档', order: 2 },
+  { file: 'docs/CE捕捉球PAPI变量.md', slug: 'ce-capture-papi', title: 'CraftEngine 捕捉球 PAPI 变量', summary: '完整变量表、按球 ID 查询、CE 配置案例、百分比与异常返回规则。', group: '管理员文档', order: 3 },
+  { file: 'docs/更新日志-2026-09-26-监守者跟随与召唤名牌.md', slug: 'changelog-2026-09-26-warden-follow-nameplate', title: '0.29.11 监守者跟随与召唤名牌', summary: '监守者持续推进、宽体路点与跳跃保留，召唤注册后显示名牌并防止延迟重建。', group: '管理员文档', order: 0 },
+  { file: 'docs/更新日志-2026-09-26-停服保存与残留攻击保护.md', slug: 'changelog-2026-09-26-shutdown-protection', title: '0.29.10 停服保存与残留攻击保护', summary: '停服独立保存、无会话攻击隔离、间接来源与嘎枝 Brain 主人仇恨清理。', group: '管理员文档', order: 0 },
+  { file: 'docs/更新日志-2026-09-26-重启残留与归属提示.md', slug: 'changelog-2026-09-26-restart-ownership', title: '0.29.9 重启残留与归属提示', summary: '实体加载延迟核对、交互补清理旧残留，保护未完成召唤并保留存档主人。', group: '管理员文档', order: 0 },
+  { file: 'docs/更新日志-2026-09-26-鱼类跟随与游泳骑乘.md', slug: 'changelog-2026-09-26-fish-swimming', title: '0.29.8 鱼类水中跟随与骑乘', summary: '水路三维跟随、骑乘松键稳定与空格上浮，保留原生物理和外部模型控制。', group: '管理员文档', order: 0 },
+  { file: 'docs/更新日志-2026-09-26-原生宠物体型.md', slug: 'changelog-2026-09-26-native-scale', title: '0.29.7 原生宠物体型缩放', summary: '原生 SCALE、碰撞箱与交互同步，公共和单宠等级倍率，默认关闭并保护外部模型。', group: '管理员文档', order: 0 },
+  { file: 'docs/更新日志-2026-09-26-info界面行数.md', slug: 'changelog-2026-09-26-info-layout', title: '0.29.6 info 界面行数修复', summary: '支持 1-6 行，移除仓库按钮强制槽位 40，保留自定义布局与越界校验。', group: '管理员文档', order: 0 },
+  { file: 'docs/更新日志-2026-09-26-监守者主人保护.md', slug: 'changelog-2026-09-26-warden-protection', title: '0.29.5 监守者宠物主人保护', summary: '接管监守者原版 Brain，避免攻击主人和范围黑暗，保留受控跟随战斗及野生黑暗。', group: '管理员文档', order: 0 },
+  { file: 'docs/更新日志-2026-09-26-WorldGuard与召唤跟随.md', slug: 'changelog-2026-09-26-worldguard-follow', title: '0.29.4 WorldGuard 与召唤跟随', summary: 'WG 召唤/攻击旗标、MM 生成前置配置及重召恢复跟随。', group: '管理员文档', order: 0 },
+  { file: 'docs/更新日志-2026-09-22-主人保护.md', slug: 'changelog-2026-09-22-owner-protection', title: '0.29.3 主人保护', summary: '禁止宠物锁定主人，双阶段伤害拦截与间接来源识别。', group: '管理员文档', order: 1 },
+  { file: 'docs/更新日志-2026-09-19-追击与绕障.md', slug: 'changelog-2026-09-19-combat-pursuit', title: '0.29.2 追击与绕障', summary: '隔墙绕行、战斗跟随距离、卡住恢复及更新版本确认。', group: '管理员文档', order: 2 },
+  { file: 'docs/更新日志-2026-09-19-主动索敌.md', slug: 'changelog-2026-09-19-auto-attack', title: '0.29.1 主动索敌', summary: '主动攻击附近敌对生物、目标过滤、单宠开关与跟随优先。', group: '管理员文档', order: 2 },
+  { file: 'docs/更新日志-2026-09-19-品质性格与闪光.md', slug: 'changelog-2026-09-19-quality-nature-shiny', title: '0.29.0 品质、性格与闪光', summary: '捕捉随机特性、成长倍率、存档升级与特性显示配置。', group: '管理员文档', order: 2 },
+  { file: 'docs/更新日志-2026-09-19-骑乘命名与多行名牌.md', slug: 'changelog-2026-09-19-riding-naming-nameplate', title: '0.28.0 骑乘、命名与多行名牌', summary: '第一批：自动迈步、朝向选项、命名校验及 lines 名牌配置。', group: '管理员文档', order: 2 },
+  { file: 'docs/更新日志-2026-09-13-跟随与骑乘稳定性.md', slug: 'changelog-2026-09-13-movement-stability', title: '0.27.29 跟随与骑乘稳定性', summary: '停靠距离、返回路径连续性、模型座位跨区保护和名牌刷新优化。', group: '管理员文档', order: 16 },
+  { file: 'docs/更新日志-2026-09-13-单宠名牌与战斗跟随.md', slug: 'changelog-2026-09-13-nameplate-combat-follow', title: '0.27.28 单宠名牌与战斗跟随', summary: '单宠名牌覆盖、运行中刷新、远距离脱战返回与骑乘输入兼容。', group: '管理员文档', order: 17 },
+  { file: 'docs/更新日志-2026-09-12-MM模型与骑乘等级.md', slug: 'changelog-2026-09-12-mm-model-riding', title: '0.27.27 MM 模型与骑乘等级', summary: '模型回收、全息跟随、模型驾驶座和等级解锁配置。', group: '管理员文档', order: 18 },
+  { file: 'docs/更新日志-2026-09-08-背包贴图标题.md', slug: 'changelog-2026-09-08-inventory-skin', title: '0.27.26 背包贴图标题', summary: '可选皮肤开关、真实容量背景和安全回退。', group: '管理员文档', order: 19 },
+  { file: 'docs/逐项排查-2026-09-06-生命周期与死亡重试.md', slug: 'audit-2026-09-06-lifecycle', title: '0.27.25 生命周期逐项排查', summary: '意外回血、死亡保存重试、末影人验证和剩余问题清单。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-09-06-死亡扣级惩罚.md', slug: 'changelog-2026-09-06-death-penalty', title: '0.27.24 死亡扣级惩罚', summary: '默认死亡扣 1 级、热重载、经验与属性点规则及持久化验证。', group: '文档总览', order: 2 },
+  { file: 'docs/Folia专项排查-2026-09-06.md', slug: 'folia-audit-2026-09-06', title: '0.27.23 Folia 专项排查', summary: '线程边界修复、366 项测试、隔离服证据与残余并发风险。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-09-06-GUI物品保护.md', slug: 'changelog-2026-09-06-gui-item-protection', title: '0.27.22 GUI 物品保护修复', summary: '补齐只读菜单拖拽保护，保留玩家背包整理与宠物背包存取。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-09-06-Folia认主与召唤时序.md', slug: 'changelog-2026-09-06-folia-owner-spawn', title: '0.27.21 Folia 认主与召唤时序修复', summary: '修复 Folia 新实体首 tick 有效性误判，并验证跨区域召唤、主人恢复与收回。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-09-06-重进认主与喂食冷却.md', slug: 'changelog-2026-09-06-relogin-feeding-cooldown', title: '0.27.20 重进认主与喂食冷却', summary: '玩家重进和区块载入恢复原版驯服主人，并新增可热重载的全局喂食冷却。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-09-05-属性加点与属性归属.md', slug: 'changelog-2026-09-05-attribute-allocation', title: '0.27.19 属性加点与属性归属修复', summary: 'revision 冲突对账重试、力量与敏捷职责修正，以及 GUI 动作安全解析。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-09-05-Residence天气与属性加点.md', slug: 'changelog-2026-09-05-residence-weather-attributes', title: '0.27.18 Residence 天气与属性加点修复', summary: '局部晴天保护 LiPet 烈焰人，并修复连续属性加点后的旧值刷新竞态。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-09-05-风弹喂食冲突修复.md', slug: 'changelog-2026-09-05-food-use-conflict', title: '0.27.17 风弹喂食冲突修复', summary: '阻止喂旋风人时同时发射风弹，保护副手回退，正常投掷不受影响。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-09-04-捕捉幼体认主修复.md', slug: 'changelog-2026-09-04-captured-baby-age-lock', title: '0.27.16 捕捉幼体认主修复', summary: '固化捕捉幼体外观，区块恢复重新校正，并验证成年边界保留 UUID、PDC 和主人。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-09-04-快乐恶魂移动修复.md', slug: 'changelog-2026-09-04-happy-ghast-movement', title: '0.27.15 快乐恶魂移动修复', summary: '绕过不适用的地面路径，按大型体型抬升跟随目标，并同步骑乘身体朝向。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-09-04-原版宠物专属食物校准.md', slug: 'changelog-2026-09-04-vanilla-pet-food-alignment', title: '0.27.14 原版宠物专属食物校准', summary: '逐项复核 87 种原版宠物，按原版食物标签修正 8 组默认或模板食物。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-09-04-默认喂食经验平衡.md', slug: 'changelog-2026-09-04-feeding-experience-balance', title: '0.27.13 默认喂食经验平衡', summary: '官方食物统一 4 点经验，低于默认战斗奖励，并保护旧服自定义食物数值。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-09-04-Folia名牌跨区.md', slug: 'changelog-2026-09-04-folia-nameplate-region', title: '0.27.12 Folia 名牌跨区修复', summary: '区域所有权检查、实体下一 tick 重试、骑乘状态复用和安全限频失败处理。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-09-04-原版食物与成长持久化.md', slug: 'changelog-2026-09-04-food-growth-persistence', title: '0.27.11 原版食物与成长持久化', summary: '全量原版宠物专属食物、战斗经验批量结算、revision 对账与重启持久化。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-09-03-技能书与敏捷速度.md', slug: 'changelog-2026-09-03-skill-speed', title: '0.27.10 技能书与敏捷速度', summary: '技能书持久预扣、串行升级和异常退款，以及敏捷与速度技能的统一最终速度。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-09-02-商城飞行加速与回收.md', slug: 'changelog-2026-09-02-shop-flight-store', title: '0.27.9 商城、飞行加速与回收', summary: '道具商城独立余额提示与安全退款、飞行属性和骑乘疾跑加速，以及命令、GUI、信号棒的统一回收反馈。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-09-01-召唤无响应修复.md', slug: 'changelog-2026-09-01-summon-recovery', title: '0.27.8 召唤无响应修复', summary: '实体任务退休后正确结束、玩家队列与查询占位释放、召唤回滚，以及可关闭的等待提示。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-09-01-骑乘名牌与视角转向.md', slug: 'changelog-2026-09-01-riding-visibility-steering', title: '0.27.7 骑乘名牌与视角转向', summary: '骑乘名牌对所有玩家隐藏、载体名称清理、下马恢复，以及原地与持续前进的实时视角控制。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-08-31-货币名称重载.md', slug: 'changelog-2026-08-31-currency-names', title: '0.27.6 货币名称配置与热重载', summary: '宠物币、金币、点券名称配置，成功重载后重开双商城生效，失败保留旧名和原有结算规则。', group: '文档总览', order: 2 },
+  { file: 'docs/等级模型与捕捉球商店.md', slug: 'level-models-capture-shop', title: '等级模型、随机属性与捕捉球商店', summary: '1级a模型、2级b模型、四属性随机范围和普通/CE捕捉球商店案例。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-08-30-等级模型与随机捕捉.md', slug: 'changelog-2026-08-30', title: '0.27.5 等级模型与随机捕捉更新', summary: 'MEG等级切换、捕捉属性持久化、捕捉球商品与验证记录。', group: '文档总览', order: 2 },
+  { file: 'docs/WIKI.md', slug: 'home', title: 'LiPet 完整 Wiki', summary: 'LiPet 2.3.15 新增仓库分页与跟随到位待命。', group: '文档总览', order: 1 },
+  { file: 'docs/PET_FEATURE_MATRIX.md', slug: 'feature-matrix', title: '功能矩阵', summary: '逐项核对宠物能力的实现范围、入口和当前状态。', group: '文档总览', order: 2 },
+  { file: 'docs/更新日志-2026-08-29-CE捕捉球与食物案例.md', slug: 'changelog-2026-08-29-ce-capture-food-examples', title: '2026-08-29 CraftEngine 捕捉球与食物案例', summary: '默认关闭的 CE 捕捉球与公共宠物食物案例、启用开关、旧配置安全补全和真实运行验证。', group: '文档总览', order: 3 },
+  { file: 'docs/更新日志-2026-08-29-全量宠物配置与MCPets兼容.md', slug: 'changelog-2026-08-29-full-pet-config-mcpets', title: '2026-08-29 全量宠物配置与 MCPets 兼容', summary: '全量原版宠物中文独立 YML、公共默认值与单宠差异、中文目录迁移及 MCPets 直接读取。', group: '文档总览', order: 4 },
+  { file: 'docs/更新日志-2026-08-29-老宠物类型兼容.md', slug: 'changelog-2026-08-29-old-type-compat', title: '2026-08-29 老宠物类型兼容与独立 YML', summary: '旧原版类型 ID 自动兼容、legacy-ids 自定义别名和商城 10 种宠物独立配置。', group: '文档总览', order: 5 },
+  { file: 'docs/更新日志-2026-08-29-MythicMobs技能优化.md', slug: 'changelog-2026-08-29-mythicmobs-skill-optimization', title: '2026-08-29 MythicMobs 技能优化', summary: '冷却热路径、失败退避、逐技能日志限频、API 变体兼容及状态规则统计。', group: '文档总览', order: 6 },
+  { file: 'docs/更新日志-2026-08-29-MythicMobs等级技能.md', slug: 'changelog-2026-08-29-mythicmobs-level-skills', title: '2026-08-29 MythicMobs 等级技能', summary: '每宠独立 MM 技能、等级解锁、七种触发器、概率、冷却及 power 成长。', group: '文档总览', order: 7 },
+  { file: 'docs/更新日志-2026-08-29-管理菜单返回.md', slug: 'changelog-2026-08-29-management-return', title: '2026-08-29 管理菜单返回修复', summary: '属性与成长面板保留打开来源，返回同一只宠物的管理页，并安全补全可配置按钮。', group: '文档总览', order: 8 },
+  { file: 'docs/更新日志-2026-08-29-仓库介绍样式.md', slug: 'changelog-2026-08-29-warehouse-lore-style', title: '2026-08-29 仓库介绍样式', summary: '潜行操作统一绿色，永久删除警告独立为红色段落，并迁移官方历史默认 Lore。', group: '文档总览', order: 9 },
+  { file: 'docs/更新日志-2026-08-29-仓库四键与宠物类型目录.md', slug: 'changelog-2026-08-29-warehouse-controls-pet-type-files', title: '2026-08-29 仓库四键与宠物类型目录', summary: '潜行左键真正收回宠物，潜行右键放生，并支持中文目录与多个宠物类型 YML。', group: '文档总览', order: 10 },
+  { file: 'docs/更新日志-2026-08-29-我的宠物入口.md', slug: 'changelog-2026-08-29-my-pets-entry', title: '2026-08-29 “我的宠物”入口调整', summary: '主菜单按钮改为“我的宠物”，点击说明改为“打开宠物列表”，并保护服主自定义文案。', group: '文档总览', order: 11 },
+  { file: 'docs/更新日志-2026-08-29-召唤上限提示.md', slug: 'changelog-2026-08-29-active-pet-limit-message', title: '2026-08-29 召唤上限提示修复', summary: '已有活动宠物时使用明确的最大召唤数量提示，并迁移官方历史默认语言。', group: '文档总览', order: 12 },
+  { file: 'docs/更新日志-2026-08-29-鹦鹉名牌跟随.md', slug: 'changelog-2026-08-29-parrot-nameplate-follow', title: '2026-08-29 鹦鹉名牌跟随修复', summary: '飞行宠物安全回传前清理 TextDisplay，并在传送完成或失败后立即恢复名牌。', group: '文档总览', order: 13 },
+  { file: 'docs/更新日志-2026-08-29-商城货币显示.md', slug: 'changelog-2026-08-29-shop-currency-display', title: '2026-08-29 商城货币显示修复', summary: 'INTERNAL 配置 ID 改为显示可配置的“宠物币”，两个商城统一解析货币名称。', group: '文档总览', order: 14 },
+  { file: 'docs/更新日志-2026-08-29-权限排行榜与PlayerPoints.md', slug: 'changelog-2026-08-29-permissions-leaderboards-playerpoints', title: '2026-08-29 权限组、排行榜与 PlayerPoints 更新', summary: '普通玩家权限自动 true、宠物币/等级排行榜和 PlayerPoints 商城结算。', group: '文档总览', order: 15 },
+  { file: 'docs/更新日志-2026-08-29-仓库快捷操作.md', slug: 'changelog-2026-08-29-warehouse-shortcuts', title: '2026-08-29 仓库快捷操作更新', summary: '左键与蹲下左键召回、右键管理、蹲下右键放生确认、语言分流和宠物币快捷指令。', group: '文档总览', order: 16 },
+  { file: 'docs/更新日志-2026-08-29-宠物币与末影龙.md', slug: 'changelog-2026-08-29-coin-dragon', title: '2026-08-29 宠物币、名牌与末影龙更新', summary: '管理员宠物币 give/take/look、名牌掉位修复、末影龙 HOVER 稳定与飞行骑乘。', group: '文档总览', order: 17 },
+  { file: 'docs/更新日志-2026-08-28-骑乘交互.md', slug: 'changelog-2026-08-28-riding', title: '2026-08-28 骑乘与交互更新', summary: '凋零/末影龙骑乘显示、末影龙部件交互、在线 Tab、召唤语言和永久删除指令。', group: '文档总览', order: 18 },
+  { file: 'docs/更新日志-2026-08-28-CE.md', slug: 'craftengine-integration', title: 'CraftEngine 完整物品挂钩', summary: 'CE 物品生成、识别、索引、热重载，以及喂食、捕捉球、技能书、商城、信号棒和 GUI 全入口配置。', group: '文档总览', order: 19 },
+  { file: 'docs/更新日志-2026-08-28-UI.md', slug: 'changelog-2026-08-28-ui', title: '2026-08-28 UI 更新', summary: '全部菜单点击音效、功能按钮多槽位复制和旧配置安全迁移。', group: '文档总览', order: 20 },
+  { file: 'docs/更新日志-2026-08-28.md', slug: 'changelog-2026-08-28', title: '2026-08-28 管理与召唤更新', summary: 'give/take、离线与全服批处理、Tab 补全及领地保护内安全召唤。', group: '文档总览', order: 21 },
+  { file: 'docs/更新日志-2026-08-27.md', slug: 'changelog-2026-08-27', title: '2026-08-27 更新', summary: '指定玩家单宠管理、商城总开关、热重载、升级步骤和兼容验证。', group: '文档总览', order: 22 },
+  { file: 'docs/更新日志.md', slug: 'changelog', title: '更新日志总览', summary: '2.3.12 Paper / Folia 26.3 适配及完整历史版本。', group: '文档总览', order: 23 },
+  { file: 'docs/玩家入门.md', slug: 'player', title: '玩家入门', summary: '创建、召唤、收回、改名、骑乘宠物并使用完整 /lipet 指令。', group: '玩家文档', order: 10 },
+  { file: 'docs/成长与喂养.md', slug: 'growth-feeding', title: '成长、属性与喂养', summary: '0.27.24 死亡扣级、经验和属性点规则，以及加点与战斗成长。', group: '玩家文档', order: 11 },
+  { file: 'docs/捕捉与商城.md', slug: 'capture-shop', title: '捕捉、宠物商城与道具商城', summary: '捕捉幼体锁龄、道具退款、捕捉仪式、宠物币奖励和三种商城货币。', group: '玩家文档', order: 12 },
+  { file: 'docs/跟随骑乘与战斗.md', slug: 'behavior-combat', title: '跟随、骑乘与战斗', summary: '每宠主动攻击开关、跟随与骑乘、战斗规则及兼容说明。', group: '玩家文档', order: 13 },
+  { file: 'docs/背包与宠物道具.md', slug: 'items-inventory', title: '背包、信号棒与技能书', summary: '54 格宠物背包、信号棒回收反馈、技能书持久预扣与失败退款，以及聊天改名。', group: '玩家文档', order: 14 },
+  { file: 'docs/安装与更新.md', slug: 'install', title: '安装与更新', summary: '2.3.7 支持 Paper 26.3，使用 Java 25，正常停服升级并保留已有配置。', group: '管理员文档', order: 20 },
+  { file: 'docs/命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '仅使用 /lipet 的玩家、商城、捕捉、奖励和管理员权限。', group: '管理员文档', order: 21 },
+  { file: 'docs/配置说明.md', slug: 'configuration', title: '配置说明', summary: '主动攻击名称的精确迁移规则、模型主驾驶与换乘、MM 接口和原有配置。', group: '管理员文档', order: 22 },
+  { file: 'docs/存储与跨服.md', slug: 'storage-network', title: '存储与跨服', summary: 'SQLite / MySQL 持久化、每宠设置保存、正常重启换库与群组配置。', group: '管理员文档', order: 23 },
+  { file: 'docs/测试与故障排查.md', slug: 'testing-troubleshooting', title: '测试与故障排查', summary: '属性公式与动作解析、两套 API 构建、Paper 启动及持久化验证。', group: '管理员文档', order: 24 },
+  { file: 'docs/常见问题.md', slug: 'faq', title: '常见问题', summary: '排查属性加点失败、力量与暴击归属、Residence 天气和 Folia 调度问题。', group: '管理员文档', order: 25 },
+  { file: 'README.md', slug: 'project', title: '项目说明', summary: '项目目标、当前能力、指令、架构目标和构建要求。', group: '开发者文档', order: 40 },
+  { file: 'docs/LIPET_DESIGN.md', slug: 'design', title: '设计与配置', summary: '宠物生命周期、数据结构、行为系统和扩展设计。', group: '开发者文档', order: 41 },
+  { file: 'docs/ARCHITECTURE.md', slug: 'architecture', title: '架构与扩展', summary: '模块边界、服务职责、数据流和二次开发结构。', group: '开发者文档', order: 42 },
+  { file: 'docs/FEATURE_ROADMAP.md', slug: 'roadmap', title: '功能路线图', summary: '功能实施顺序、阶段目标与尚未完成的边界。', group: '开发者文档', order: 43 },
+]);
+
+
+const liDungeonDocs = defineDocs('lidungeon', [
+  { file: 'Home.md', slug: 'home', title: 'LiDungeon 完整 Wiki', summary: '以当前 2.0.1-zhcn-folia.9 源码与配置为准的安装、游玩、编辑和运维入口。', group: '文档总览', order: 1 },
+  { file: 'Quick-Start.md', slug: 'quick-start', title: '五分钟快速上手', summary: '创建最小经典地牢，设置出生、完成触发器、保存并完成第一次玩家测试。', group: '玩家文档', order: 10 },
+  { file: '玩家游玩指南.md', slug: 'player-guide', title: '玩家游玩指南', summary: 'play、难度、队伍、准备、生命、旁观、退出与无法进入时的提示。', group: '玩家文档', order: 11 },
+  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: 'Paper/Folia 1.21.11 与 26.2 环境、全新安装、覆盖更新、迁移和回滚。', group: '管理员文档', order: 20 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '统一 /lidungeon 命令树、快捷命令、完整参数、权限和分组建议。', group: '管理员文档', order: 21 },
+  { file: '地牢创建与编辑.md', slug: 'creation-editor', title: '地牢创建与编辑', summary: '创建参数、出生点、构建器、物品、钥匙、保存、重载与编辑验收。', group: '管理员文档', order: 22 },
+  { file: '地牢类型与程序化生成.md', slug: 'dungeon-types-generation', title: '地牢类型与程序化生成', summary: 'Classic、Procedural、Continuous、房间、连接点、门与两种布局。', group: '管理员文档', order: 23 },
+  { file: '主配置说明.md', slug: 'global-configuration', title: '主配置说明', summary: '全局实例、队伍、准备、Folia、多世界、实验功能和旁观配置逐项说明。', group: '管理员文档', order: 24 },
+  { file: '单地牢配置.md', slug: 'dungeon-configuration', title: '单地牢配置', summary: '生命周期、要求、钥匙、难度、奖励冷却、地图与玩法保护规则。', group: '管理员文档', order: 25 },
+  { file: 'Folia与多世界.md', slug: 'folia-multiworld', title: 'Folia 与多世界实例', summary: '预加载世界池、离线世界导入、远端隔离回退、容量计算与调度排查。', group: '管理员文档', order: 26 },
+  { file: '触发器与条件.md', slug: 'triggers-conditions', title: '触发器与条件', summary: '15 个触发器、最多 11 个条件、目标上下文、常用配方与逐层排查。', group: '管理员文档', order: 27 },
+  { file: '功能与奖励.md', slug: 'functions-rewards', title: '功能、奖励与流程编排', summary: '38 个基础功能、可选扩展、奖励、目标类型和安全流程编排。', group: '管理员文档', order: 28 },
+  { file: '可选联动与变量.md', slug: 'integrations-placeholders', title: '可选联动与变量', summary: 'PlaceholderAPI 变量、MythicMobs、Citizens、Vault、PacketEvents 与队伍联动。', group: '管理员文档', order: 29 },
+  { file: '备份迁移与回滚.md', slug: 'backup-migration-rollback', title: '备份、迁移与回滚', summary: '数据范围、备份节奏、MythicDungeons/Paper/Folia 迁移与灾难恢复。', group: '管理员文档', order: 30 },
+  { file: '故障排查.md', slug: 'troubleshooting', title: '故障排查', summary: '编辑线程等待、世界池、队列、触发器、配置、奖励与数据恢复问题树。', group: '管理员文档', order: 31 },
+  { file: 'FAQ.md', slug: 'faq', title: '常见问题', summary: '主命令、多世界、触发器数量、完成语义、重载、保存和自动关机说明。', group: '管理员文档', order: 32 },
+  { file: '验证清单.md', slug: 'validation-checklist', title: '上线验收清单', summary: '启动、Folia、编辑、玩家、触发、奖励、数据与发布记录的逐项验收。', group: '管理员文档', order: 33 },
+]);
+
+const lichQianDocs = defineDocs('lichqian', [
+  { file: 'Home.md', slug: 'home', title: 'LichQian 使用说明', summary: '安装、命令、权限、时间、文本、GUI、变量和配置升级。', group: '文档总览', order: 1 },
+  { file: '玩家入门.md', slug: 'player', title: '玩家入门', summary: '打开抽签菜单、直接抽签、查看次数和理解每日重置。', group: '玩家文档', order: 10 },
+  { file: '签文与奖励.md', slug: 'draw-rules', title: '签文、费用与奖励', summary: '抽签条件、扣费、签文效果、持续时间和异常退款规则。', group: '玩家文档', order: 11 },
+  { file: 'resource-pack/README.md', slug: 'resource-pack', title: '配套资源包', summary: '资源包目录、安装方式和客户端使用说明。', group: '玩家文档', order: 12 },
+  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: 'Paper、Java、Vault、首次启动、升级和配置保护。', group: '管理员文档', order: 20 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '玩家抽签、状态查询、管理员重载和权限节点。', group: '管理员文档', order: 21 },
+  { file: '配置说明.md', slug: 'configuration', title: '配置说明', summary: '每日次数、时区、重置、签文、标题动画、GUI 与消息。', group: '管理员文档', order: 22 },
+  { file: '变量与文本.md', slug: 'placeholders', title: '变量、占位符与文本格式', summary: 'GUI 消息变量、PlaceholderAPI、MiniMessage 和时间格式。', group: '管理员文档', order: 23 },
+  { file: '故障排查.md', slug: 'troubleshooting', title: '故障排查', summary: '经济依赖、无有效签文、YAML 错误、退款和背包已满问题。', group: '管理员文档', order: 24 },
+  { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '每日重置、次数限制、药水等级、重载和奖励异常说明。', group: '管理员文档', order: 25 },
+  { file: '开发与构建.md', slug: 'development', title: '开发与构建', summary: '兼容基线、分层结构、构建命令和验证记录。', group: '开发者文档', order: 40 },
+  { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: 'LichQian 版本功能、修复与兼容性变更。', group: '管理员文档', order: 26 },
+]);
+
+const liSkinDocs = defineDocs('liskin', [
+  { file: 'Home.md', slug: 'home', title: 'LiSkin 完整文档', summary: '基础用法、资源安装、分类 NPC 试衣间、旁观视角、皮肤配置、商店、权限与跨服。', group: '文档总览', order: 1 },
+  { file: '功能介绍.md', slug: 'features', title: '功能与获取介绍', summary: '3D 武器与时装皮肤、玩家人偶试衣间、经济、跨服、指令、权限和安装说明。', group: '玩家文档', order: 10 },
+  { file: '玩家入门.md', slug: 'player', title: '玩家入门', summary: '使用综合菜单或试衣 NPC 选择、试穿、解锁、应用和移除物品皮肤。', group: '玩家文档', order: 11 },
+  { file: '皮肤应用与还原.md', slug: 'application', title: '皮肤应用与安全还原', summary: '兼容物品、分类、权限、PDC 标记和原始外观恢复。', group: '玩家文档', order: 12 },
+  { file: '商店与试穿.md', slug: 'shop-preview', title: '商店、试穿与试衣间', summary: '购买、分类换装、沉浸旁观视角、人偶旋转展示和安全恢复。', group: '玩家文档', order: 13 },
+  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: 'CraftEngine 资源、运行环境、首次安装、升级与验证。', group: '管理员文档', order: 20 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '菜单、解锁、应用、试穿、商店、调试和管理权限。', group: '管理员文档', order: 21 },
+  { file: '配置说明.md', slug: 'configuration', title: '配置说明', summary: '皮肤条目、CE 模型、装备资产、分类、预览和试衣 NPC 节点。', group: '管理员文档', order: 22 },
+  { file: '跨服与数据安全.md', slug: 'storage-network', title: '跨服与数据安全', summary: '解锁数据、所有者保护、跨服防刷、外观保存和恢复。', group: '管理员文档', order: 23 },
+  { file: '故障排查.md', slug: 'troubleshooting', title: '故障排查', summary: '资源缺失、模型错误、权限还原、商店和跨服问题定位。', group: '管理员文档', order: 24 },
+  { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '解答皮肤 ID、CE 模型、试穿、权限、价格和外观恢复问题。', group: '管理员文档', order: 25 },
+]);
+
+const jisseeChessDocs = defineDocs('jisseechessgames', [
+  { file: 'Home.md', slug: 'home', title: 'JisseeChessGames 使用文档', summary: '运行要求、安装、棋盘生成、对局、指令、交互、持久化与配置。', group: '文档总览', order: 1 },
+  { file: '玩家入门.md', slug: 'player', title: '玩家入门', summary: '通过全息或指令加入棋局，完成落子、走棋、认输和离开。', group: '玩家文档', order: 10 },
+  { file: '棋类规则.md', slug: 'game-rules', title: '五子棋、象棋与军棋规则', summary: '三种自动对局的回合、合法移动、胜负和重置规则。', group: '玩家文档', order: 11 },
+  { file: '棋盘与房间.md', slug: 'arenas-rooms', title: '棋盘、全息与房间', summary: '五类棋盘、右击全息、双人房间和手动玩法边界。', group: '玩家文档', order: 12 },
+  { file: '安装与更新.md', slug: 'install', title: '安装与更新', summary: 'CraftEngine 资源、运行环境、安装顺序、验证和升级。', group: '管理员文档', order: 20 },
+  { file: '命令与权限.md', slug: 'commands-permissions', title: '命令与权限', summary: '玩家房间、棋盘生成、管理、验证和权限节点。', group: '管理员文档', order: 21 },
+  { file: '配置与存储.md', slug: 'configuration-storage', title: '配置、保护与持久化', summary: '主配置、消息、棋盘、房间、保护和升级合并规则。', group: '管理员文档', order: 22 },
+  { file: '故障排查.md', slug: 'troubleshooting', title: '故障排查', summary: 'CE 资源、生成空间、房间恢复、全息和规则问题定位。', group: '管理员文档', order: 23 },
+  { file: '常见问题.md', slug: 'faq', title: '常见问题', summary: '自动玩法范围、棋盘尺寸、围棋飞行棋、重启恢复和保护说明。', group: '管理员文档', order: 24 },
+  { file: '验证与排错.md', slug: 'validation', title: '验证报告', summary: '五子棋、中国象棋和军棋的规则验证、迁移和运行测试边界。', group: '管理员文档', order: 25 },
+  { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: 'JisseeChessGames 各版本功能、修复和数据兼容变更。', group: '管理员文档', order: 26 },
+]);
+
+const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
+const enchantDirectory = path.resolve(currentDirectory, '../../content/lirealenchant/enchants');
+
+function readEnchantMetadata(fileName: string) {
+  const source = fs.readFileSync(path.join(enchantDirectory, fileName), 'utf8');
+  const title = source.match(/^#\s+(.+)$/m)?.[1].trim() ?? path.basename(fileName, '.md');
+  const summary = source
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .find((line) => line && !line.startsWith('#') && !line.startsWith('[') && !line.startsWith('|') && !line.startsWith('>'))
+    ?.replace(/[*_`]/g, '') ?? `查看 ${title} 的等级、触发条件、效果、冷却、粒子与声音。`;
+  return { title, summary };
+}
+
+const lirealEnchantDocs = fs.readdirSync(enchantDirectory)
+  .filter((fileName) => fileName.endsWith('.md'))
+  .sort((left, right) => left.localeCompare(right, 'en'))
+  .map((fileName, index): DocEntry => {
+    const id = path.basename(fileName, '.md');
+    const metadata = readEnchantMetadata(fileName);
+    return {
+      project: 'lirealenchant',
+      file: `enchants/${fileName}`,
+      slug: `enchant-${id.replaceAll('_', '-')}`,
+      title: metadata.title,
+      summary: metadata.summary,
+      group: '附魔详情',
+      order: 1000 + index,
+      sidebar: false,
+    };
+  });
+
+export const docSets: DocSet[] = [
+  { slug: 'lienhance', name: 'LiEnhance 装备强化', version: '1.3.0', summary: 'CraftEngine 装备强化、药水、献祭台、属性图鉴与自定义展示。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: defineDocs('lienhance', [
+    { file: 'Home.md', slug: 'home', title: 'LiEnhance 文档首页', summary: '1.3.0 功能概览、依赖和验证范围。', group: '文档总览', order: 1 },
+    { file: '玩法指南.md', slug: 'player', title: '药水、献祭与强化图鉴', summary: '十分钟加成、Y/N 确认、献祭风险和属性查询。', group: '玩家文档', order: 10 },
+    { file: '配置与指令.md', slug: 'configuration', title: '配置、指令与升级', summary: '献祭台注册、分级概率、名称后缀、等级突破和权限。', group: '管理员文档', order: 20 },
+    { file: '更新日志.md', slug: 'changelog', title: '更新日志与验证', summary: '1.3.0 七项功能及 1.2.7/1.2.8 等级扩展。', group: '文档总览', order: 2 },
+  ]) },
+  { slug: 'litown', name: 'LiTown 小镇公会', version: '1.1.2', summary: '小镇经营与成员协作：委托、袭击 BossBar、物资贡献、共享仓库、菜单配置与安装文档。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档'], docs: defineDocs('litown', [
+    { file: 'Home.md', slug: 'home', title: 'LiTown 小镇公会', summary: '1.1.2 玩法介绍、袭击进度条、免费获取与完整文档入口。', group: '文档总览', order: 1 },
+    { file: '更新日志.md', slug: 'changelog', title: '更新日志', summary: '1.1.2 袭击修复与 BossBar，以及历史菜单分页和文本优化。', group: '文档总览', order: 2 },
+    { file: '玩法总览.md', slug: 'player', title: '玩法与玩家命令', summary: '小镇成员、任务、袭击、金库、仓库、红包与 PvP 积分竞赛。', group: '玩家文档', order: 10 },
+    { file: '菜单与分页.md', slug: 'menus', title: '菜单与分页', summary: '菜单布局、分页命令、导航配置、商店确认与按钮反馈。', group: '玩家文档', order: 11 },
+    { file: '安装与升级.md', slug: 'install', title: '安装与升级', summary: 'Paper 26.2、依赖与配置保护、旧版迁移和本次验证范围。', group: '管理员文档', order: 20 },
+    { file: '命令权限与变量.md', slug: 'commands-permissions', title: '管理命令、权限与变量', summary: '管理员指令、小镇职位权限及 PlaceholderAPI 变量。', group: '管理员文档', order: 21 },
+    { file: '配置文件.md', slug: 'configuration', title: '配置文件参考', summary: '小镇等级、物资贡献、成就、金库与功能配置入口。', group: '管理员文档', order: 22 },
+    { file: '任务配置.md', slug: 'quests', title: '委托任务配置', summary: '任务类型、目标、奖励、日常周常与提交设置。', group: '管理员文档', order: 23 },
+    { file: '袭击配置.md', slug: 'raids', title: '小镇袭击配置', summary: 'BossBar 进度条、原版实体、MythicMobs、首领波次、冷却和奖励。', group: '管理员文档', order: 24 },
+    { file: '存储与排错.md', slug: 'storage-troubleshooting', title: '存储与故障排查', summary: 'YAML / SQLite / MySQL 迁移、备份、重载与常见问题。', group: '管理员文档', order: 25 },
+  ]) },
+  { slug: 'litechtree', name: 'LiTechTree 科技树', version: '1.3.1', summary: '12 章 97 科技、紧凑图形 Dialog、研究条件与奖励、CE 配方权限和自定义升级教程。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档'], docs: defineDocs('litechtree', [
+    { file: 'Home.md', slug: 'home', title: 'LiTechTree 图形科技树', summary: '原版生存完整路线与原生 Dialog 界面。', group: '文档总览', order: 1 },
+    { file: '更新日志.md', slug: 'changelog', title: '更新日志与验证', summary: '1.3.1 完整路线、缩小界面、自定义与实际验证。', group: '文档总览', order: 2 },
+    { file: '默认生存路线与自定义.md', slug: 'survival-route', title: '完整生存路线与 97 节点参考', summary: '从工作台到世界工匠，章节、材料、费用、奖励、权限和自定义示例。', group: '玩家文档', order: 10 },
+    { file: '安装升级与命令.md', slug: 'install', title: '安装、升级与命令', summary: '26.2 运行要求、资源包安装、配置保护、玩家与管理命令。', group: '管理员文档', order: 20 },
+    { file: '界面自定义与资源包.md', slug: 'custom-ui', title: '界面自定义与资源包', summary: '切换紧凑预设、调整按钮与文案，重建尺寸、颜色和节点布局。', group: '管理员文档', order: 21 },
+    { file: '配置与CE配方.md', slug: 'configuration', title: '配置与 CE 配方权限', summary: '条件、首次奖励、权限挂钩、存档规则与常见问题。', group: '管理员文档', order: 22 },
+  ]) },
+  { slug: 'liweaponreset', name: 'LiWeaponReset 武器回归', version: '1.0.7', summary: '米饭强化残留属性自动回归、备份撤销与安全边界。', icon: 'redstone', groups: ['文档总览', '管理员文档'], docs: defineDocs('liweaponreset', [
+    { file: 'Home.md', slug: 'home', title: '武器数值回归', summary: '主手自动恢复材质原版攻击属性，先备份再修改。', group: '文档总览', order: 1 },
+    { file: '安装与自动恢复.md', slug: 'install', title: '安装与自动恢复', summary: '运行环境、自动检测条件和部署检查。', group: '管理员文档', order: 10 },
+    { file: '指令与撤销.md', slug: 'commands', title: '指令与备份撤销', summary: '手动预览、权限、精确撤销与持久化豁免。', group: '管理员文档', order: 20 },
+    { file: '配置与排错.md', slug: 'configuration', title: '配置与故障排查', summary: '完整默认配置及不恢复、无法撤销的排查方法。', group: '管理员文档', order: 30 },
+    { file: '更新日志.md', slug: 'changelog', title: '更新日志与验证', summary: '1.0.3 自动回归与 51 项服务端自检记录。', group: '文档总览', order: 2 },
+  ]) },
+  { slug: 'playerplushiestudio', name: '玩家玩偶工坊', version: '1.6.0', summary: 'Windows 玩家玩偶生成、皮肤、手持物、备份移除与兼容排错。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: defineDocs('playerplushiestudio', [
+    { file: 'Home.md', slug: 'home', title: '玩家玩偶工坊', summary: '认识 1.6.0 功能与使用流程。', group: '文档总览', order: 1 },
+    { file: '快速开始.md', slug: 'quick-start', title: '快速开始', summary: '选择服务器目录，识别并生成玩家玩偶。', group: '管理员文档', order: 10 },
+    { file: '皮肤与玩偶管理.md', slug: 'management', title: '皮肤与玩偶管理', summary: '本地皮肤、手持物、单人更新与备份移除。', group: '管理员文档', order: 20 },
+    { file: '兼容与排错.md', slug: 'troubleshooting', title: '兼容与排错', summary: 'Windows 运行要求与皮肤模型故障排查。', group: '管理员文档', order: 30 },
+    { file: '版本说明.md', slug: 'changelog', title: '版本说明', summary: '1.6.0 收录信息与升级提醒。', group: '文档总览', order: 2 },
+  ]) },
+  { slug: 'liskills', name: 'LiSkills', version: '1.20.2', summary: '15 职业技能、70 被动、生命魔力 HUD、配置、防刷、迁移与安全卸载指南。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: defineDocs('liskills', liSkillsDocDefinitions) },
+  { slug: 'liemc', name: 'LIEMC', version: '0.1.0+build.110', summary: 'EMC 经济、历史解锁兼容、缓存一致性、客户端本地化原版名称、权限出售倍率、自定义 GUI、CraftEngine 与跨服同步文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liemcDocs },
+  { slug: 'lwe', name: 'LWE 小创世神', version: '0.1.0+build.16', summary: '轻量选区施工、材料消耗、LIEMC 自动补料、配置与故障排查。', icon: 'book', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lweDocs },
+  { slug: 'lirealenchant', name: 'LiRealEnchant2', version: '2.0.0-dev218-paper26', summary: '真实附魔、YML/API 扩展、获取、槽位、铁砧、祛魔、配置与 122 篇附魔详情。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: [...lirealMainDocs, ...lirealEnchantDocs] },
+  { slug: 'lititle', name: 'LiTitle', version: '0.1.105', summary: '称号、商店、仓库、聊天、昵称、存储与跨服部署文档。', icon: 'gold', groups: ['文档总览', '玩家文档', '管理员文档'], docs: lititleDocs },
+  { slug: 'lipet', name: 'LiPet', version: '2.3.15', summary: '宠物仓库支持上下翻页与页码，宠物跟随到位后停止自主闲逛；保留 CE 图标与自定义配置。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liPetDocs },
+  { slug: 'lidungeon', name: 'LiDungeon', version: '2.0.1-zhcn-folia.10', summary: 'Paper/Folia 26.3 地牢副本系统，支持 Folia 离线世界导入与完整中文运维文档。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liDungeonDocs },
+  { slug: 'liskin', name: 'LiSkin', version: '1.12.2', summary: 'CraftEngine 外观皮肤、顶部分类换装、沉浸旁观视角、常驻 NPC、商店、权限与跨服文档。', icon: 'amethyst', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liSkinDocs },
+  { slug: 'jisseechessgames', name: 'JisseeChessGames', version: '2.3.4', summary: '棋盘生成、五子棋、中国象棋、军棋、房间、持久化与验证文档。', icon: 'book', groups: ['文档总览', '管理员文档'], docs: jisseeChessDocs },
+  { slug: 'liseasons', name: 'LISeasons', version: '2.3.0', summary: '2.3.0 水分饮水、四季生活、灾害与实测 Paper 26.1.2/26.2、Folia 26.2 说明。', icon: 'grass', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: liseasonsDocs },
+  { slug: 'enderdragon', name: 'EnderDragon', version: '26.3.1', summary: '26.3.1 复活流程修复、召唤来源控制、奖励与 Paper/Folia 26.2 验证说明。', icon: 'meteor', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: enderDragonDocs },
+  { slug: 'blockcraft', name: 'BlockCraft', version: '1.0.16', summary: '八基座祭坛合成、物品来源挂钩、费用与成功率、粒子与音效、故障排查与命令说明。', icon: 'redstone', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: blockCraftDocs },
+  { slug: 'lianimalscale', name: 'LiAnimalScale', version: '1.1.2', summary: '动物缩放、命令权限、配置、Folia 兼容、热加载与验证文档。', icon: 'leaf', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liAnimalScaleDocs },
+  { slug: 'lichqian', name: 'LichQian', version: '1.1.3', summary: '抽签玩法、时间配置、文本、GUI、变量、资源包与构建文档。', icon: 'redstone', groups: ['文档总览', '玩家文档', '管理员文档', '开发者文档'], docs: lichQianDocs },
+  { slug: 'lishop', name: 'liShop', version: '1.9.3', summary: 'GUI 商店、动态价格、交易所、编辑器、经济、数据库与集群文档。', icon: 'ice', groups: ['文档总览', '玩家文档', '管理员文档'], docs: liShopDocs },
+];
+
+for (const docSet of docSets) {
+  if (['playerplushiestudio', 'litechtree', 'litown', 'lienhance'].includes(docSet.slug)) continue;
+  docSet.docs.unshift({ project: docSet.slug, file: '26.3兼容说明.md', slug: 'compatibility-26-3', title: ['enderdragon', 'liseasons'].includes(docSet.slug) ? '历史版本 · 26.3 验证' : '26.3 适配与验证', summary: ['enderdragon', 'liseasons'].includes(docSet.slug) ? '旧构建的 26.3 加载记录，不代表当前新增玩法已在 26.3 重测。' : 'Paper / Folia 构建、前置、验证范围与升级说明。', group: '文档总览', order: 0 });
+}
+
+export const allDocs = docSets.flatMap((docSet) => docSet.docs);
+
+export function getDocSet(slug: string) {
+  return docSets.find((docSet) => docSet.slug === slug);
+}
+
